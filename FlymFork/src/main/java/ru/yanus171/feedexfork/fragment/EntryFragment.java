@@ -100,13 +100,12 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isTapActionEnabled;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -121,7 +120,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public FeedFilters mFilters = null;
     public String mAnchor = "";
     public View mRootView = null;
-    public ControlPanel mControlPanel = null;
     MenuItem mSearchNextItem = null;
     MenuItem mSearchPreviousItem = null;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
@@ -134,17 +132,18 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private int mCurrentPagerPos = 0;
     private int mLastPagerPos = -1;
     private long mInitialEntryId = -1;
-    private boolean mIsTapZoneVisible = false;
     private ViewPager mEntryPager;
     private View mStarFrame = null;
     @SuppressLint("StaticFieldLeak")
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
     private String mSearchText = "";
-    private EntryOrientation mOrientation;
+    EntryOrientation mOrientation;
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
+    public EntryTapZones mTapZones = null;
+    public ControlPanel mControlPanel = null;
 
 
     @Override
@@ -167,30 +166,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    public void SetupZones() {
-        final boolean visible = mIsTapZoneVisible;
-        UpdateTapZoneButton( R.id.pageUpBtn, false );
-        UpdateTapZoneButton( R.id.pageDownBtn, false );
-        UpdateTapZoneButton( R.id.brightnessSliderLeft, false );
-        UpdateTapZoneButton( R.id.brightnessSliderRight, false );
-        UpdateTapZoneButton( R.id.entryLeftBottomBtn, visible );
-        UpdateTapZoneButton( R.id.entryRightBottomBtn, visible );
-        UpdateTapZoneButton( R.id.leftTopBtn, visible );
-        UpdateTapZoneButton( R.id.rightTopBtn, visible );
-        UpdateTapZoneButton( R.id.backBtn, visible );
-        UpdateTapZoneButton( R.id.leftTopBtnFS, visible );
-        UpdateTapZoneButton( R.id.rightTopBtnFS, visible );
-        UpdateTapZoneButton( R.id.entryCenterBtn, visible );
-
-        final EntryView view = GetSelectedEntryView();
-        final boolean isBackBtnVisible = view != null && view.CanGoBack() && visible; //&& IsZoneEnabled( R.id.backBtn, false, false );
-        getBaseActivity().mRootView.findViewById( R.id.backBtn ).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
-
-        if ( !isArticleTapEnabledTemp() ) {
-            UpdateTapZoneButton(R.id.rightTopBtn, true);
-            getBaseActivity().mRootView.findViewById(R.id.rightTopBtn).setVisibility( View.VISIBLE );
-        }
-    }
 
     public static boolean IsExternalLink( Uri uri ) {
         return uri == null ||
@@ -212,8 +187,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         mRootView = getBaseActivity().mRootView;
+        if ( PrefUtils.isTapActionEnabled() )
+            mTapZones = new EntryTapZones( this );
+        else {
+            mTapZones = null;
+            EntryTapZones.hideAllTapZones( mRootView );
+        }
         mControlPanel = new ControlPanel( mRootView, this );
-        SetupZones();
+        if ( mTapZones != null )
+            mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
+                mTapZones.hideTapZones();
+                if ( mControlPanel.isVisible() )
+                    mControlPanel.hide();
+                else {
+                    mControlPanel.show(GetSelectedEntryView());
+                    setupControlPanelButtonActions();
+                }
+            });
 
         mStatusText = new StatusText( mRootView.findViewById(R.id.statusText ),
                                       mRootView.findViewById(R.id.errorText ),
@@ -221,7 +211,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       mRootView.findViewById(R.id.progressText),
                                       FetcherService.Status() );
 
-        setupTapZoneButtonActions();
         setupEndEditingButton();
 
         mEntryPager = mRootView.findViewById(R.id.pager);
@@ -236,18 +225,56 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+        if ( mTapZones != null ) {
+            mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
+                getEntryActivity().setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
+                if (!isTapActionEnabled())
+                    return true;
+                GetSelectedEntryView().OpenLabelSetup();
+                return true;
+            });
+
+            mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
+                GetSelectedEntryView().leftBottomBtnClick();
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
+                if (GetSelectedEntryWebView() == null)
+                    return true;
+                GetSelectedEntryWebView().DownloadAllImages();
+                UiUtils.toast(R.string.downloadAllImagesStarted);
+                return true;
+            });
+
+            mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
+                GetSelectedEntryView().rightBottomBtnClick();
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
+                if (GetSelectedEntryWebView() == null)
+                    return true;
+                GetSelectedEntryWebView().ReloadFullText();
+                UiUtils.toast(R.string.fullTextReloadStarted);
+                return true;
+            });
+
+            TextView.OnClickListener listener = view -> {
+                PageDown();
+                mControlPanel.hide();
+            };
+
+            mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+            //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+            mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
+                GetSelectedEntryView().LongClickOnBottom();
+                return true;
+            });
+        }
 
         setupUpStarSwipe();
-
-        mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
-            hideTapZones();
-            if ( mControlPanel.isVisible() )
-                mControlPanel.hide();
-            else {
-                mControlPanel.show(GetSelectedEntryView());
-                setupControlPanelButtonActions();
-            }
-        });
 
         SetStarFrameWidth(0);
         UpdateHeader();
@@ -255,7 +282,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return mRootView;
     }
 
-    private void setupControlPanelButtonActions() {
+    void setupControlPanelButtonActions() {
         mOrientation.setupControlPanelButtonActions( mControlPanel, getUri() );
     }
 
@@ -275,8 +302,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( mEntryPager.getCurrentItem() > 0  )
             mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, true );
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -323,7 +348,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, true, false);
         }
         mOrientation.onResume();
-        UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
+        if ( mTapZones != null )
+            mTapZones.onResune();
         refreshUI(false);
     }
 
@@ -444,6 +470,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mOrientation.onPrepareOptionsMenu( menu );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
+        menu.findItem( R.id.menu_actionbar_visible).setVisible( PrefUtils.isTapActionEnabled() );
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -667,24 +694,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return ((WebEntryView)entryView).mWebView;
     }
 
-    public void toggleTapZoneVisibility() {
-        if ( mControlPanel.isVisible() ) {
-            mIsTapZoneVisible = false;
-            mControlPanel.hide();
-        } else
-            mIsTapZoneVisible = !mIsTapZoneVisible;
-        SetupZones();
-    }
-    public void hideTapZones() {
-        mIsTapZoneVisible = false;
-        SetupZones();
-    }
-    public boolean hasVideo() {
-        final WebEntryView view = GetSelectedEntryWebView();
-        if ( view != null )
-            return view.hasVideo();
-        return false;
-    }
     public void refreshUI( boolean invalidateContent ) {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
@@ -729,6 +738,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         view.StatusStartPageLoading();
         return view;
     }
+    public boolean hasVideo() {
+        final WebEntryView view = GetSelectedEntryWebView();
+        if ( view != null )
+            return view.hasVideo();
+        return false;
+    }
     private void setupEndEditingButton() {
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -739,90 +754,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
     }
 
-    private void setupTapZoneButtonActions() {
-        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
-        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
-            GetSelectedEntryView().ClearHistoryAnchor();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
-            if ( isArticleTapEnabled() ) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
-            } else
-                EnableTapActions();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
-            if ( isArticleTapEnabled() ) {
-                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                SetupZones();
-                GetSelectedEntryView().refreshUI( true );
-                UiUtils.toast( R.string.tap_actions_were_disabled );
-            } else
-                EnableTapActions();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
-            EntryActivity activity = (EntryActivity) getActivity();
-            activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().OpenLabelSetup();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().leftBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().DownloadAllImages();
-            UiUtils.toast( R.string.downloadAllImagesStarted );
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().rightBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().ReloadFullText();
-            UiUtils.toast( R.string.fullTextReloadStarted );
-            return true;
-        });
-
-        TextView.OnClickListener listener = view -> {
-            PageDown();
-            mControlPanel.hide();
-        };
-
-        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-        mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().LongClickOnBottom();
-            return true;
-        });
-    }
-
-    private void UpdateTapZoneButton( int viewID, boolean visible ) {
-        UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
-    }
 
     private void setupPageChangeListener() {
         mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -850,8 +781,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 if ( view != null && GetSelectedEntryWebView() != null ) {
                     if ( view.mLoadTitleOnly )
                         getLoaderManager().restartLoader(i, null, EntryFragment.this);
-                    else
-                        GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
+                    else if ( mTapZones != null )
+                        mTapZones.DisableTapActionsIfVideo( view );
                     view.mLoadTitleOnly = false;
                 }
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
@@ -940,13 +871,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 return SystemClock.elapsedRealtime() - downTime > ViewConfiguration.getLongPressTimeout();
             }
         });
-    }
-
-    private void EnableTapActions() {
-        PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        SetupZones();
-        GetSelectedEntryView().refreshUI( true );
-        UiUtils.toast( R.string.tap_actions_were_enabled );
     }
 
 
@@ -1059,7 +983,4 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.SetID(currentEntryID).start();
     }
-
-
-
 }

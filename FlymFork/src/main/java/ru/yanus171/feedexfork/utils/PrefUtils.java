@@ -155,9 +155,8 @@ public class PrefUtils {
 
     public static final String PREF_TAP_ENABLED = "article_tap_enabled";
     public static final String PREF_ARTICLE_TAP_ENABLED_TEMP = "article_tap_enabled_temp";
-    public static Boolean isArticleTapEnabled() {
-        return PrefUtils.getBoolean( PREF_TAP_ENABLED, true ) &&
-            isArticleTapEnabledTemp();
+    public static Boolean isTapActionEnabled() {
+        return PrefUtils.getBoolean( PREF_TAP_ENABLED, true );
     }
     public static Boolean isArticleTapEnabledTemp() {
         return PrefUtils.getBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, true );

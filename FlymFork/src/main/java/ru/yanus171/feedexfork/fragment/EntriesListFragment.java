@@ -187,7 +187,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private static String mSearchText = "";
     private boolean mIsSingleLabelWithoutChildren = false;
     private static final HashSet<String> mWasVisibleList = new HashSet<>();
-    public EntriesListTapActions mTapActions = null;
+    private EntriesListTapActions mTapActions = null;
 
     private boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
     private StatusText mStatusText = null;
@@ -324,7 +324,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if ( scrollState != SCROLL_STATE_IDLE )
                     return;
-                mTapActions.UpdateTopTapZoneVisibility();
+                if ( mTapActions != null )
+                    mTapActions.UpdateTopTapZoneVisibility();
                 UpdateHeader();
                 //Dog.v( String.format( "EntriesListFragment.onScrollStateChanged(%d) last=%d count=%d", scrollState, mListView.getLastVisiblePosition(), mListView.getCount() ) );
             }
@@ -509,6 +510,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         menu.findItem( R.id.menu_full_screen ).setChecked(GetIsStatusBarEntryListHidden() );
         menu.findItem( R.id.menu_force_orientation_by_sensor ).setChecked( PrefUtils.isForceOrientationBySensor() );
         menu.findItem( R.id.menu_actionbar_visible ).setChecked(!GetIsActionBarEntryListHidden() );
+        menu.findItem( R.id.menu_actionbar_visible).setVisible( PrefUtils.isTapActionEnabled() );
         menu.findItem( R.id.menu_show_article_text_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_text_preview_toggle ).setEnabled( !mShowTextInEntryList );
         menu.findItem( R.id.menu_show_article_big_image_toggle ).setEnabled( !mShowTextInEntryList && PrefUtils.IsShowArticleBigImagesEnabled( mCurrentUri ) );
@@ -957,7 +959,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                         RestoreListScrollPosition();
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
-                mTapActions.UpdateTopTapZoneVisibility();
+                if ( mTapActions != null )
+                    mTapActions.UpdateTopTapZoneVisibility();
                 UiUtils.RunOnGuiThread( () -> UpdateHeader(), 1000 );
 
                 Status().End(mStatus);
@@ -1368,7 +1371,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             if (mListView.getCount() == 0)
                 return false;
             mListView.setSelection(0);
-            mTapActions.UpdateTopTapZoneVisibility();
+            if ( mTapActions != null )
+                mTapActions.UpdateTopTapZoneVisibility();
             Toast.makeText(getContext(), R.string.list_was_scrolled_to_top, Toast.LENGTH_SHORT).show();
             return true;
         };
@@ -1379,7 +1383,8 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             if (mListView.getCount() == 0)
                 return false;
             mListView.setSelection(mListView.getCount() - 1);
-            mTapActions.UpdateTopTapZoneVisibility();
+            if ( mTapActions != null )
+                mTapActions.UpdateTopTapZoneVisibility();
             Toast.makeText(getContext(), R.string.list_was_scrolled_to_bottom, Toast.LENGTH_SHORT).show();
             return true;
         };
@@ -1393,5 +1398,15 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         if ( downOrUp > 0 )
             ( (AppBarLayout)mActivity.findViewById(R.id.appbar) ).setExpanded( false );
     }
+
+    public void recreateTapActions() {
+        if ( PrefUtils.isTapActionEnabled() )
+            mTapActions = new EntriesListTapActions( this, mActivity );
+        else {
+            mTapActions = null;
+            EntriesListTapActions.hideAllTapZones( mActivity.mRootView );
+        }
+    }
+
 
 }

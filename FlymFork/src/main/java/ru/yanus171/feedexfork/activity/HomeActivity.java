@@ -125,7 +125,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     private static final String STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN = "STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN = "STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN";
     private int mStatus = 0;
-    private EntriesListTapActions mTapActions = null;
 
     //private static final String FEED_ALL_NUMBER = "(SELECT " + DB_COUNT + " FROM " + EntryColumns.TABLE_NAME + " WHERE " +
     //        EntryColumns.FEED_ID + '=' + FeedColumns.TABLE_NAME + '.' + FeedColumns._ID + ')';
@@ -152,7 +151,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
     }
 
     public void setFullScreen( boolean statusBarHidden, boolean actionBarHidden ) {
-        setFullScreen( statusBarHidden, actionBarHidden, STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
+        setFullScreen( statusBarHidden, actionBarHidden && PrefUtils.isTapActionEnabled(), STATE_IS_STATUSBAR_ENTRY_LIST_HIDDEN, STATE_IS_ACTIONBAR_ENTRY_LIST_HIDDEN );
     }
 
     @Override
@@ -221,6 +220,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             Timer.Start( LOADER_ID, "HomeActivity.restartLoader LOADER_ID" );
             getLoaderManager().restartLoader(LOADER_ID, null, this);
             TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
+            mEntriesFragment.recreateTapActions();
         }
         setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         if ( mDrawerLayout != null )
@@ -245,7 +245,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             PrefUtils.putLong( PrefUtils.FIRST_LAUNCH_TIME, System.currentTimeMillis() );
 
         mEntriesFragment = (EntriesListFragment) getSupportFragmentManager().findFragmentById(R.id.entries_list_fragment);
-        mTapActions = new EntriesListTapActions( mEntriesFragment, this );
+        mEntriesFragment.recreateTapActions();
         mTitle = getTitle().toString();
 
         mLeftDrawer = findViewById(R.id.left_drawer);
@@ -361,6 +361,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         });
         timer.End();
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //outState.putInt(STATE_CURRENT_DRAWER_POS, mCurrentDrawerPos);

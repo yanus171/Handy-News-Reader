@@ -326,8 +326,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     Status().ChangeProgress("finished.");
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
-                    if (mEntryView.mEntryFragment != null)
-                        mEntryView.DisableTapActionsIfVideo( mEntryView );
+                    if ( mEntryView.mEntryFragment.mTapZones != null )
+                        mEntryView.mEntryFragment.mTapZones.DisableTapActionsIfVideo( mEntryView );
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
                             mEntryView.DownLoadImages();
@@ -340,7 +340,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             private void ScheduleScrollTo(final WebView view, long startTime) {
                 //Dog.v(TAG, "ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
-                final String searchText = mEntryView.mEntryFragment.getActivity().getIntent().getStringExtra( "SCROLL_TEXT" );
+                final String searchText = mEntryView.mEntryFragment.getActivity() != null ? mEntryView.mEntryFragment.getActivity().getIntent().getStringExtra( "SCROLL_TEXT" ) : null;
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
                 if ( !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if ( isSearch ) {
@@ -741,7 +741,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             return true;
         }
         if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
-            mEntryView.toggleTapZoneVisibility();
+            if ( mEntryView.mEntryFragment.mTapZones != null )
+                mEntryView.mEntryFragment.mTapZones.toggleTapZoneVisibility();
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW)

@@ -56,8 +56,8 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
             return
         btn.setOnClickListener {
             click.onClick(btn)
-            mEntryFragment.mControlPanel.hide()
-            mEntryFragment.hideTapZones()
+            hide()
+            mEntryFragment.mTapZones.hideTapZones()
         }
         btn.visibility = View.VISIBLE
         if (checked)

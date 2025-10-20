@@ -3,6 +3,7 @@ package ru.yanus171.feedexfork.activity;
 import static ru.yanus171.feedexfork.activity.HomeActivity.AppBarLayoutState.EXPANDED;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
 import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsStatusBarEntryListHidden;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.SetupZones;
 
 import android.graphics.Color;
@@ -25,7 +26,6 @@ public class EntriesListTapActions {
 
     public EntriesListTapActions( EntriesListFragment fragment, HomeActivity activity) {
         mEntriesFragment = fragment;
-        mEntriesFragment.mTapActions = this;
         mActivity = activity;
         TapZonePreviewPreference.SetupZones(activity.findViewById(R.id.layout_root), false);
         {
@@ -95,6 +95,21 @@ public class EntriesListTapActions {
         UpdateTapZoneButton( R.id.entryRightBottomBtn, true );
         UpdateTapZoneButton( R.id.backBtn, false );
         UpdateTapZoneButton( R.id.entryCenterBtn, false );
+    }
+    public static void hideAllTapZones( View rootView ) {
+        UpdateTapZoneButtonEnable( rootView, R.id.pageUpBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.leftTopBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.rightTopBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.pageUpBtnFS, false  );
+        UpdateTapZoneButtonEnable( rootView, R.id.leftTopBtnFS, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.rightTopBtnFS, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.pageDownBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.brightnessSliderLeft, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.brightnessSliderRight, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.entryLeftBottomBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.entryRightBottomBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.backBtn, false );
+        UpdateTapZoneButtonEnable( rootView, R.id.entryCenterBtn, false );
     }
 
 

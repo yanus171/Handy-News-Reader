@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -20,7 +19,7 @@ import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryLi
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isTapActionEnabled;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
@@ -66,23 +65,6 @@ public final class TapZonePreviewPreference extends DialogPreference {
         SetupZone(parentView, R.id.entryCenterBtn, size, size, showText);
     }
 
-    public static boolean IsZoneEnabled(int viewID, boolean preview, boolean isArticleList) {
-        if ( isArticleList && viewID == R.id.backBtn)
-            return false;
-        if ( !isArticleList && viewID == R.id.rightTopBtn && !isArticleTapEnabledTemp() )
-            return true;
-        boolean hideByFullScreenMode = false;
-        if ( isArticleList ) {
-            if ( viewID == R.id.leftTopBtn || viewID == R.id.rightTopBtn || viewID == R.id.pageUpBtn )
-                hideByFullScreenMode = GetIsActionBarEntryListHidden();
-            else if ( viewID == R.id.leftTopBtnFS || viewID == R.id.rightTopBtnFS || viewID == R.id.pageUpBtnFS )
-                hideByFullScreenMode = !GetIsActionBarEntryListHidden();
-        }
-        return !hideByFullScreenMode &&
-               ( preview ||
-                 isArticleList && getBoolean( PREF_TAP_ENABLED, true ) ||
-                 !isArticleList && isArticleTapEnabled() );
-    }
     private static void SetupZone(View parentView, int viewID, int width, int height, boolean showText) {
         TextView view = parentView.findViewById(viewID );
         if ( view == null )

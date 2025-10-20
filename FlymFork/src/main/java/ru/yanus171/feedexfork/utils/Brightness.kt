@@ -110,7 +110,7 @@ class Brightness(private val mActivity: Activity, rootView: View) {
             }
             rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnTouchListener(touchListener);
             rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnTouchListener(touchListener);
-        } else if ( PrefUtils.getBoolean(PrefUtils.PREF_TAP_ENABLED, true) ){
+        } else if ( PrefUtils.isTapActionEnabled() && PrefUtils.isArticleTapEnabledTemp() ){
             rootView.findViewById<View>(R.id.brightnessSliderLeft)?.setOnClickListener{ mTapAction?.run() };
             rootView.findViewById<View>(R.id.brightnessSliderRight)?.setOnClickListener{ mTapAction?.run() };
         }

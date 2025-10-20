@@ -123,7 +123,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         mView = mWebView;
         mWebView.setListener(this);
         mWebView.mScrollChangeListener = () -> {
-            mEntryFragment.hideTapZones();
+            if ( mEntryFragment.mTapZones != null )
+                mEntryFragment.mTapZones.hideTapZones();
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)
@@ -855,29 +856,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 mLoadTitleOnly = false;
                 mEntryFragment.restartCurrentEntryLoader();
             }
-        }
-    }
-
-    public void DisableTapActionsIfVideo(EntryView view) {
-        if (view.mLoadTitleOnly)
-            return;
-        if (!PrefUtils.getBoolean(PrefUtils.PREF_TAP_ENABLED, true))
-            return;
-        final boolean tapActionsEnabled;
-        synchronized (this) {
-            tapActionsEnabled = mIsFullTextShown ||
-                    !PrefUtils.getBoolean("disable_tap_actions_when_video", true) ||
-                    !hasVideo();
-        }
-
-        if (tapActionsEnabled != isArticleTapEnabledTemp()) {
-            PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, tapActionsEnabled);
-            mEntryFragment.SetupZones();
-            Toast.makeText(MainApplication.getContext(),
-                    tapActionsEnabled ?
-                            getContext().getString(R.string.tap_actions_were_enabled) :
-                            getContext().getString(R.string.video_tag_found_in_article) + ". " + getContext().getString(R.string.tap_actions_were_disabled),
-                    Toast.LENGTH_LONG).show();
         }
     }
 

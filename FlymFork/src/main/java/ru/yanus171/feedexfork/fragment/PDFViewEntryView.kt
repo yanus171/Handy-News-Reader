@@ -81,7 +81,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
             })
             .onPageScroll( object: OnPageScrollListener {
                 override fun onPageScrolled(page: Int, positionOffset: Float) {
-                    mEntryFragment.hideTapZones();
+                    mEntryFragment.mTapZones.onPageScrolled();
                     if ( !mIsLoaded )
                         return
                     mScrollPartY = GetViewScrollPartY()
@@ -102,7 +102,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
             .onTap( object : OnTapListener {
                 override fun onTap(e: MotionEvent): Boolean {
                     if ( Date().time - mLastTimeScrolled > TAP_TIMEOUT )
-                        toggleTapZoneVisibility()
+                        mEntryFragment.mTapZones.toggleTapZoneVisibility()
                     return true
                 }
             })
@@ -341,8 +341,8 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     private fun toggleZoomShiftEnabled() {
         saveState();
         PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
-        mEntryFragment.SetupZones()
-        UiUtils.toast(if (PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
+        mEntryFragment.mTapZones.SetupZones()
+        UiUtils.toast(if (getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
         refreshUI(true)
     }
 

@@ -49,7 +49,8 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
                 view.generateArticleContent(forceUpdate );
             }
         }
-        mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.SetupZones();
     }
 
     void onResume() {

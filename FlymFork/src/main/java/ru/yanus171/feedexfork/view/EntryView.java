@@ -94,13 +94,15 @@ public abstract class EntryView {
     }
     public void ClearHistoryAnchor() {
         mHistoryAnchorScrollY.clear();
-        mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.SetupZones();
     }
 
     public void GoBack() {
         if (CanGoBack())
             ScrollTo(mHistoryAnchorScrollY.pop(), false);
-        mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.SetupZones();
     }
 
     public void GoTop() {
@@ -110,7 +112,8 @@ public abstract class EntryView {
 
     public void AddNavigationHistoryStep() {
         mHistoryAnchorScrollY.push(GetScrollY());
-        mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.SetupZones();
     }
 
     protected abstract int GetScrollY();
@@ -150,7 +153,8 @@ public abstract class EntryView {
     public void refreshUI( boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
-        mEntryFragment.hideTapZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.hideTapZones();
         mEntryFragment.mControlPanel.hide();
     }
 
@@ -204,10 +208,6 @@ public abstract class EntryView {
 
     }
 
-    protected void toggleTapZoneVisibility() {
-        if ( mEntryFragment != null )
-            mEntryFragment.toggleTapZoneVisibility();
-    }
     public void setCursor( Cursor cursor ) {
         mCursor = cursor;
     }
@@ -334,7 +334,7 @@ public abstract class EntryView {
             }
             case R.id.menu_disable_all_tap_actions: {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                mEntryFragment.SetupZones();
+                mEntryFragment.mTapZones.SetupZones();
                 UiUtils.toast( R.string.tap_actions_were_disabled );
                 refreshUI(true);
                 break;
@@ -457,6 +457,8 @@ public abstract class EntryView {
 
         menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
         menu.findItem( R.id.menu_zoom_shift_enabled).setVisible( false );
+        menu.findItem( R.id.menu_disable_all_tap_actions).setVisible( mEntryFragment.mTapZones != null );
+
     }
 
 //    private String getTitle() {
