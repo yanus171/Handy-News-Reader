@@ -759,5 +759,5 @@
     <string name="scroll_to_top_disabled_for_pdf">Scroll to top disabled for PDF</string>
     <string name="zoom_is_disabled">Zoom &amp; shift are disabled</string>
     <string name="page_number_from_count">%d from %d</string>
-    
+
 </resources>

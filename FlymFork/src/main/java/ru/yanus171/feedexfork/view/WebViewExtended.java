@@ -94,7 +94,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -327,7 +326,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
                     if ( mEntryView.mEntryFragment.mTapZones != null )
-                        mEntryView.mEntryFragment.mTapZones.DisableTapActionsIfVideo( mEntryView );
+                        mEntryView.mEntryFragment.mTapZones.DisableIfVideo( mEntryView );
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
                             mEntryView.DownLoadImages();
@@ -742,7 +741,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         }
         if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
             if ( mEntryView.mEntryFragment.mTapZones != null )
-                mEntryView.mEntryFragment.mTapZones.toggleTapZoneVisibility();
+                mEntryView.mEntryFragment.mTapZones.toggleVisibility();
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW)

@@ -50,7 +50,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
             }
         }
         if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.SetupZones();
+            mEntryFragment.mTapZones.Update();
     }
 
     void onResume() {

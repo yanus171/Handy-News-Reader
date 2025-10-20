@@ -15,12 +15,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static ru.yanus171.feedexfork.activity.HomeActivity.GetIsActionBarEntryListHidden;
 import static ru.yanus171.feedexfork.utils.PrefUtils.GetTapZoneSize;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isTapActionEnabled;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.UiUtils.SetSize;
 
 public final class TapZonePreviewPreference extends DialogPreference {
@@ -74,7 +69,7 @@ public final class TapZonePreviewPreference extends DialogPreference {
             view.setText( "" );
     }
 
-    static public void UpdateTapZonesTextAndVisibility( View rootView, boolean visible ) {
+    static public void UpdateTextAndVisibility(View rootView, boolean visible ) {
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageDownBtn, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtn, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtnFS, false);

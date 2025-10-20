@@ -100,7 +100,6 @@ import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_TAP_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
@@ -191,12 +190,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mTapZones = new EntryTapZones( this );
         else {
             mTapZones = null;
-            EntryTapZones.hideAllTapZones( mRootView );
+            EntryTapZones.hideAll( mRootView );
         }
         mControlPanel = new ControlPanel( mRootView, this );
         if ( mTapZones != null )
             mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
-                mTapZones.hideTapZones();
+                mTapZones.Hide();
                 if ( mControlPanel.isVisible() )
                     mControlPanel.hide();
                 else {
@@ -782,7 +781,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     if ( view.mLoadTitleOnly )
                         getLoaderManager().restartLoader(i, null, EntryFragment.this);
                     else if ( mTapZones != null )
-                        mTapZones.DisableTapActionsIfVideo( view );
+                        mTapZones.DisableIfVideo( view );
                     view.mLoadTitleOnly = false;
                 }
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );

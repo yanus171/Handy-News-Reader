@@ -102,7 +102,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
             .onTap( object : OnTapListener {
                 override fun onTap(e: MotionEvent): Boolean {
                     if ( Date().time - mLastTimeScrolled > TAP_TIMEOUT )
-                        mEntryFragment.mTapZones.toggleTapZoneVisibility()
+                        mEntryFragment.mTapZones.toggleVisibility()
                     return true
                 }
             })
@@ -341,7 +341,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     private fun toggleZoomShiftEnabled() {
         saveState();
         PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
-        mEntryFragment.mTapZones.SetupZones()
+        mEntryFragment.mTapZones.Update()
         UiUtils.toast(if (getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
         refreshUI(true)
     }

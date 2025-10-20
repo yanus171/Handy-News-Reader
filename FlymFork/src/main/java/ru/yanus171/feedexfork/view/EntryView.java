@@ -95,14 +95,14 @@ public abstract class EntryView {
     public void ClearHistoryAnchor() {
         mHistoryAnchorScrollY.clear();
         if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.SetupZones();
+            mEntryFragment.mTapZones.Update();
     }
 
     public void GoBack() {
         if (CanGoBack())
             ScrollTo(mHistoryAnchorScrollY.pop(), false);
         if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.SetupZones();
+            mEntryFragment.mTapZones.Update();
     }
 
     public void GoTop() {
@@ -113,7 +113,7 @@ public abstract class EntryView {
     public void AddNavigationHistoryStep() {
         mHistoryAnchorScrollY.push(GetScrollY());
         if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.SetupZones();
+            mEntryFragment.mTapZones.Update();
     }
 
     protected abstract int GetScrollY();
@@ -154,7 +154,7 @@ public abstract class EntryView {
         if ( invalidateContent )
             InvalidateContentCache();
         if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.hideTapZones();
+            mEntryFragment.mTapZones.Hide();
         mEntryFragment.mControlPanel.hide();
     }
 
@@ -334,7 +334,7 @@ public abstract class EntryView {
             }
             case R.id.menu_disable_all_tap_actions: {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                mEntryFragment.mTapZones.SetupZones();
+                mEntryFragment.mTapZones.Update();
                 UiUtils.toast( R.string.tap_actions_were_disabled );
                 refreshUI(true);
                 break;

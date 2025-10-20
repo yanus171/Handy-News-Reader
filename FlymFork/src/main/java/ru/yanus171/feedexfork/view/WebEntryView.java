@@ -19,9 +19,7 @@ import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
-import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
@@ -124,7 +122,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         mWebView.setListener(this);
         mWebView.mScrollChangeListener = () -> {
             if ( mEntryFragment.mTapZones != null )
-                mEntryFragment.mTapZones.hideTapZones();
+                mEntryFragment.mTapZones.Hide();
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)
