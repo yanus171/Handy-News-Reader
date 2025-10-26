@@ -119,8 +119,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public FeedFilters mFilters = null;
     public String mAnchor = "";
     public View mRootView = null;
-    MenuItem mSearchNextItem = null;
-    MenuItem mSearchPreviousItem = null;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
 
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
@@ -136,14 +134,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @SuppressLint("StaticFieldLeak")
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
-    private String mSearchText = "";
     EntryOrientation mOrientation;
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     public EntryTapZones mTapZones = null;
     public ControlPanel mControlPanel = null;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -402,65 +398,16 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         final EntryView view = GetSelectedEntryView();
         if ( view != null ){
-            MenuItem item = menu.findItem(R.id.menu_star);
-            if (view.mFavorite)
-                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
-            else
-                item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
-            updateMenuWithIcon(item);
+            view.onCreateOptionsMenu(menu);
+
         }
 
-        final MenuItem searchItem = menu.findItem(R.id.menu_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        mSearchNextItem = menu.findItem(R.id.menu_search_next);
-        mSearchPreviousItem = menu.findItem(R.id.menu_search_previous);
-        mSearchNextItem.setVisible( false );
-        mSearchPreviousItem.setVisible( false );
 
         mOrientation.onCreateOptionsMenu( menu );
 
-        // Use a custom search icon for the SearchView in AppBar
-        int searchImgId = androidx.appcompat.R.id.search_button;
-        ImageView v = searchView.findViewById(searchImgId);
-        v.setImageResource(R.drawable.ic_search);
 
-        if (!mSearchText.isEmpty()) {
-            searchItem.expandActionView();
-            // Without that, it just does not work
-            searchView.post(() -> {
-                searchView.setQuery(mSearchText, false);
-                searchView.clearFocus();
-            });
-        }
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mSearchText = newText;
-                mSearchNextItem.setVisible( false );
-                mSearchPreviousItem.setVisible( false );
-
-                if (!TextUtils.isEmpty(newText)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        GetSelectedEntryWebViewExtended().findAllAsync( newText );
-                    else
-                        GetSelectedEntryWebViewExtended().findAll( newText );
-                }
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(() -> {
-            mSearchText = "";
-            mSearchNextItem.setVisible( false );
-            mSearchPreviousItem.setVisible( false );
-            GetSelectedEntryWebViewExtended().clearMatches();
-            return false;
-        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -724,16 +671,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         if ( mLeakEntryView == null )
             mLeakEntryView  = view;
-
-        final WebViewExtended webView = GetSelectedEntryWebViewExtended();
-        if (Build.VERSION.SDK_INT >= 16 && webView != null ) {
-            webView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
-                if (mSearchNextItem == null || mSearchPreviousItem == null)
-                    return;
-                mSearchNextItem.setVisible(numberOfMatches > 1);
-                mSearchPreviousItem.setVisible(numberOfMatches > 1);
-            });
-        }
         view.StatusStartPageLoading();
         return view;
     }
@@ -885,7 +822,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
      * @param item
      *         the item to update
      */
-    private static void updateMenuWithIcon(@NonNull final MenuItem item) {
+    public static void updateMenuWithIcon(@NonNull final MenuItem item) {
         SpannableStringBuilder builder = new SpannableStringBuilder()
                 .append("*") // the * will be replaced with the icon via ImageSpan
                 .append("    ") // This extra space acts as padding. Adjust as you wish

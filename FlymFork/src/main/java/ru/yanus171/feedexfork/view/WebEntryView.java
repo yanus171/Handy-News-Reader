@@ -81,6 +81,7 @@ import ru.yanus171.feedexfork.activity.LoadLinkLaterActivity;
 import ru.yanus171.feedexfork.activity.MessageBox;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
+import ru.yanus171.feedexfork.fragment.EntryTextSearch;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -113,6 +114,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mIsWithTables;
     private boolean mIsReplaceImgWithALink;
     private boolean mWasAutoUnStar = false;
+
+    private EntryTextSearch mSearch = null;
 
     public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId) {
         super(fragment, entryId);
@@ -148,7 +151,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 SetIsFavorite(false, true);
             }
         };
-
+        mSearch = new EntryTextSearch( mWebView );
     }
 
     @Override
@@ -1104,4 +1107,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         super.refreshUI( invalidateContent );
         mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
     }
+    public void onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        mSearch.onCreateOptionsMenu( menu );
+    }
+
 }

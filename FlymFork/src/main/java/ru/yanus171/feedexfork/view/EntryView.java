@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.updateMenuWithIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -161,6 +162,15 @@ public abstract class EntryView {
     public void onStart() {
     }
     public abstract void ScrollToPage(int page);
+
+    public void onCreateOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_star);
+        if (mFavorite)
+            item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
+        else
+            item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
+        updateMenuWithIcon(item);
+    }
 
     static public class ProgressInfo {
         public int max;
