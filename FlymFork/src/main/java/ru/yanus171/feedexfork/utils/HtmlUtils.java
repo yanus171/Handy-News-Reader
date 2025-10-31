@@ -28,6 +28,7 @@ import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.HANDY_NEWS_READER_ROOT_CLASS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
+import static ru.yanus171.feedexfork.view.WebViewExtended.NO_MENU;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,6 +109,7 @@ public class HtmlUtils {
     //public static boolean mIsDownloadingImagesForEntryView = false;
 
     static final Pattern VIDEO_CHANNEL_URL = Pattern.compile("ube.com.watch.v=([^&]+)" );
+    public static final String LOADED_LINK_CLASS_NAME = "loaded_link";
 
     public static String improveHtmlContent(String content, String baseUri, FeedFilters filters, ArrayList<String> categoryList, ArticleTextExtractor.MobilizeType mobType, boolean isAutoFullTextRoot ) {
 
@@ -223,10 +226,9 @@ public class HtmlUtils {
     private static String GetLinkStartTag(String imgPath) {
         return "<a href=\"" + Constants.FILE_SCHEME + imgPath + "\" >";
     }
-    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages) {
+    public static String replaceImageURLs(String content, final long entryId, final String entryLink, boolean isDownLoadImages, HashSet<String> notLoadedUrlSet) {
         final ArrayList<String> imagesToDl = new ArrayList<>();
-        return replaceImageURLs(content, "", entryId, entryLink, isDownLoadImages, imagesToDl, null, mMaxImageDownloadCount );
-
+        return replaceImageURLs(content, "", entryId, entryLink, isDownLoadImages, imagesToDl, null, mMaxImageDownloadCount, notLoadedUrlSet );
     }
     public static String replaceImageURLs(String content,
                                           final String feedId,
@@ -235,7 +237,8 @@ public class HtmlUtils {
                                           boolean isDownLoadImages,
                                           final ArrayList<String> imagesToDl,
                                           final ArrayList<Uri> externalImageList,
-                                          final int maxImageDownloadCount) {
+                                          final int maxImageDownloadCount,
+                                          HashSet<String> notLoadedUrlSet ) {
         if (IsLocalFile(Uri.parse(entryLink)))
             return content;
         final int status = Status().Start("Reading images", true); try {
@@ -313,6 +316,9 @@ public class HtmlUtils {
                 }
 
             }
+            if ( notLoadedUrlSet != null )
+                content = SetupLoadedLinks( content, notLoadedUrlSet );
+
             timer.End();
         } catch ( Exception e ) {
             Status().SetError( null, "", String.valueOf(entryId), e  );
@@ -340,6 +346,34 @@ public class HtmlUtils {
             }
         }
         return content;
+    }
+    public static String SetupLoadedLinks(String content, HashSet<String> notLoadedUrlSet) {
+        notLoadedUrlSet.clear();
+        final Pattern PATTERN = Pattern.compile("<a.*?href=\"(.*?)\".*?>", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = PATTERN.matcher(content);
+        while (matcher.find()) {
+            final String aTag = matcher.group();
+            final String link = matcher.group(1).replaceAll("#.+", "");
+            if (link.contains( NO_MENU ) )
+                continue;
+            if ( EntryUrlVoc.INSTANCE.get( link ) == null ) {
+                notLoadedUrlSet.add( link );
+                continue;
+            }
+            content = content.replace(aTag, InsertClassNameInNode( aTag, LOADED_LINK_CLASS_NAME ) );
+        }
+        return content;
+    }
+
+    private static String InsertClassNameInNode( String nodeText, String newClassName ) {
+        final Pattern PATTERN = Pattern.compile("class=\"([^\"]+?)\"", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = PATTERN.matcher(nodeText);
+        if ( matcher.find() ) {
+            final String oldClassNames = matcher.group(1);
+            assert oldClassNames != null;
+            return nodeText.replace( oldClassNames, oldClassNames + " " + newClassName);
+        } else
+            return nodeText.replace( ">", " class=\"" + newClassName + "\">" );
     }
 
     private static String ReplaceImagesWithDataOriginal(String content, String regex) {

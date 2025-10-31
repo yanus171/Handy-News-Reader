@@ -580,11 +580,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         EntryView.ProgressInfo info = new EntryView.ProgressInfo();
         if (entryView != null)
             info = entryView.getProgressInfo();
-        getBaseActivity().UpdateHeader(info.max,
-                info.progress,
-                info.step,
-                GetIsStatusBarHidden(),
-                GetIsActionBarHidden());
+        if ( getBaseActivity() != null )
+            getBaseActivity().UpdateHeader( info.max,
+                                            info.progress,
+                                            info.step,
+                                            GetIsStatusBarHidden(),
+                                            GetIsActionBarHidden() );
     }
 
     @NonNull

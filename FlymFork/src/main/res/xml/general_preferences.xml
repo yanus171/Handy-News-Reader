@@ -293,6 +293,15 @@
             colorPreference:istransparency="false"
             colorPreference:sampletextShort="@string/settings_color_link_sample_short"
             colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
+        <ru.yanus171.feedexfork.view.ColorPreference
+            android:defaultValue="@string/default_loaded_link_color"
+            colorPreference:backgroundColor1="@string/transparent_color"
+            android:key="loadedLinkColor"
+            android:title="@string/loadedLinkColor"
+            android:summary="@string/loadedLinkColor_descr"
+            colorPreference:istransparency="false"
+            colorPreference:sampletextShort="@string/settings_color_link_sample_short"
+            colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="underline_links"

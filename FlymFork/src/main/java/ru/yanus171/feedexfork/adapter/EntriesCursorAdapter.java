@@ -948,7 +948,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                true,
                                                imagesToDl,
                                                mImageUrlList,
-                                               3 );
+                                               3,
+                                               null );
             temp = temp.replace(mTitle, "");
             temp = temp.replaceAll( "<p[^>]+>", "" );
             temp = temp.replace( "</p>", "" ).trim();
@@ -1027,7 +1028,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         int flags = strBuilder.getSpanFlags(span);
         ClickableSpan clickable = new ClickableSpan() {
             public void onClick(View view) {
-                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context);
+                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context, null);
             }
         };
         strBuilder.setSpan(clickable, start, end, flags);

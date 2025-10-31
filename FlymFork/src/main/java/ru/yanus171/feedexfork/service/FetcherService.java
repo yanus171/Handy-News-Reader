@@ -1056,7 +1056,7 @@ public class FetcherService extends IntentService {
                             }
                             ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                             if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
-                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
+                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount, null);
 
                             String mainImgUrl;
                             if (!imgUrlsToDownload.isEmpty())

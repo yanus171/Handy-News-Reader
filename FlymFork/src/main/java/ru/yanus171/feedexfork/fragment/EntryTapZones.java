@@ -101,8 +101,8 @@ public class EntryTapZones {
             Update();
             Toast.makeText(MainApplication.getContext(),
                     enabled ?
-                            mFragment.getContext().getString(R.string.tap_actions_were_enabled) :
-                            mFragment.getContext().getString(R.string.video_tag_found_in_article) + ". " + mFragment.getContext().getString(R.string.tap_actions_were_disabled),
+                            MainApplication.getContext().getString(R.string.tap_actions_were_enabled) :
+                            MainApplication.getContext().getString(R.string.video_tag_found_in_article) + ". " + mFragment.getContext().getString(R.string.tap_actions_were_disabled),
                     Toast.LENGTH_LONG).show();
         }
     }

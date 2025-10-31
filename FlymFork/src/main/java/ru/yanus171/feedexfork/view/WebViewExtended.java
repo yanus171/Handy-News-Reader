@@ -58,6 +58,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
+import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
@@ -103,15 +105,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -121,7 +127,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
     static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
-    private static final String NO_MENU = "NO_MENU_";
+    public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
@@ -295,12 +301,16 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                                         replace( "&", "&amp;" ).
                                         replace( "*", "." ).
                                         replace( ",", "." );
-                        final Pattern REGEX = Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace("url", urlWithoutRegexSymbols ), Pattern.CASE_INSENSITIVE);
-                        Matcher matcher = REGEX.matcher(mEntryView.mData);
-                        String title = matcher.find() ? Jsoup.parse(matcher.group(1 ) ).text() : url;
-                        title = url.equals( title )  ? "" : title;
-
-                        ShowLinkMenu(url, title, context);
+                        String title = "";
+                        try {
+                            final Pattern REGEX = Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace("url", urlWithoutRegexSymbols), Pattern.CASE_INSENSITIVE);
+                            Matcher matcher = REGEX.matcher(mEntryView.mData);
+                            title = matcher.find() ? Jsoup.parse(matcher.group(1)).text() : url;
+                            title = url.equals(title) ? "" : title;
+                        } catch ( PatternSyntaxException e ){
+                            DebugApp.AddErrorToLog( null, e );
+                        }
+                        ShowLinkMenu(url, title, context, mEntryView);
                     }
                 } catch ( ActivityNotFoundException e ) {
                     UiUtils.toast( R.string.cant_open_link);
@@ -472,6 +482,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             + "title, h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
             + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
             + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
+            + "a.loaded_link {color: " + Theme.GetColor(LOADED_LINK_COLOR, R.string.default_loaded_link_color) + "; background: " + Theme.GetColor(LOADED_LINK_COLOR_BACKGROUND, R.string.default_text_color_background) + "}\n"
             + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
             + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
             (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"

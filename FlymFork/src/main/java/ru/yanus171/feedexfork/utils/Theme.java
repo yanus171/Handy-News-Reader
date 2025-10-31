@@ -28,7 +28,9 @@ public class Theme {
 	static final String BACKGROUND = "_background";
 	public static final String TEXT_COLOR_READ_BACKGROUND = TEXT_COLOR_READ + BACKGROUND;
 	public static final String LINK_COLOR = "linkColor";
+	public static final String LOADED_LINK_COLOR = "loadedLinkColor";
 	public static final String LINK_COLOR_BACKGROUND = LINK_COLOR + BACKGROUND;
+	public static final String LOADED_LINK_COLOR_BACKGROUND = LOADED_LINK_COLOR + BACKGROUND;
 	public static final String QUOTE_BACKGROUND_COLOR = "quote_background_color";
 	public static final String QUOTE_LEFT_COLOR = "quote_left_color";
 	//public static final String BUTTON_COLOR = "button_color";

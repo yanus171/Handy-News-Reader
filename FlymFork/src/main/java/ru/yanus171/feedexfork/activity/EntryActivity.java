@@ -467,7 +467,7 @@ public class EntryActivity extends BaseActivity implements Observer {
             return;
         if ( !(view instanceof WebEntryView ) )
             return;
-        ((WebEntryView)view).UpdateImages( false );
+        ((WebEntryView)view).UpdateImagesAndLinks( false );
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
     @Override

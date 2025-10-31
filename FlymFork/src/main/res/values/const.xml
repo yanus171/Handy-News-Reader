@@ -35,6 +35,7 @@
     <string name="default_article_text_footer_color" translatable="false">#9e9e9e</string>
     <string name="default_read_color" translatable="false">#9e9e9e</string>
     <string name="default_link_color" translatable="false">#0099cc</string>
+    <string name="default_loaded_link_color" translatable="false">#999999</string>
     <string name="default_toolbar_color" translatable="false">#175073</string>
 
 </resources>

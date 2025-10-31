@@ -71,6 +71,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -98,7 +100,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
-public class WebEntryView extends EntryView implements WebViewExtended.EntryViewManager {
+public class WebEntryView extends EntryView implements WebViewExtended.EntryViewManager, Observer {
     public WebViewExtended mWebView = null;
     public int mLastContentLength = 0;
     boolean mIsAutoMarkVisibleAsRead = false;
@@ -116,7 +118,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mWasAutoUnStar = false;
 
     private EntryTextSearch mSearch = null;
-
+    HashSet<String> mNotLoadedUrlSet = new HashSet<>();
     public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId) {
         super(fragment, entryId);
         mWebView = new WebViewExtended(getContext(), this);
@@ -152,8 +154,14 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             }
         };
         mSearch = new EntryTextSearch( mWebView );
+        EntryUrlVoc.INSTANCE.getMObservable().addObserver( this );
     }
 
+    @Override
+    public void Destroy() {
+        super.Destroy();
+        EntryUrlVoc.INSTANCE.getMObservable().deleteObserver( this );
+    }
     @Override
     protected int GetScrollY() {
         if (mScrollY != 0)
@@ -200,7 +208,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         int webViewHeight = mWebView.getMeasuredHeight();
         int contentHeight = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale()) - webViewHeight;
         ProgressInfo result = new ProgressInfo();
-        final int screenCount = contentHeight / mWebView.getPageHeight();
+        final int screenCount = mWebView.getPageHeight() == 0 ? 1 : contentHeight / mWebView.getPageHeight();
         result.max = screenCount;
         result.progress = (int) ((screenCount * mWebView.getScrollY()) / (float)contentHeight);
         result.step = 1;
@@ -283,18 +291,19 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         final boolean finalIsFullTextShown = isFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
         final String finalTitle = title;
-
+        final HashSet<String> notLoadedUrlSet = (HashSet<String>) mNotLoadedUrlSet.clone();
         new Thread() {
             @Override
             public void run() {
                 final String dataWithLinks = mWebView.generateHtmlContent(feedID, articleListUri, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
                 final ArrayList<String> imagesToDl = new ArrayList<>();
-                final String data = HtmlUtils.replaceImageURLs(dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount);
+                String data = HtmlUtils.replaceImageURLs(dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount, notLoadedUrlSet);
                 synchronized (mWebView) {
                     mImagesToDl = imagesToDl;
                     mData = data;
                     mDataWithWebLinks = dataWithLinks;
                     mHasScripts = dataWithLinks.contains("<script");
+                    mNotLoadedUrlSet = notLoadedUrlSet;
                 }
                 UiUtils.RunOnGuiThread(() -> LoadData());
             }
@@ -335,14 +344,14 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
     }
 
-    public void UpdateImages(final boolean downloadImages) {
+    public void UpdateImagesAndLinks(final boolean downloadImages) {
         if (!downloadImages)
             StatusStartPageLoading();
         Dog.v(EntryView.TAG, "UpdateImages");
         new Thread() {
             @Override
             public void run() {
-                final String data = HtmlUtils.replaceImageURLs(mDataWithWebLinks, mEntryId, mEntryLink, downloadImages);
+                final String data = HtmlUtils.replaceImageURLs(mDataWithWebLinks, mEntryId, mEntryLink, downloadImages, mNotLoadedUrlSet);
                 synchronized (mWebView) {
                     mData = data;
                 }
@@ -409,14 +418,14 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         Status().End(status);
     }
 
-    public static void NotifyToUpdate(final long entryId, final String entryLink, final boolean restorePosition) {
+        public static void NotifyToUpdate(final long entryId, final String entryLink, final boolean restorePosition) {
         UiUtils.RunOnGuiThread(() -> {
             Dog.v(EntryView.TAG, String.format("NotifyToUpdate( %d )", entryId));
             WebViewExtended.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink, restorePosition));
         }, 0);//NOTIFY_OBSERVERS_DELAY_MS);
     }
 
-    public static void ShowLinkMenu(String url, String title, Context context) {
+    public static void ShowLinkMenu(String url, String title, Context context, WebEntryView entryView) {
         final MenuItem itemTitle = new MenuItem(url);
         final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)));
         final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));
@@ -829,7 +838,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void downloadNextImages() {
         UiUtils.RunOnGuiThread(() -> {
             FetcherService.mMaxImageDownloadCount += PrefUtils.getImageDownloadCount();
-            UpdateImages(true);
+            UpdateImagesAndLinks(true);
         });
 
     }
@@ -841,7 +850,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public void DownloadAllImages() {
         FetcherService.mMaxImageDownloadCount = 0;
-        UpdateImages(true);
+        UpdateImagesAndLinks(true);
     }
 
     @Override
@@ -1112,4 +1121,17 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         mSearch.onCreateOptionsMenu( menu );
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        if ( observable == EntryUrlVoc.INSTANCE.getMObservable() ) {
+            String url = (String)o;
+            if ( mNotLoadedUrlSet.contains( url ) ) {
+                InvalidateContentCache();
+                UpdateImagesAndLinks(false);
+            }
+        }
+    }
+
+
 }
+//

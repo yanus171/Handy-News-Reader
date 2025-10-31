@@ -8,6 +8,11 @@ import ru.yanus171.feedexfork.service.FetcherService
 import java.util.*
 
 object EntryUrlVoc {
+    public val mObservable: Observable = object: Observable() {
+        override fun hasChanged(): Boolean {
+            return true
+        }
+    }
     private var mIsInitialized = false
     private val mVoc = HashMap<String, Long>()
 
@@ -22,6 +27,7 @@ object EntryUrlVoc {
         synchronized( mVoc ) {
             mVoc[getKey( url )] = id
         }
+        UiUtils.RunOnGuiThread { mObservable.notifyObservers( url ) }
     }
     fun remove(url: String ) {
         initInThread()
