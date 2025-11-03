@@ -23,6 +23,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
+import static ru.yanus171.feedexfork.view.MenuItem.createDialogTitleView;
 import static ru.yanus171.feedexfork.view.WebViewExtended.BASE_URL;
 import static ru.yanus171.feedexfork.view.WebViewExtended.TEXT_HTML;
 
@@ -60,6 +61,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URL;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -67,12 +70,14 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
@@ -446,7 +451,26 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         final MenuItem[] items = {itemTitle, itemReadNow, itemLater, itemLaterInFavorities, itemOpenLink, itemShare};
         final MenuItem[] itemsNoRead = {itemTitle, itemOpenLink, itemShare};
 
-        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context);
+        ShowMenu(!isLinkToLoad(url) ? itemsNoRead : items, title, context, () -> getWebPageTitle( url ));
+    }
+
+    static String getWebPageTitle(String link) {
+        InputStream response = null;
+        try {
+            response = new URL(link).openStream();
+            Scanner scanner = new Scanner(response);
+            String responseBody = scanner.useDelimiter("\\A").next();
+            return responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
+        } catch (IOException e) {
+            DebugApp.AddErrorToLog( null, e );
+        } finally {
+            try {
+                response.close();
+            } catch (Exception e) {
+                DebugApp.AddErrorToLog( null, e );
+            }
+        }
+        return "";
     }
 
     @SuppressLint("SimpleDateFormat")
