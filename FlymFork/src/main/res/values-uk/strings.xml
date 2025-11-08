@@ -733,4 +733,5 @@
     <string name="zoom_shift_enabled">Масштабування &amp; зміщення</string>
     <string name="scroll_to_bottom_disabled_for_pdf">Прокручування до низу вимкнуто для PDF</string>
     <string name="scroll_to_top_disabled_for_pdf">Прокручування вгору вимкнуто для PDF</string>
+    <string name="page_number_from_count">%d з %d</string>
 </resources>
