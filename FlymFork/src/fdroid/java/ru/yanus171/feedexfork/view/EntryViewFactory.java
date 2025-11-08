@@ -9,8 +9,8 @@ import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.utils.Dog;
 
 public class EntryViewFactory {
-    public static EntryView Create(String link, long entryId, EntryFragment fragment, ViewGroup container) {
+    public static EntryView Create(String link, long entryId, EntryFragment fragment, ViewGroup container, int position) {
         Dog.v( TAG, "EntryView.Create link = " + link);
-        return new WebEntryView( fragment, container, entryId );
+        return new WebEntryView( fragment, container, entryId, position );
     }
 }
