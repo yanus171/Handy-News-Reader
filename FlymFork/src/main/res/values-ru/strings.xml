@@ -185,7 +185,7 @@
     <string name="file">Файл</string>
     <string name="download_and_save">Загрузить и сохранить</string>
     <string name="open_link">Открыть ссылку</string>
-    <string name="tip_sentence">Подсказка: свайп влево помечает статью как прочитанную, свайп вправо - как избранную</string>
+    <string name="tip_sentence">Подсказка: свайп влево п7омечает статью как прочитанную, свайп вправо - как избранную</string>
     <string name="undo">Отменить</string>
     <string name="marked_as_read">Отмечено как прочитанное</string>
     <string name="marked_as_unread">Отмечено непрочитанным</string>
@@ -729,8 +729,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="menu_article_orientation">Ориентация статьи</string>
     <string name="settings_autobackup_requires_charging">Только во время зарядки</string>
     <string name="entry_show_menu">Показать меню</string>
-    <string name="article_list_restore_type">Восстановить тип позиции списка</string>
+    <string name="article_list_restore_type">Восстанавливать позицию списка</string>
     <string name="article_list_restore_type_summary">На какую позицию прокручивать список статей при первом открытии</string>
-    <string name="scroll_to_bottom_disabled_for_pdf">Прокрутка вниз отключена для PDF</string>
-    <string name="scroll_to_top_disabled_for_pdf">Прокрутка вверх отключена для PDF</string>
+    <string name="scroll_to_bottom_disabled_for_pdf">Прокрутка вниз недоступна для PDF</string>
+    <string name="scroll_to_top_disabled_for_pdf">Прокрутка вверх недоступна для PDF</string>
 </resources>
