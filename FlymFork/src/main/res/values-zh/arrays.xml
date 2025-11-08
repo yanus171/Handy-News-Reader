@@ -47,6 +47,11 @@
         <item>竖直</item>
         <item>不显示按钮</item>
     </string-array>
+    <string-array name="article_list_restore_type_captions">
+        <item>顶部 | 底部(取决于顺序设置)</item>
+        <item>到最老的新文章</item>
+        <item>到最老的未读文章</item>
+    </string-array>
     <string-array name="settings_datetime_format">
         <item>系统默认</item>
         <item>剩余时间</item>

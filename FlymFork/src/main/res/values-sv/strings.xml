@@ -153,6 +153,7 @@
     <string name="article_text_show_progress">Visa</string>
     <string name="article_text_progress_height">Höjd</string>
     <string name="article_text_progress_color">Färg</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_notifications_enabled">Visa påminnelser</string>
     <string name="settings_notifications_enabled_description">Visa påminnelser då nytt feed innehåll finns</string>
     <string name="settings_notifications_ringtone">Ringsignal</string>

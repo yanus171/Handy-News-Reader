@@ -1,0 +1,40 @@
+<i>„Kõigi oma huvidega ühenduses püsimine pole kunagi varem nii lihtne olnud.“</i>
+
+<b><i>Käepärane lugemine</i>: reklaamid puuduvad / tasuta tarkvara <i>GNU GPL</i> litsentsi alusel.</b>
+
+<ul>
+	<li><b>loo oma unistuste ajakiri!</b></li>
+	<li><b>huvitavad artiklid otse Su kätte</b></li>
+	<li><b>lõpuks ometi naudi lugemist</b></li>
+</ul>
+
+...nautige oma elu <b>tähelepanuvõimeta – ja samal ajal oma huvidega kursis olles</b>. Keskendu olemusele...
+
+Tutvuge <i>Käepärase Lugemisega</i> – rikkaliku funktsioonidega, võrguühenduseta <i>RSS-i, veebisisu ja raamatute</i> lugejaga, mis <b>austab teie aega ja sisemist rahu</b>: see väldib tähelepanu hajutamist ja segajate hajutamist, mis on tänapäeval mobiilseadmete puhul nii tuttavad.
+
+<ul>
+<b><u>Omadused</u>:</b>
+	<li><b><u>mis tahes veebisisu lugemine samas kontekstis</u> käepärast</b>: täistekstile juurdepääsemiseks pole vaja kasutada välist veebibrauserit,</li>
+	<li><b><u>mugav</u> lugemine</b>: artiklite vahetamine helitugevuse nuppude või libistamise abil, <i>puudutusvööndid</i>, lugemisasukoha meeldejätmine <u>iga artikli puhul</u>,</li>
+  <li><b>Oluliste artiklite teavitus</b>: Te ei jää enam ilma millestki, mida eriti oluliseks peate,</li>
+	<li><b><i>„Loe hiljem”</i></b>: Saate artikleid kiiresti sirvida – <b>märkides (tärniga) valitud artikleid hiljem vabal ajal lugemiseks</b> – või lihtsalt säilitamiseks,</li>
+	<li><b>FB2 raamatu</b>tugi</u>,</li>
+  <li><b><i>„Eemalda pärast lõpetamist”</i></b> – kui olete sellise artikli lugemise lõpetanud, võidakse see automaatselt eemaldada lemmikute hulgast <i>„Lemmikud”</i> (=<i>„Loe hiljem”</i>),</li>
+	<li><b>valmis võrguühenduseta režiimi lülituma</b> - süvene huvitavasse lugemisse ilma segajateta: pärast värskendamist pole vaja midagi täiendavalt laadida - see toimib tõesti ka ilma internetita :),</li>
+	<li><b>säästa ribalaiust</b>: mine võrku ainult uute artiklite jaoks - mitte nende täisversiooni iga kord laadimiseks; kontrolli, mida tuleks alla laadida - ja millises ulatuses,</li>
+	<li><b>žestidesõbralik</b>: nt. libista sõrmega ülevalt alla, et lisada/eemaldada artikkel <i>Lemmikute</i> hulgast, libista mööda ekraani vasakut serva, et reguleerida teksti heledust,</li>
+	<li><b>kasutajasõbralik</b>: hoolitse oma silmade eest tumeda teemaga, kohanda teksti suurus, värv ja heledus vastavalt oma individuaalsetele vajadustele,</li>
+	<li><b>nutikad ideed</b>: hüperlinkideta artiklipealkirjad ei sega enam sinu sõrmi ;) ; artiklilehtede kerimine 90% nende kõrgusest võib muuta lugemise vähem segaseks = mugavamaks,</li>
+	<li><b>väga kohandatav</b>: alates <i>puutetsoonide</i> suurusest kuni hüperlinkide värvi ja allajoonimiseni – on hulgaliselt detaile, mida saad täpselt oma maitse ja vajaduste järgi kohandada,</li>
+	<li><b>täiustatud funktsioonid</b>: automaatne varundamine (eksport/import <i>.opml</i> formaati), sisu pakkumine mitte-<i>RSS</i> veebisaitidelt,</li>
+	<li><b>veel põnevamaid funktsioone</b> on varuks – külasta meie veebisaiti, et rohkem teada saada :) !,</li>
+	<li><b><u>tähtis</u>:</b> see rakendus EI sünkroniseeri võrgupõhiste uudistevoo lugejatega (st. <i>Feedly</i>),</li>
+	<li><b>tagasiside ja soovitused on teretulnud;</b></li>
+</ul>
+
+<ul>
+<b>Kust meid leida:</b>
+	<li><a href="https://github.com/yanus171/Handy-News-Reader" target="_blank">lähtekood aadressil <i>GitHub</i></a>,</li>	
+	<li><a href="https://handynewsreader.blogspot.com" target="_blank">koduleht</a>,</li>
+	<li><a href="https://crowdin.com/project/handy-news-reader" target="_blank">tõlked</a>;</li>
+</ul>

@@ -159,7 +159,7 @@
     <string name="entry_text_align_justify_description">否则向左对齐</string>
     <string name="tap_zone_size">点击区域尺寸</string>
     <string name="tap_zone_size_descr"> 所有点击区域的高度或宽度（单位：毫米）</string>
-    <string name="settings_show_tap_zones">点击区域可见</string>
+    <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->
     <string name="settings_tapZones">点击区域预览</string>
     <string name="settings_volume_buttons_action">音量按钮操作</string>
     <string name="settings_notifications_enabled">启用通知</string>
