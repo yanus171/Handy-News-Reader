@@ -728,5 +728,8 @@
     <string name="article_list_restore_type_summary">An welche Position die Artikelliste beim ersten Öffnen blättern soll</string>
     <string name="menu_replace_img_with_a_link_toggle">Grafik durch einen Link ersetzen</string>
     <string name="zoom_shift_enabled">Vergrößern &amp; Verschieben</string>
+    <string name="scroll_to_bottom_disabled_for_pdf">Zum Ende blättern für PDFs deaktiviert</string>
+    <string name="scroll_to_top_disabled_for_pdf">Zum Anfang blättern für PDFs deaktiviert</string>
     <string name="zoom_is_disabled">Vergrößerungsmodus deaktiviert</string>
+    <string name="page_number_from_count">%d von %d</string>
 </resources>
