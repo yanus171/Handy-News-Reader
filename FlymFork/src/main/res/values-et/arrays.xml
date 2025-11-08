@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_intervals">
+        <item>1 minut</item>
+        <item>5 minutit</item>
+        <item>15 minutit</item>
+        <item>30 minutit</item>
+        <item>1 tund</item>
+        <item>2 tundi</item>
+        <item>3 tundi</item>
+        <item>6 tundi</item>
+        <item>12 tundi</item>
+        <item>1 päev</item>
+        <item>2 päeva</item>
+        <item>3 päeva</item>
+    </string-array>
+    <string-array name="settings_keep_times">
+        <item>1 tund</item>
+        <item>12 tundi</item>
+        <item>1 päev</item>
+        <item>2 päeva</item>
+        <item>4 päeva</item>
+        <item>1 nädal</item>
+        <item>2 nädalat</item>
+        <item>1 kuu</item>
+        <item>2 kuud</item>
+        <item>3 kuud</item>
+        <item>Mitte eemaldada</item>
+    </string-array>
+    <string-array name="settings_volume_buttons_action">
+        <item>Vaikimisi</item>
+        <item>Järgmine artikkel | eelmine artikkel</item>
+        <item>Järgmine leht | eelmine leht</item>
+    </string-array>
+    <string-array name="settings_preload_image_modes">
+        <item>Mitte kunagi</item>
+        <item>Ainult üle Wifi</item>
+        <item>Alati</item>
+    </string-array>
+    <string-array name="themeList">
+        <item>Hele</item>
+        <item>Tume</item>
+        <item>Must</item>
+    </string-array>
+    <string-array name="buttons_layout_captions">
+        <item>Horisontaalne</item>
+        <item>Vertikaalne</item>
+        <item>Ära näita nuppe</item>
+    </string-array>
+    <string-array name="article_list_restore_type_captions">
+        <item>Üleval | All (olenevalt järjestuse seadistusest)</item>
+        <item>Varaseimale uute artiklite hulgast</item>
+        <item>Vanimale lugemata artiklile</item>
+    </string-array>
+    <string-array name="settings_datetime_format">
+        <item>Süsteemi vaikeseade</item>
+        <item>Järelejäänud aeg</item>
+    </string-array>
+</resources>

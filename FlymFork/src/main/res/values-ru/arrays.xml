@@ -47,6 +47,11 @@
         <item>Вертикально</item>
         <item>Не показывать кнопки</item>
     </string-array>
+    <string-array name="article_list_restore_type_captions">
+        <item>Вверх | Вниз (в зависимости от настроек порядка)</item>
+        <item>К самой ранней из новых статей</item>
+        <item>К самой ранней из непрочитанных статей</item>
+    </string-array>
     <string-array name="settings_datetime_format">
         <item>Как в системе</item>
         <item>Оставшееся время</item>
