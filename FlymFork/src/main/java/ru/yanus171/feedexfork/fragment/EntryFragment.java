@@ -84,6 +84,7 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.ControlPanel;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.EntryViewFactory;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.WebEntryView;
 import ru.yanus171.feedexfork.view.WebViewExtended;
@@ -667,7 +668,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     @NonNull
     public EntryView CreateWebEntryView(int position, ViewGroup container ) {
         final Entry entry = mEntryPagerAdapter.GetEntry(position);
-        final EntryView view = EntryView.Create( entry.mLink, entry.mID, this, container );
+        final EntryView view = EntryViewFactory.Create( entry.mLink, entry.mID, position, this, container );
         view.mView.setTag(view);
 
         if ( mLeakEntryView == null )
@@ -714,14 +715,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 mLastPagerPos = i;
                 refreshUI(false);
 
-                EntryView view = mEntryPagerAdapter.GetEntryView( i );
-                if ( view != null && GetSelectedEntryWebView() != null ) {
-                    if ( view.mLoadTitleOnly )
-                        getLoaderManager().restartLoader(i, null, EntryFragment.this);
-                    else if ( mTapZones != null )
-                        mTapZones.DisableIfVideo( view );
-                    view.mLoadTitleOnly = false;
-                }
+                if ( GetSelectedEntryView() != null )
+                    GetSelectedEntryView().onPageSelected();
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                 Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
                 TextView textView = new TextView(getContext());

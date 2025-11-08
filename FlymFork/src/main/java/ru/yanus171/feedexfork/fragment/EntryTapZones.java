@@ -86,26 +86,6 @@ public class EntryTapZones {
         Hide();
     }
 
-    public void DisableIfVideo(EntryView view) {
-        if (view.mLoadTitleOnly)
-            return;
-        final boolean enabled;
-        synchronized (this) {
-            enabled = mFragment.GetSelectedEntryWebView().mIsFullTextShown ||
-                    !PrefUtils.getBoolean("disable_tap_actions_when_video", true) ||
-                    !mFragment.hasVideo();
-        }
-
-        if (enabled != isArticleTapEnabledTemp()) {
-            PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, enabled);
-            Update();
-            Toast.makeText(MainApplication.getContext(),
-                    enabled ?
-                            MainApplication.getContext().getString(R.string.tap_actions_were_enabled) :
-                            MainApplication.getContext().getString(R.string.video_tag_found_in_article) + ". " + mFragment.getContext().getString(R.string.tap_actions_were_disabled),
-                    Toast.LENGTH_LONG).show();
-        }
-    }
     private void setupButtonActions() {
         mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> mFragment.GetSelectedEntryView().GoBack() );
         mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {

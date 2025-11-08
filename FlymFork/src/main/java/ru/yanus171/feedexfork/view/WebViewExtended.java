@@ -335,8 +335,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     Status().ChangeProgress("finished.");
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
-                    if ( mEntryView.mEntryFragment.mTapZones != null )
-                        mEntryView.mEntryFragment.mTapZones.DisableIfVideo( mEntryView );
+                    mEntryView.DisableTapActionsIfVideo();
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
                             mEntryView.DownLoadImages();

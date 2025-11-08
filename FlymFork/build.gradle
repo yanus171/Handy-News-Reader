@@ -84,7 +84,7 @@ android {
             dimension 'dim'
         }
 
-        google {
+        full {
             dimension 'dim'
         }
     }
@@ -107,9 +107,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.10.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.work:work-runtime:2.7.1'
-    googleImplementation "com.google.android.gms:play-services-safetynet:17+"
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation 'com.github.barteksc:android-pdf-viewer:3.2+'
+    fullImplementation "com.google.android.gms:play-services-safetynet:17+"
+    fullImplementation 'com.github.barteksc:android-pdf-viewer:3.2+'
 }
 //repositories {
 //    mavenCentral()

@@ -29,7 +29,6 @@ import android.provider.BaseColumns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -50,7 +49,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
-import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -63,6 +61,7 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 public abstract class EntryView {
     //public EntryActivity mActivity = null;
     protected EntryFragment mEntryFragment = null;
+    protected final int mPosition;
     public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
     public double mScrollPartY = -1;
@@ -82,9 +81,10 @@ public abstract class EntryView {
 
     public static final long TAP_TIMEOUT = 1000;
 
-    protected EntryView(EntryFragment fragment, long entryId) {
+    protected EntryView(EntryFragment fragment, long entryId, int position) {
         mEntryFragment = fragment;
         mEntryId = entryId;
+        mPosition = position;
     }
 
     protected Context getContext() {
@@ -172,6 +172,10 @@ public abstract class EntryView {
         updateMenuWithIcon(item);
     }
 
+    public void onPageSelected() {
+
+    }
+
     static public class ProgressInfo {
         public int max;
         public int progress;
@@ -206,15 +210,6 @@ public abstract class EntryView {
 
     }
     public void onPause() {
-
-    }
-
-    public static EntryView Create(String link, long entryId, EntryFragment fragment, ViewGroup container) {
-        Dog.v( TAG, "EntryView.Create link = " + link);
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
-            return new PDFViewEntryView( fragment, container, entryId);//PDFEntryView
-        else
-            return new WebEntryView( fragment, container, entryId );
 
     }
 

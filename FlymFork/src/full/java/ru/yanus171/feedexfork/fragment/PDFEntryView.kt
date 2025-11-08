@@ -23,7 +23,7 @@ import ru.yanus171.feedexfork.view.EntryView
 import java.io.IOException
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long) : EntryView(fragment, entryId) {
+class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long, position: Int) : EntryView(fragment, entryId, position) {
     var mRenderer: PdfRenderer? = null
     val mListView = ListView(getContext())
     init {

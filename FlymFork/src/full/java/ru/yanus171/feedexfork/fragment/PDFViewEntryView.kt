@@ -34,7 +34,7 @@ import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import java.util.Date
 
-class PDFViewEntryView(private val fragment: EntryFragment, private val mContainer: ViewGroup, entryID: Long) : EntryView(fragment, entryID)
+class PDFViewEntryView(private val fragment: EntryFragment, private val mContainer: ViewGroup, entryID: Long, position: Int) : EntryView(fragment, entryID, position)
 {
     lateinit var mPDFView: PDFView
     var mXOffset: Float = 0.0F

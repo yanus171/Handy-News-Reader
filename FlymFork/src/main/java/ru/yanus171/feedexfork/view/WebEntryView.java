@@ -19,7 +19,9 @@ import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CONTENT_TEXT_ROOT_EXTRACT_RULES;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DATE_EXTRACT_RULES;
+import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
@@ -124,8 +126,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     private EntryTextSearch mSearch = null;
     HashSet<String> mNotLoadedUrlSet = new HashSet<>();
-    public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId) {
-        super(fragment, entryId);
+    public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId, int position) {
+        super(fragment, entryId, position);
         mWebView = new WebViewExtended(getContext(), this);
         container.addView(mWebView);
         mView = mWebView;
@@ -884,8 +886,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
             generateArticleContent(false);
             mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
-            //if getBoolean(DISPLAY_ENTRIES_FULLSCREEN, false))
-            //    activity.setFullScreen(true, true);
             if (mLoadTitleOnly) {
                 mLoadTitleOnly = false;
                 mEntryFragment.restartCurrentEntryLoader();
@@ -1065,11 +1065,16 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 share();
                 break;
             }
-
-
         }
+    }
 
-
+    @Override
+    public void onPageSelected() {
+        if ( mLoadTitleOnly )
+            mEntryFragment.getLoaderManager().restartLoader(mPosition, null, mEntryFragment);
+        else if ( mEntryFragment.mTapZones != null )
+            DisableTapActionsIfVideo();;
+        mLoadTitleOnly = false;
     }
 
     private void share() {
@@ -1156,6 +1161,27 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
     }
 
+    public void DisableTapActionsIfVideo() {
+        if (mLoadTitleOnly)
+            return;
+        final boolean enabled;
+        synchronized (this) {
+            enabled = mIsFullTextShown ||
+                    !PrefUtils.getBoolean("disable_tap_actions_when_video", true) ||
+                    !hasVideo();
+        }
+
+        if (enabled != isArticleTapEnabledTemp()) {
+            PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, enabled);
+            if ( mEntryFragment.mTapZones != null )
+                mEntryFragment.mTapZones.Update();
+            Toast.makeText(MainApplication.getContext(),
+                    enabled ?
+                            MainApplication.getContext().getString(R.string.tap_actions_were_enabled) :
+                            MainApplication.getContext().getString(R.string.video_tag_found_in_article) + ". " + getContext().getString(R.string.tap_actions_were_disabled),
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
 }
 //
