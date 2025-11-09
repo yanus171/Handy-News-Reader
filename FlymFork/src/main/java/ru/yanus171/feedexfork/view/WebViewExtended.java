@@ -310,7 +310,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                         } catch ( PatternSyntaxException e ){
                             DebugApp.AddErrorToLog( null, e );
                         }
-                        ShowLinkMenu(url, title, context, mEntryView);
+                        ShowLinkMenu(url, title, context);
                     }
                 } catch ( ActivityNotFoundException e ) {
                     UiUtils.toast( R.string.cant_open_link);

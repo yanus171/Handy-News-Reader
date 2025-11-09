@@ -432,7 +432,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }, 0);//NOTIFY_OBSERVERS_DELAY_MS);
     }
 
-    public static void ShowLinkMenu(String url, String title, Context context, WebEntryView entryView) {
+    public static void ShowLinkMenu(String url, String title, Context context) {
         final MenuItem itemTitle = new MenuItem(url);
         final MenuItem itemReadNow = new MenuItem(R.string.loadLink, R.drawable.cup_new_load_now, new Intent(context, EntryActivity.class).setData(Uri.parse(url)));
         final MenuItem itemLater = new MenuItem(R.string.loadLinkLater, R.drawable.cup_new_load_later, new Intent(context, LoadLinkLaterActivity.class).setData(Uri.parse(url)));

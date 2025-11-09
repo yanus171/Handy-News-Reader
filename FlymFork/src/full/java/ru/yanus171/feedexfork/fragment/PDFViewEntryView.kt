@@ -13,10 +13,13 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.link.LinkHandler
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
+import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
@@ -30,8 +33,10 @@ import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
+import ru.yanus171.feedexfork.utils.Theme
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
+import ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu
 import java.util.Date
 
 class PDFViewEntryView(private val fragment: EntryFragment, private val mContainer: ViewGroup, entryID: Long, position: Int) : EntryView(fragment, entryID, position)
@@ -113,6 +118,26 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
                 Status().SetError(mEntryLink, null, mEntryId.toString(), it as Exception)
                 EndStatus()
             }
+            .linkHandler(
+                object : LinkHandler {
+                    override fun handleLinkEvent(event: LinkTapEvent) {
+                        val uri = event.link.uri
+                        val page = event.link.destPageIdx
+                        if ( page != null )
+                            showPageJumpMenu( page )
+                        else if ( uri != null )
+                            ShowLinkMenu( uri, "", context )
+                    }
+
+                    private fun showPageJumpMenu( page: Int  ) {
+                        AlertDialog.Builder(context)
+                            .setMessage( context.getString( R.string.page_jump_PDF_confirm, page ) )
+                            .setPositiveButton( android.R.string.ok ) { dialog, _ -> mPDFView.jumpTo(page) }
+                            .setNeutralButton( android.R.string.cancel ){ dialog, _ -> dialog.dismiss() }
+                            .show()
+                    }
+                }
+            )
             .onRender {
             }
             .onLoad {

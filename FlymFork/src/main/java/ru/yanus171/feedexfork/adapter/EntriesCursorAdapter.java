@@ -1028,7 +1028,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         int flags = strBuilder.getSpanFlags(span);
         ClickableSpan clickable = new ClickableSpan() {
             public void onClick(View view) {
-                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context, null);
+                ShowLinkMenu(span.getURL(), strBuilder.subSequence(start, end ).toString(), context);
             }
         };
         strBuilder.setSpan(clickable, start, end, flags);
