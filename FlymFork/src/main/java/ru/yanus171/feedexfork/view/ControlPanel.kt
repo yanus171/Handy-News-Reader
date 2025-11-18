@@ -12,6 +12,7 @@ import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.fragment.EntryFragment
 import ru.yanus171.feedexfork.utils.Theme
+import ru.yanus171.feedexfork.utils.UiUtils.SetFont
 
 class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     private var mView: View? = null
@@ -27,6 +28,8 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
 
     fun hide() {
         mView?.visibility = View.GONE
+        val titleTextView: TextView = mRootView.findViewById(R.id.title)
+        titleTextView.visibility = View.GONE
     }
 
     @SuppressLint("InflateParams")
@@ -42,6 +45,12 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
         setupPageSeekbar()
         setupControlPanelButtonActions()
         mEntryView?.setupControlPanelButtonActions()
+        val titleTextView: TextView = mRootView.findViewById(R.id.title)
+        titleTextView.visibility = View.VISIBLE
+        titleTextView.setBackgroundColor(Theme.GetMenuBackgroundColor())
+        titleTextView.text = mEntryView!!.mTitle;
+        SetFont(titleTextView, 1F);
+
     }
 
     fun setupControlPanelButtonActions() {
@@ -70,6 +79,7 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
         val seekBar = mRootView.findViewById<SeekBar>(R.id.seekbar)
         val seekBarText = mRootView.findViewById<TextView>(R.id.seekbar_text)
         seekBarText.setTextColor( Theme.GetTextColorInt() )
+        SetFont(seekBarText, 1F);
         val info = mEntryView!!.getProgressInfo()
         seekBar.setOnSeekBarChangeListener(null)
         seekBar.max = info.max

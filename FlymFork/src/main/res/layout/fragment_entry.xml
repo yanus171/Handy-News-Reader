@@ -34,7 +34,7 @@
             <include layout="@layout/colontitul" />
 
 
-            <RelativeLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -51,6 +51,16 @@
                         android:background="@android:color/transparent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 <!--                </androidx.core.widget.NestedScrollView>-->
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_horizontal|top"
+                    android:gravity="center"
+                    android:paddingVertical="20dp"
+                    android:text="title"/>
+
 
                 <include layout="@layout/brightness_slider_layout_left" />
                 <include layout="@layout/brightness_slider_layout_right" />
