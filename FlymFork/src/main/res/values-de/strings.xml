@@ -255,6 +255,8 @@
     <string name="entry_text_align_justify_description">Wenn nicht aktiviert, wird der Text links ausgerichtet</string>
     <string name="linkColor">Farbe der Links</string>
     <string name="linkColor_descr">Text- und Hintergrundfarbe der weiterführenden Links</string>
+    <string name="loadedLinkColor">Farbe des geladenen Links</string>
+    <string name="loadedLinkColor_descr">Text und Hintergrund</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Farbe der Links</string>
     <string name="underline_links">Links unterstreichen</string>
