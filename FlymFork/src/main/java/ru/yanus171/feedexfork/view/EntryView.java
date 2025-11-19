@@ -455,7 +455,6 @@ public abstract class EntryView {
     public void onPrepareOptionsMenu (Menu menu) {
         menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
         menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem(R.id.menu_force_orientation_by_sensor).setChecked( PrefUtils.isForceOrientationBySensor() );
 
         menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
         menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );

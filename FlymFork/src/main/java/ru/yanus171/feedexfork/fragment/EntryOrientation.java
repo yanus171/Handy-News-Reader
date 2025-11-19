@@ -66,8 +66,8 @@ class EntryOrientation {
         }
     }
 
-    public void refreshUI( EntryView view, Uri uri) {
-        SetForceOrientation(ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos)), uri);
+    public void loadingDataFinished(EntryView view) {
+        mForceOrientation = ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos));
         applyForceOrientation();
     }
 
@@ -128,7 +128,6 @@ class EntryOrientation {
         if (mForceOrientation == forceOrientation)
             return;
         mForceOrientation = forceOrientation;
-        //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
         ContentValues values = new ContentValues();
         values.put(FeedData.EntryColumns.IS_LANDSCAPE, ForceOrientationToInt(mForceOrientation));
         ContentResolver cr = MainApplication.getContext().getContentResolver();

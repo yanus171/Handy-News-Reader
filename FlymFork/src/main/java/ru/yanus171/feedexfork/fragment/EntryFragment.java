@@ -38,7 +38,6 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -55,7 +54,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -614,6 +612,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( view != null ) {
             view.setCursor( cursor );
             view.loadingDataFinished();
+            mOrientation.loadingDataFinished( view );
         }
     }
 
@@ -654,7 +653,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
 
             startMobilizationTask(view.mEntryId);
-            mOrientation.refreshUI( view, getUri() );
         }
         markPrevArticleAsRead();
     }
