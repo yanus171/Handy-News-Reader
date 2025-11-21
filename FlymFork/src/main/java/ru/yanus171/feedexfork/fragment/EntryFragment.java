@@ -396,17 +396,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
 
         final EntryView view = GetSelectedEntryView();
-        if ( view != null ){
+        if ( view != null )
             view.onCreateOptionsMenu(menu);
-
-        }
-
-
         mOrientation.onCreateOptionsMenu( menu );
-
-
-
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -529,13 +521,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     try ( Cursor entriesCursor = cr.query( mBaseUri, FeedData.EntryColumns.PROJECTION_ID, mWhereSQL, null, FeedData.EntryColumns.DATE + entriesOrder) ) {
                         mEntryPagerAdapter.setData(entriesCursor );
                     }
-                    {
+                    if ( mInitialEntryId != -1 ){
                         final int index = mEntryPagerAdapter.GetEntryIndexByID( mInitialEntryId );
                         if ( index >= 0 ) {
                             mCurrentPagerPos = index;
                             mLastPagerPos = index;
                         }
-
                     }
 
                     if ( getCurrentEntryID() != -1 ) {
