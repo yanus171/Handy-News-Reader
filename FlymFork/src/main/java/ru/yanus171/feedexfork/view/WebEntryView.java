@@ -463,7 +463,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             response = new URL(link).openStream();
             Scanner scanner = new Scanner(response);
             String responseBody = scanner.useDelimiter("\\A").next();
-            return responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
+            final int start = responseBody.indexOf("<title>") + 7;
+            final int end = responseBody.indexOf("</title>");
+            if ( start >= 0 && end > start )
+                return responseBody.substring(start, end);
+            else
+                return link;
         } catch (IOException e) {
             DebugApp.AddErrorToLog( null, e );
         } finally {
