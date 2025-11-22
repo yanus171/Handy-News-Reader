@@ -78,7 +78,8 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.START | Gravity.TOP);
-        mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
+        mErrorView.setBackgroundColor( Theme.GetErrorTextBackroundColorInt() );
+        mErrorView.setTextColor( Theme.GetErrorTextColorInt() );
         mErrorView.setOnClickListener(v -> {
             FetcherObservable status = (FetcherObservable)observable;
             status.ClearError();

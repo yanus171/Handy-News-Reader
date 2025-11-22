@@ -269,4 +269,11 @@ public class Theme {
 	public static int GetTextColorReadInt() {
 		return GetColorInt( TEXT_COLOR_READ, R.string.default_read_color );
 	}
+
+	public static int GetErrorTextColorInt() {
+		return Color.WHITE;
+	}
+	public static int GetErrorTextBackroundColorInt() {
+		return Color.RED;
+	}
 }

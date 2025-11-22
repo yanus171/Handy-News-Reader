@@ -600,7 +600,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( view != null ) {
             view.setCursor( cursor );
             view.loadingDataFinished();
-            mOrientation.loadingDataFinished( view );
+            if ( view == GetSelectedEntryView() )
+                mOrientation.loadingDataFinished( view );
         }
     }
 
