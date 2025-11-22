@@ -1,5 +1,6 @@
 package ru.yanus171.feedexfork.fragment;
 
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -41,8 +42,8 @@ class EntryOrientation {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked(mForceOrientation == Orientation.LANDSCAPE);
-        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked(mForceOrientation == Orientation.PORTRAIT);
+        setItemChecked( menu, R.id.menu_force_landscape_orientation_toggle, mForceOrientation == Orientation.LANDSCAPE);
+        setItemChecked( menu, R.id.menu_force_portrait_orientation_toggle, mForceOrientation == Orientation.PORTRAIT);
     }
 
     @SuppressLint("NonConstantResourceId")

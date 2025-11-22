@@ -32,9 +32,10 @@ public class EntryTextSearch {
 
     public void onCreateOptionsMenu(Menu menu) {
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
+        if ( searchItem == null )
+            return;
         mSearchNextItem = menu.findItem(R.id.menu_search_next);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         mSearchPreviousItem = menu.findItem(R.id.menu_search_previous);
         mSearchNextItem.setVisible( false );
         mSearchPreviousItem.setVisible( false );

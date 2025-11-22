@@ -45,6 +45,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -96,6 +97,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
@@ -139,10 +141,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
     public EntryTapZones mTapZones = null;
     public ControlPanel mControlPanel = null;
+    public EntryMenu mMenu = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
+        mMenu = new EntryMenu( getActivity() );
         mOrientation = new EntryOrientation( this );
         if ( IsExternalLink( getActivity().getIntent().getData() ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
@@ -387,14 +391,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.entry, menu);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            menu.setGroupDividerEnabled( true );
-        for ( int i = 0; i < menu.size(); i++ )
-            updateMenuWithIcon( menu.getItem( i ) );
-
-        menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
-
+        mMenu.onCreateOptionsMenu(menu, inflater);
         final EntryView view = GetSelectedEntryView();
         if ( view != null )
             view.onCreateOptionsMenu(menu);
@@ -407,7 +404,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mOrientation.onPrepareOptionsMenu( menu );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
-        menu.findItem( R.id.menu_actionbar_visible).setVisible( PrefUtils.isTapActionEnabled() );
+        setItemVisible( menu, R.id.menu_actionbar_visible, PrefUtils.isTapActionEnabled() );
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -801,36 +798,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 
-    /**
-     * Updates a menu item in the dropdown to show it's icon that was declared in XML.
-     *
-     * @param item
-     *         the item to update
-     */
-    public static void updateMenuWithIcon(@NonNull final MenuItem item) {
-        SpannableStringBuilder builder = new SpannableStringBuilder()
-                .append("*") // the * will be replaced with the icon via ImageSpan
-                .append("    ") // This extra space acts as padding. Adjust as you wish
-                .append(item.getTitle());
-
-
-
-        // Retrieve the icon that was declared in XML and assigned during inflation
-        if (item.getIcon() != null && item.getIcon().getConstantState() != null) {
-            Drawable drawable = item.getIcon().getConstantState().newDrawable();
-
-            // Mutate this drawable so the tint only applies here
-            // drawable.mutate().setTint(color);
-
-            // Needs bounds, or else it won't show up (doesn't know how big to be)
-            //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
-            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
-            ImageSpan imageSpan = new ImageSpan(drawable);
-            builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            item.setTitle(builder);
-        }
-    }
 
 
     private String getCurrentEntryLink() {

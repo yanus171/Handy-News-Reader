@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@id/menu_share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="always"
+        android:title="@string/menu_share"/>
+    <item
+        android:id="@+id/menu_open_link"
+        android:icon="@drawable/ic_open_in_browser"
+        android:title="@string/open_link" />
+    <item
+        android:id="@+id/menu_share_all_text"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share_all_text" />
+    <item
+        android:id="@+id/menu_copy_clipboard"
+        android:icon="@drawable/ic_content_copy"
+        android:title="@string/menu_copy_clipboard" />
+    <item
+        android:id="@+id/menu_show_html"
+        android:icon="@drawable/ic_developer_mode"
+        android:title="@string/show_html" />
+    <item
+        android:id="@+id/menu_add_entry_shortcut"
+        android:icon="@drawable/ic_home"
+        android:title="@string/add_entry_shortcut" />
+</menu>

@@ -55,7 +55,7 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
 
     fun setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_menu, false) {
-            mEntryFragment.activity?.openOptionsMenu()
+            mEntryFragment.mMenu.open()
         }
     }
 
@@ -73,6 +73,17 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
             btn.setBackgroundColor(Theme.GetToolBarColorInt())
         else
             btn.setBackgroundResource(android.R.drawable.screen_background_dark)
+    }
+    fun setupButtonLongClickAction(viewId: Int, click: View.OnClickListener) {
+        val btn = mView!!.findViewById<ImageButton>(viewId)
+        if ( btn == null )
+            return
+        btn.setOnLongClickListener {
+            click.onClick(btn)
+            hide()
+            mEntryFragment.mTapZones.Hide()
+            return@setOnLongClickListener true
+        }
     }
 
     private fun setupPageSeekbar() {

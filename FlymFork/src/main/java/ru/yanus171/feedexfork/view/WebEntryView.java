@@ -4,6 +4,7 @@ import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -1116,11 +1117,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_font_bold).setChecked(PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
-        menu.findItem(R.id.menu_reload_with_tables_toggle).setChecked( mIsWithTables );
-        menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( mIsReplaceImgWithALink );
-        menu.findItem(R.id.menu_reload_full_text_with_debug_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
-        menu.findItem(R.id.menu_replace_img_with_a_link_toggle).setChecked( PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
+        setItemChecked( menu, R.id.menu_font_bold, PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
+        setItemChecked( menu, R.id.menu_reload_with_tables_toggle, mIsWithTables );
+        setItemChecked( menu, R.id.menu_replace_img_with_a_link_toggle, mIsReplaceImgWithALink );
+        setItemChecked( menu, R.id.menu_reload_full_text_with_debug_toggle, PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
+        setItemChecked( menu, R.id.menu_replace_img_with_a_link_toggle, PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
     }
 
     @Override

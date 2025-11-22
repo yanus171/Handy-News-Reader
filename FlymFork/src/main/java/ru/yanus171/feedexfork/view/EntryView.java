@@ -1,7 +1,8 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.updateMenuWithIcon;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.updateMenuWithIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -165,6 +166,8 @@ public abstract class EntryView {
 
     public void onCreateOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_star);
+        if ( item == null )
+            return;
         if (mFavorite)
             item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
         else
@@ -453,15 +456,14 @@ public abstract class EntryView {
         return ContentUris.withAppendedId(mEntryFragment.mBaseUri, mEntryId);
     }
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
-        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
+        setItemChecked( menu, R.id.menu_image_white_background, PrefUtils.isImageWhiteBackground());
+        setItemChecked( menu, R.id.menu_show_progress_info, PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
 
-        menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
-        menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
-
-        menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
-        menu.findItem( R.id.menu_zoom_shift_enabled).setVisible( false );
-        menu.findItem( R.id.menu_disable_all_tap_actions).setVisible( mEntryFragment.mTapZones != null );
+        setItemChecked( menu, R.id.menu_full_screen, GetIsStatusBarHidden() );
+        setItemChecked( menu, R.id.menu_actionbar_visible, !GetIsStatusBarHidden() );
+        setItemChecked( menu, R.id.menu_go_back, CanGoBack() );
+        setItemChecked( menu,  R.id.menu_zoom_shift_enabled, false );
+        setItemChecked( menu,  R.id.menu_disable_all_tap_actions, mEntryFragment.mTapZones != null );
 
     }
 
@@ -487,9 +489,18 @@ public abstract class EntryView {
     public void setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_label_setup, false, v -> OpenLabelSetup());
         setupButtonAction(R.id.btn_settings, false, v -> OpenSettings());
+        setupButtonLongClickAction( R.id.btn_share, v -> mEntryFragment.mMenu.openShare());
+        setupButtonLongClickAction( R.id.btn_force_orientation_by_sensor, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_force_portrait_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_force_landscape_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_reload, v -> mEntryFragment.mMenu.openReload());
+
     }
     protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
         mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
+    }
+    protected void setupButtonLongClickAction(int viewId, View.OnClickListener click ) {
+        mEntryFragment.mControlPanel.setupButtonLongClickAction( viewId, click );
     }
 }
 
