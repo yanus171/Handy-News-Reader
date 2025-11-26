@@ -23,6 +23,8 @@ import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
+import ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked
+import ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible
 import ru.yanus171.feedexfork.parser.FileSelectDialog
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE
@@ -346,8 +348,8 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
 
     override fun onPrepareOptionsMenu(menu: Menu ) {
         super.onPrepareOptionsMenu(menu)
-        menu.findItem( R.id.menu_zoom_shift_enabled ).isVisible = true
-        menu.findItem( R.id.menu_zoom_shift_enabled ).isChecked = PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )
+        setItemVisible( menu, R.id.menu_zoom_shift_enabled, true )
+        setItemChecked( menu, R.id.menu_zoom_shift_enabled, getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) )
     }
     override fun onOptionsItemSelected(item: android.view.MenuItem ) {
         super.onOptionsItemSelected(item);
