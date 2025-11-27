@@ -88,9 +88,13 @@ public class EntryMenu {
     }
 
     static public void setItemChecked( Menu menu, int itemID, boolean checked ) {
+        setVisible( menu, itemID );
         MenuItem item = menu.findItem( itemID );
         if (  item != null )
             item.setChecked( checked );
+    }
+    static public void setVisible(Menu menu, int itemID ) {
+        setItemVisible( menu, itemID, true );
     }
 
     static public void setItemVisible( Menu menu, int itemID, boolean visible ) {

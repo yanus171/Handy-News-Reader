@@ -23,6 +23,7 @@ import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
+import ru.yanus171.feedexfork.fragment.EntryMenu.setVisible
 import ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked
 import ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible
 import ru.yanus171.feedexfork.parser.FileSelectDialog
@@ -35,7 +36,6 @@ import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
-import ru.yanus171.feedexfork.utils.Theme
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu
@@ -350,6 +350,12 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         super.onPrepareOptionsMenu(menu)
         setItemVisible( menu, R.id.menu_zoom_shift_enabled, true )
         setItemChecked( menu, R.id.menu_zoom_shift_enabled, getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) )
+
+        setVisible( menu, R.id.menu_labels );
+        setVisible( menu, R.id.menu_reload_full_text );
+        setVisible( menu, R.id.menu_cancel_refresh );
+        setVisible( menu, R.id.menu_share );
+        setVisible( menu, R.id.menu_zoom_shift_enabled );
     }
     override fun onOptionsItemSelected(item: android.view.MenuItem ) {
         super.onOptionsItemSelected(item);

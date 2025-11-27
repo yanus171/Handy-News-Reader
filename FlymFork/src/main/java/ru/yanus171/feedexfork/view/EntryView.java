@@ -2,6 +2,8 @@ package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.updateMenuWithIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
@@ -462,9 +464,36 @@ public abstract class EntryView {
         setItemChecked( menu, R.id.menu_full_screen, GetIsStatusBarHidden() );
         setItemChecked( menu, R.id.menu_actionbar_visible, !GetIsStatusBarHidden() );
         setItemChecked( menu, R.id.menu_go_back, CanGoBack() );
-        setItemChecked( menu,  R.id.menu_zoom_shift_enabled, false );
-        setItemChecked( menu,  R.id.menu_disable_all_tap_actions, mEntryFragment.mTapZones != null );
+        setItemChecked( menu, R.id.menu_zoom_shift_enabled, false );
+        setItemChecked( menu, R.id.menu_disable_all_tap_actions, mEntryFragment.mTapZones != null );
 
+        hideAllMenuItems(menu);
+
+        setVisible( menu, R.id.menu_star );
+        setVisible( menu, R.id.menu_share );
+        setVisible( menu, R.id.menu_mark_as_unread );
+        setVisible( menu, R.id.menu_article_web_search );
+        //showItem( menu, R.id.menu_share_group );
+        //showItem( menu, R.id.menu_display_options_group );
+        setVisible( menu, R.id.menu_labels );
+        //showItem( menu, R.id.menu_reload_group );
+        setVisible( menu, R.id.menu_setting );
+        setVisible( menu, R.id.menu_close );
+        setVisible( menu, R.id.menu_toggle_theme );
+        setVisible( menu, R.id.menu_copy_clipboard );
+        setVisible( menu, R.id.menu_setting );
+        setVisible( menu, R.id.menu_edit_article_title );
+        setVisible( menu, R.id.menu_image_white_background );
+        setVisible( menu, R.id.menu_disable_all_tap_actions );
+        setVisible( menu, R.id.menu_add_entry_shortcut );
+    }
+
+    private static void hideAllMenuItems(Menu menu) {
+        for (int i = 0; i < menu.size(); i++ )
+            if ( menu.getItem(i).hasSubMenu() )
+                hideAllMenuItems( menu.getItem(i).getSubMenu() );
+            else
+                setItemVisible(menu, menu.getItem(i).getItemId(), false );
     }
 
 //    private String getTitle() {
@@ -494,7 +523,6 @@ public abstract class EntryView {
         setupButtonLongClickAction( R.id.btn_force_portrait_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
         setupButtonLongClickAction( R.id.btn_force_landscape_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
         setupButtonLongClickAction( R.id.btn_reload, v -> mEntryFragment.mMenu.openReload());
-
     }
     protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
         mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );

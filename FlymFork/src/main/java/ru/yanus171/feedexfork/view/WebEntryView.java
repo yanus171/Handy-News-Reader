@@ -4,6 +4,7 @@ import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
@@ -26,7 +27,6 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetPackageNameForAction;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.MenuItem.ShowMenu;
-import static ru.yanus171.feedexfork.view.MenuItem.createDialogTitleView;
 import static ru.yanus171.feedexfork.view.WebViewExtended.BASE_URL;
 import static ru.yanus171.feedexfork.view.WebViewExtended.TEXT_HTML;
 
@@ -122,7 +122,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mRetrieveFullText = false;
     public long mLastSetHTMLTime = 0;
     private boolean mIsWithTables;
-    private boolean mIsReplaceImgWithALink;
     private boolean mWasAutoUnStar = false;
 
     private EntryTextSearch mSearch = null;
@@ -1122,9 +1121,38 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
+        super.onPrepareOptionsMenu( menu );
+
+        setVisible( menu, R.id.menu_search );
+        setVisible( menu, R.id.menu_reload_full_text_toolbar );
+        setVisible( menu, R.id.menu_search_next );
+        setVisible( menu, R.id.menu_search_previous );
+        setVisible( menu, R.id.menu_go_back );
+        setVisible( menu, R.id.menu_disable_all_tap_actions );
+        setVisible( menu, R.id.menu_load_all_images );
+        setVisible( menu, R.id.menu_load_all_images );
+        setVisible( menu, R.id.menu_labels );
+        setVisible( menu, R.id.menu_open_link );
+        setVisible( menu, R.id.menu_reload_full_text );
+        setVisible( menu, R.id.menu_reload_full_text_toolbar );
+        setVisible( menu, R.id.menu_reload_full_text_without_mobilizer );
+        setVisible( menu, R.id.menu_reload_with_tables_toggle );
+        setVisible( menu, R.id.menu_replace_img_with_a_link_toggle );
+        setVisible( menu, R.id.menu_reload_full_text_with_debug_toggle );
+        setVisible( menu, R.id.menu_reload_full_text_with_tags );
+        setVisible( menu, R.id.menu_reload_full_text_with_scripts );
+        setVisible( menu, R.id.menu_edit_article_url );
+        setVisible( menu, R.id.menu_share_all_text );
+        setVisible( menu, R.id.menu_cancel_refresh );
+        setVisible( menu, R.id.menu_font_bold );
+        setVisible( menu, R.id.menu_show_html );
+        setVisible( menu, R.id.menu_edit_feed );
+        setVisible( menu, R.id.menu_search_next );
+        setVisible( menu, R.id.menu_search_previous );
+        setVisible( menu, R.id.menu_share );
+
         setItemChecked( menu, R.id.menu_font_bold, PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ));
         setItemChecked( menu, R.id.menu_reload_with_tables_toggle, mIsWithTables );
-        setItemChecked( menu, R.id.menu_replace_img_with_a_link_toggle, mIsReplaceImgWithALink );
         setItemChecked( menu, R.id.menu_reload_full_text_with_debug_toggle, PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
         setItemChecked( menu, R.id.menu_replace_img_with_a_link_toggle, PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
     }

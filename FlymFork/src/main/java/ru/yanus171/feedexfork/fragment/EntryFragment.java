@@ -401,10 +401,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        mOrientation.onPrepareOptionsMenu( menu );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
         setItemVisible( menu, R.id.menu_actionbar_visible, PrefUtils.isTapActionEnabled() );
+        mOrientation.onPrepareOptionsMenu( menu );
     }
 
     @SuppressLint("NonConstantResourceId")
