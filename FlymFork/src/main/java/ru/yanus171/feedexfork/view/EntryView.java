@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.addArticleShortcut;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
@@ -352,41 +353,16 @@ public abstract class EntryView {
 
 
             case R.id.menu_add_entry_shortcut: {
-                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(getContext()) ) {
-                    //Adding shortcut for MainActivity on Home screen
-                    if (mCursor != null) {
-                        final String name = mCursor.getString(mTitlePos);
-                        final long entryID = mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
-                        final Uri uri = Uri.parse( mCursor.getString(mLinkPos) );
-                        final String iconUrl = mCursor.getString(mCursor.getColumnIndex( FeedData.EntryColumns.IMAGE_URL ));
-
-                        new WaitDialog(mEntryFragment.getActivity(), R.string.downloadImage, () -> {
-                            final IconCompat icon = LoadIcon(iconUrl);
-                            UiUtils.RunOnGuiThread(() -> {
-                                final Intent intent = new Intent(getContext(), EntryActivityNewTask.class)
-                                        .setAction(Intent.ACTION_VIEW)
-                                        .setData(uri)
-                                        .putExtra( NEW_TASK_EXTRA, true );
-                                ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), String.valueOf(entryID))
-                                        .setIcon(icon)
-                                        .setShortLabel(name)
-                                        .setIntent( intent )
-                                        .build();
-
-
-                                ShortcutManagerCompat.requestPinShortcut(getContext(), pinShortcutInfo, null);
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-                                    UiUtils.toast( R.string.new_entry_shortcut_added );
-                            });
-                        }).execute();
-                    }
-                } else
-                    UiUtils.toast( R.string.new_feed_shortcut_add_failed );
+                if (mCursor != null)
+                    addArticleShortcut( mEntryFragment.getActivity(),
+                                        mCursor.getString(mTitlePos),
+                                        mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID)),
+                                        Uri.parse( mCursor.getString(mLinkPos) ),
+                                        mCursor.getString(mCursor.getColumnIndex( FeedData.EntryColumns.IMAGE_URL )) );
                 break;
             }
 
         }
-
     }
 
     private void OpenSettings() {

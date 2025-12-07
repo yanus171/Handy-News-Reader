@@ -55,6 +55,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -69,6 +72,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -80,6 +84,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.ControlPanel;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
@@ -105,6 +110,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isTapActionEnabled;
+import static ru.yanus171.feedexfork.view.EntryView.LoadIcon;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
 
 
@@ -669,6 +675,32 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return view.hasVideo();
         return false;
     }
+
+    public static void addArticleShortcut( final Activity activity, final String name, final long entryID, final Uri uri, String iconUrl ) {
+        if ( ShortcutManagerCompat.isRequestPinShortcutSupported(activity) ) {
+            //Adding shortcut for MainActivity on Home screen
+            new WaitDialog(activity, R.string.downloadImage, () -> {
+                final IconCompat icon = LoadIcon(iconUrl);
+                UiUtils.RunOnGuiThread(() -> {
+                    final Intent intent = new Intent(activity, EntryActivityNewTask.class)
+                            .setAction(Intent.ACTION_VIEW)
+                            .setData(uri)
+                            .putExtra(NEW_TASK_EXTRA, true);
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(activity, String.valueOf(entryID))
+                            .setIcon(icon)
+                            .setShortLabel(name)
+                            .setIntent(intent)
+                            .build();
+
+
+                    ShortcutManagerCompat.requestPinShortcut(activity, pinShortcutInfo, null);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                        UiUtils.toast(R.string.new_entry_shortcut_added);
+                });
+            }).execute();
+        } else
+            UiUtils.toast( R.string.new_feed_shortcut_add_failed );
+    }
     private void setupEndEditingButton() {
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -872,4 +904,5 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.SetID(currentEntryID).start();
     }
+
 }
