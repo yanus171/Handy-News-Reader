@@ -349,7 +349,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMarkAsUnreadOnFinish = false;
         if ( mSetupChanged ) {
             mSetupChanged = false;
-            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, true, false);
+            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos);
         }
         mOrientation.onResume();
         if ( mTapZones != null )
