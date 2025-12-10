@@ -731,11 +731,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 CancelStarNotification( getCurrentEntryID() );
 
-                mLastPagerPos = i;
                 refreshUI(false);
 
                 if ( GetSelectedEntryView() != null )
                     GetSelectedEntryView().onPageSelected();
+
+                mLastPagerPos = i;
+
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                 Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
                 TextView textView = new TextView(getContext());
