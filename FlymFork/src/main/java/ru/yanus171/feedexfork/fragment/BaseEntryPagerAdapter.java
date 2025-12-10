@@ -96,7 +96,6 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
 //            sv.setFillViewport( true );
 //            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        view.mLoadTitleOnly = true;
         Entry entry = GetEntry( position );
         if ( entry != null ) {
             FetcherService.addActiveEntryID(entry.mID);
@@ -166,15 +165,5 @@ class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
         return 1;
     }
 
-
-    @NotNull
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        final View view = (View)super.instantiateItem(container, position);
-        final EntryView entryView = (EntryView)view.getTag();
-        entryView.mLoadTitleOnly = false;
-        //entryView.mActivity.mEntryFragment.refreshUI();
-        return view;
-    }
 }
 

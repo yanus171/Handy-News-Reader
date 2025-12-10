@@ -123,6 +123,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public long mLastSetHTMLTime = 0;
     private boolean mIsWithTables;
     private boolean mWasAutoUnStar = false;
+    boolean mLoadTitleOnly = false;
 
     private EntryTextSearch mSearch = null;
     HashSet<String> mNotLoadedUrlSet = new HashSet<>();
@@ -131,6 +132,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         mWebView = new WebViewExtended(getContext(), this);
         container.addView(mWebView);
         mView = mWebView;
+        mLoadTitleOnly = true;
         mWebView.setListener(this);
         mWebView.mScrollChangeListener = () -> {
             if ( mEntryFragment.mTapZones != null )
@@ -1214,6 +1216,16 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                             MainApplication.getContext().getString(R.string.tap_actions_were_enabled) :
                             MainApplication.getContext().getString(R.string.video_tag_found_in_article) + ". " + getContext().getString(R.string.tap_actions_were_disabled),
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    void EndStatus() {
+        synchronized (this) {
+            if ( !mContentWasLoaded && !mLoadTitleOnly )
+                return;
+            if (mStatus != 0)
+                Status().End(mStatus);
+            mStatus = 0;
         }
     }
 

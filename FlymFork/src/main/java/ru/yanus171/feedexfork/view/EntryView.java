@@ -66,7 +66,6 @@ public abstract class EntryView {
     //public EntryActivity mActivity = null;
     protected EntryFragment mEntryFragment = null;
     protected final int mPosition;
-    public boolean mLoadTitleOnly = false;
     public boolean mContentWasLoaded = false;
     public double mScrollPartY = -1;
     public Cursor mCursor = null;
@@ -194,15 +193,6 @@ public abstract class EntryView {
                 if (mStatus == 0)
                     mStatus = Status().Start(R.string.web_page_loading, true);
             }
-    }
-    public void EndStatus() {
-        synchronized (this) {
-            if ( !mContentWasLoaded && !mLoadTitleOnly )
-                return;
-            if (mStatus != 0)
-                Status().End(mStatus);
-            mStatus = 0;
-        }
     }
     public boolean IsStatusStartPageLoading() {
         synchronized (this) {
