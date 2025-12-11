@@ -13,7 +13,6 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -28,7 +27,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.BaseColumns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +35,6 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -50,7 +46,6 @@ import java.util.Stack;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -60,10 +55,8 @@ import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.utils.WaitDialog;
 
 public abstract class EntryView {
-    //public EntryActivity mActivity = null;
     protected double mScrollPartY = -1;
     public Cursor mCursor = null;
     public String mTitle = "";
@@ -153,7 +146,7 @@ public abstract class EntryView {
 
     }
 
-    public void refreshUI( boolean invalidateContent ) {
+    public void update(boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
         if ( mEntryFragment.mTapZones != null )
@@ -213,7 +206,6 @@ public abstract class EntryView {
     }
     @SuppressLint("Range")
     public void generateArticleContent( boolean forceUpdate ) {
-        //refreshUI();
         Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
     }
@@ -336,7 +328,7 @@ public abstract class EntryView {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 mEntryFragment.mTapZones.Update();
                 UiUtils.toast( R.string.tap_actions_were_disabled );
-                refreshUI(true);
+                update(true);
                 break;
             }
 
@@ -360,7 +352,7 @@ public abstract class EntryView {
 
     protected void toggleImageWhiteBackground() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
-        refreshUI(true);
+        update(true);
         generateArticleContent(true);
     }
 
@@ -460,20 +452,6 @@ public abstract class EntryView {
             else
                 setItemVisible(menu, menu.getItem(i).getItemId(), false );
     }
-
-//    private String getTitle() {
-//        if (GetExtrenalLinkFeedID().equals(mCursor.getString(mFeedIDPos))) {
-//            if (!mCursor.isNull(mTitlePos))
-//                return mCursor.getString(mTitlePos);
-//            else
-//                return "";
-//        }
-//        if ( !mCursor.isNull(mFeedNamePos) )
-//            return mCursor.getString(mFeedNamePos);
-//        if ( !mCursor.isNull(mFeedUrlPos) )
-//            return mCursor.getString(mFeedUrlPos);
-//        return "";
-//    }
 
     protected static float getPageChangeMultiplier() {
         return PrefUtils.isPageUpDown90Pct() ? 0.9F : 0.98F;

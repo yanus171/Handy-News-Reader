@@ -7,9 +7,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTextAndVisibility;
 
 import android.view.View;
-import android.widget.Toast;
 
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -104,7 +102,7 @@ public class EntryTapZones {
             if ( PrefUtils.isArticleTapEnabledTemp() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 Update();
-                mFragment.GetSelectedEntryView().refreshUI( true );
+                mFragment.GetSelectedEntryView().update( true );
                 UiUtils.toast( R.string.tap_actions_were_disabled );
             } else
                 Enable();
@@ -119,7 +117,7 @@ public class EntryTapZones {
     private void Enable() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         Update();
-        mFragment.GetSelectedEntryView().refreshUI( true );
+        mFragment.GetSelectedEntryView().update( true );
         UiUtils.toast( R.string.tap_actions_were_enabled );
     }
 }

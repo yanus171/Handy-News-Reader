@@ -29,23 +29,18 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -354,7 +349,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mOrientation.onResume();
         if ( mTapZones != null )
             mTapZones.onResune();
-        refreshUI(false);
+        update(false);
+        markPrevArticleAsRead();
     }
 
     @Override
@@ -636,20 +632,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return ((WebEntryView)entryView).mWebView;
     }
 
-    public void refreshUI( boolean invalidateContent ) {
+    public void update(boolean invalidateContent ) {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         EntryView view = GetSelectedEntryView();
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
             getEntryActivity().invalidateOptionsMenu();
-            view.refreshUI( invalidateContent );
-
+            view.update( invalidateContent );
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
-
             startMobilizationTask(view.mEntryId);
         }
-        markPrevArticleAsRead();
     }
     public void restartCurrentEntryLoader() {
         UiUtils.RunOnGuiThread(() -> {
@@ -731,7 +724,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 CancelStarNotification( getCurrentEntryID() );
 
-                refreshUI(false);
+                update(false);
+                markPrevArticleAsRead();
 
                 if ( GetSelectedEntryView() != null )
                     GetSelectedEntryView().onPageSelected();

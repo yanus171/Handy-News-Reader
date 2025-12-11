@@ -243,7 +243,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
 
     override fun LongClickOnBottom() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false);
-        refreshUI(true);
+        update(true);
         generateArticleContent(true);
     }
 
@@ -312,8 +312,8 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         return result
     }
 
-    override fun refreshUI(invalidateContent: Boolean){
-        super.refreshUI(invalidateContent)
+    override fun update(invalidateContent: Boolean){
+        super.update(invalidateContent)
         if ( !mIsLoaded )
             return
         generateArticleContent(false)
@@ -334,7 +334,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     @SuppressLint("Range")
     override fun loadingDataFinished() {
         super.loadingDataFinished()
-        mEntryFragment.refreshUI(false)
+        mEntryFragment.update(false)
         if ( mCursor != null && !mContentWasLoaded ) {
             mZoom = readFloat( ZOOM, mZoom )
             mXOffset = readFloat( X_OFFSET, mXOffset )
@@ -376,7 +376,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
         mEntryFragment.mTapZones.Update()
         UiUtils.toast(if (getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
-        refreshUI(true)
+        update(true)
     }
 
     override fun leftBottomBtnClick() {
