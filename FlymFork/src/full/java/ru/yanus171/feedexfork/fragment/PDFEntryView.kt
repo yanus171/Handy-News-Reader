@@ -29,8 +29,6 @@ class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long
     init {
         mView = mListView
         mContainer.addView(mListView)
-        mLoadTitleOnly = false
-
     }
 
     override fun generateArticleContent(forceUpdate: Boolean) {

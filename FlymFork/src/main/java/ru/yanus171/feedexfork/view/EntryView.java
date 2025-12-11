@@ -64,25 +64,24 @@ import ru.yanus171.feedexfork.utils.WaitDialog;
 
 public abstract class EntryView {
     //public EntryActivity mActivity = null;
-    protected EntryFragment mEntryFragment = null;
-    protected final int mPosition;
-    public boolean mContentWasLoaded = false;
-    public double mScrollPartY = -1;
+    protected double mScrollPartY = -1;
     public Cursor mCursor = null;
-    protected int mStatus = 0;
     public String mTitle = "";
     public static final String TAG = "EntryView";
     public boolean mFavorite;
     public int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos,
-            mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
-
-
-    private final Stack<Integer> mHistoryAnchorScrollY = new Stack<>();
+    mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
     public long mEntryId = -1;
     public String mEntryLink = "";
     public View mView = null;
-
     public static final long TAP_TIMEOUT = 1000;
+    public boolean mContentWasLoaded = false;
+
+    protected EntryFragment mEntryFragment = null;
+    protected final int mPosition;
+
+    private int mStatus = 0;
+    private final Stack<Integer> mHistoryAnchorScrollY = new Stack<>();
 
     protected EntryView(EntryFragment fragment, long entryId, int position) {
         mEntryFragment = fragment;
@@ -496,5 +495,13 @@ public abstract class EntryView {
     protected void setupButtonLongClickAction(int viewId, View.OnClickListener click ) {
         mEntryFragment.mControlPanel.setupButtonLongClickAction( viewId, click );
     }
+    protected void EndStatus() {
+        synchronized (this) {
+            if (mStatus != 0)
+                Status().End(mStatus);
+            mStatus = 0;
+        }
+    }
+
 }
 

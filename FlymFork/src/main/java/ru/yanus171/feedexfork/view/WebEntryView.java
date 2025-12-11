@@ -1219,13 +1219,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
     }
 
-    void EndStatus() {
+    @Override
+    protected void EndStatus() {
         synchronized (this) {
             if ( !mContentWasLoaded && !mLoadTitleOnly )
                 return;
-            if (mStatus != 0)
-                Status().End(mStatus);
-            mStatus = 0;
+            super.EndStatus();
         }
     }
 
