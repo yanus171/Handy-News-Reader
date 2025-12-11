@@ -98,25 +98,7 @@ public class EntryActivity extends BaseActivity implements Observer {
 
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
 
-        mIsNewTask = getIntent() != null && getIntent().getBooleanExtra( NEW_TASK_EXTRA, false );
-
-        final Intent intent = getIntent();
-        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
-            if (m.find()) {
-                final String url = text.substring(m.start(), m.end());
-                final String title = text.substring(0, m.start());
-                LoadAndOpenLink(url, title, TEXT);
-            }
-        } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
-            final String url = intent.getDataString();
-            final String title = intent.getDataString();
-            LoadAndOpenLink(url, title, TEXT);
-        }
-
-        mEntryFragment.setData(getIntent().getData());
+        setDataFrom(getIntent());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -129,8 +111,6 @@ public class EntryActivity extends BaseActivity implements Observer {
             }
         });
 
-
-        FetcherService.mCancelRefresh = false;
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {
@@ -149,6 +129,27 @@ public class EntryActivity extends BaseActivity implements Observer {
             setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
     }
 
+    private void setDataFrom(final Intent intent) {
+        mIsNewTask = intent != null && intent.getBooleanExtra( NEW_TASK_EXTRA, false );
+
+        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
+            if (m.find()) {
+                final String url = text.substring(m.start(), m.end());
+                final String title = text.substring(0, m.start());
+                LoadAndOpenLink(url, title, TEXT);
+            }
+        } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
+            final String url = intent.getDataString();
+            final String title = intent.getDataString();
+            LoadAndOpenLink(url, title, TEXT);
+        }
+
+        mEntryFragment.setData(getIntent().getData());
+        FetcherService.mCancelRefresh = false;
+    }
 
 
     @Override
@@ -309,7 +310,10 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mEntryFragment.onNewIntent();
+        final EntryView view = mEntryFragment.GetSelectedEntryView();
+        if (view != null )
+            view.StatusStartPageLoading();
+        setDataFrom(intent);
     }
 
     @Override
