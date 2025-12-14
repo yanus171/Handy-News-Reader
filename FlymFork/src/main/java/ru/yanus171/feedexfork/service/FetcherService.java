@@ -784,138 +784,7 @@ public class FetcherService extends IntentService {
 
     public enum AutoDownloadEntryImages {Yes, No}
 
-    @SuppressLint("Range")
-    public static boolean loadFB2LocalFile(final long entryId, String link ) throws IOException {
-        boolean result = false;
-        if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
-            return result;
-        Timer timer = new Timer( "loadFB2LocalFile " + link );
-        try (InputStream is = contentResolver().openInputStream(Uri.parse(link))) {
-            ClearContentStepToFile();
-            Status().ChangeProgress( "Jsoup.parse" );
-            Document doc = Jsoup.parse(is, null, "");
-            SaveContentStepToFile( doc, "Jsoup.parse" );
 
-            Status().ChangeProgress( "images" );
-            Elements list = doc.getElementsByTag("image");
-            list.addAll( doc.getElementsByTag("img") );
-            for (Element el : list ) {
-                final String id = el.attr( "l:href" ).replace( "#", "" );
-                if ( id.isEmpty() )
-                    continue;
-                Elements images = doc.getElementsByAttributeValue( "id", id );
-                if ( images.isEmpty() )
-                    continue;
-                el.insertChildren( -1, images.first() );
-                el.attr( "align", "middle" );
-            }
-            SaveContentStepToFile( doc, "binary_move" );
-
-            for (Element el : doc.getElementsByTag("title"))
-                el.tagName( "h1" );
-            SaveContentStepToFile( doc, "h1" );
-
-            Status().ChangeProgress( "binary" );
-
-            int imageIndex = 0;
-            for (Element el : doc.getElementsByTag("binary")) {
-                if (!el.hasAttr("content-type"))
-                    continue;
-                el.tagName("img");
-                imageIndex++;
-                final String imgFilePath = getDownloadedImageLocaLPath( link, imageIndex );
-                final String imageData = el.ownText().replace( "\n", "" ).replace( " ", "" );
-                if ( imageData.isEmpty() )
-                    continue;
-                Status().ChangeProgress( String.format( "image file %d", imageIndex ) ) ;
-                byte[] data = Base64.decode(imageData, Base64.DEFAULT );
-                try (OutputStream stream = new FileOutputStream(imgFilePath)) {
-                    stream.write(data);
-                }
-                el.attr("src", Constants.FILE_SCHEME + imgFilePath);
-                el.text("");
-            }
-            SaveContentStepToFile( doc, "binary_to_img" );
-
-
-            removeElementsWithTag(doc, "id");
-            removeElementsWithTag(doc, "genre");
-            removeElementsWithTag(doc, "lang" );
-            removeElementsWithTag(doc, "src-lang" );
-            removeElementsWithTag(doc, "translator" );
-            removeElementsWithTag(doc, "document-info" );
-            removeElementsWithTag(doc, "publish-info" );
-            removeElementsWithTag(doc, "custom-info" );
-            removeElementsWithTag(doc, "home-page" );
-            final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
-            removeElementsWithTag(doc, "first-name" );
-            removeElementsWithTag(doc, "last-name" );
-            removeElementsWithTag(doc, "author" );
-            removeElementsWithTag(doc, "book-title" );
-            removeElementsWithTag(doc, "stylesheet" );
-
-            Status().ChangeProgress( "doc.toString()" );
-            String content = doc.toString();
-            //content = content.replaceAll( "[^\\s]{50,}", "" );
-            content = content.replace( "<style>", "" );
-            content = content.replace( "</style>", "" );
-            content = content.replace( "<empty-line", "<br" );
-            content = content.replace( "emphasis>", "i>" );
-            //content = content.replace( "</i>, ", ",</i>" );
-            content = content.replace( "strong>", "b>" );
-            content = content.replace( "strikethrough>.", "del>" );
-            content = content.replace( "xlink:href", "href" );
-            content = content.replaceAll( "\\n\\s+<", "<" );
-            //content = content.replace( "\n\r<", "<" );
-            //content = content.replace( "\r\n<", "<" );
-
-            Status().ChangeProgress( "replace 0" );
-            content = content.replace( "&#x0;", "" );
-            SaveContentStepToFile( content, "after_remove_0" );
-
-            Status().ChangeProgress( "convertXMLSymbols" );
-            content = convertXMLSymbols(content);
-
-            content = AddFB2TableOfContent( content );
-
-            ContentValues values = new ContentValues();
-            values.put(EntryColumns.TITLE, title );
-            Status().ChangeProgress( "saveMobilizedHTML" );
-            FileUtils.INSTANCE.saveMobilizedHTML(link, content, values);
-            contentResolver().update(EntryColumns.CONTENT_URI(entryId), values, null, null);
-            Status().ChangeProgress("");
-            result = true;
-        }
-        timer.End();
-        return result;
-    }
-
-    private static void removeElementsWithTag(Document doc, String tag) {
-        for ( Element item: doc.getElementsByTag( tag ) )
-            item.remove();
-    }
-
-    private static String AddFB2TableOfContent(String content) {
-        final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = PATTERN.matcher(content);
-        StringBuilder tc = new StringBuilder();
-        int i = 1;
-        String TC_START = "TC_START";
-        while (matcher.find()) {
-            String match = matcher.group();
-            String newText = "<div id=\"tc" + i + "\" >" + match.replaceAll( "<?p>", "") + "</div>";
-            if ( i == 1 )
-                newText = TC_START + newText;
-            content = content.replaceFirst(match, newText);
-            String caption = matcher.group(2).replaceAll( "<.*?>", "");
-            tc.append("<p class=\"toc\"><a href=\"#tc").append(i).append("\">").append(caption).append("</a></p>");
-            i++;
-        }
-        if ( tc.length() > 0 )
-            tc.insert( 0, String.format("<h2>%s</h2>", MainApplication.getContext().getString( R.string.tableOfContent )) );
-        content = content.replaceFirst( TC_START, "<div class=\"toc\">" + tc + "</div>" );
-        return content;
-    }
     static boolean isOptionsAttrOn(Cursor entryCursor, String attrName) {
         boolean result = false;
         final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
@@ -955,8 +824,8 @@ public class FetcherService extends IntentService {
                     try {
                         feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
 
-                        if (IsLocalFile(Uri.parse(link)))
-                            return loadFB2LocalFile(entryId, link);
+                        if (FB2.TypeIs( link ))
+                            return new FB2().loadLocalFile( entryId, link );
                         String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                         String contentIndicator = null;
                         {

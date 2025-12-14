@@ -214,6 +214,7 @@ public class HtmlUtils {
 
     @NonNull
     public static String convertXMLSymbols(String content) {
+        Status().ChangeProgress( "convertXMLSymbols" );
         content = content.replace("&lt;", "<");
         content = content.replace("&gt;", ">");
         content = content.replace("&amp;", "&");
