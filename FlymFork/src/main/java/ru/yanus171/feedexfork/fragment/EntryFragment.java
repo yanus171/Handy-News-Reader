@@ -68,6 +68,7 @@ import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
+import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -170,12 +171,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return uri == null ||
             uri.toString().startsWith( HTTP_SCHEME ) ||
             uri.toString().startsWith( HTTPS_SCHEME ) ||
-            IsLocalFile( uri );
-    }
-    public static boolean IsLocalFile(Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) &&
-            ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
-            uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
+            LocalFile.Is( uri );
     }
 
     private BaseActivity getBaseActivity() {

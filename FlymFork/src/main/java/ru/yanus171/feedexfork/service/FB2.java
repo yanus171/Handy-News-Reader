@@ -1,6 +1,5 @@
 package ru.yanus171.feedexfork.service;
 
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
@@ -30,17 +29,30 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 
-class FB2 {
-    public static boolean TypeIs( String link ) {
-        return IsLocalFile(Uri.parse(link)) && FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2");
+public class FB2 {
+    public static boolean Is(String uri ) {
+        return Is( Uri.parse(uri) );
+    }
+    public static boolean Is(Uri uri ) {
+        final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
+        return fileName.contains(".fb2");
+    }
+    static public Uri processOnFirstLoad(Uri uri ) {
+        if ( LocalFile.IsZIP( uri) ) {
+            Status().ChangeProgress( "extracting zip" );
+            uri = LocalFile.extractFileFromZIP( uri, "" );
+            Status().ChangeProgress( "" );
+        }
+        return uri;
     }
     @SuppressLint("Range")
     public boolean loadLocalFile(final long entryId, String link ) throws IOException {
-        if (!TypeIs(link))
+        if (!Is(link))
             return false;
         Timer timer = new Timer( "loadFB2LocalFile " + link );
         ClearContentStepToFile();

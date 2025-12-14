@@ -21,7 +21,6 @@ package ru.yanus171.feedexfork.utils;
 
 import static android.provider.BaseColumns._ID;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
@@ -53,6 +52,7 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -240,7 +240,7 @@ public class HtmlUtils {
                                           final ArrayList<Uri> externalImageList,
                                           final int maxImageDownloadCount,
                                           HashSet<String> notLoadedUrlSet ) {
-        if (IsLocalFile(Uri.parse(entryLink)))
+        if (LocalFile.Is(Uri.parse(entryLink)))
             return content;
         final int status = Status().Start("Reading images", true); try {
 
