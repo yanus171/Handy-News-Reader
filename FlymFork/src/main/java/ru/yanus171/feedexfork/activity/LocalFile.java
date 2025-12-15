@@ -2,7 +2,9 @@ package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
+import static ru.yanus171.feedexfork.service.FetcherService.Status;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Build;
 
@@ -19,15 +21,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
+import ru.yanus171.feedexfork.service.EPUB;
 import ru.yanus171.feedexfork.service.FB2;
 import ru.yanus171.feedexfork.utils.FileUtils;
 
 public class LocalFile {
     @NonNull
-    static public Uri processOnFirstLoad(Uri uri) {
-        if (FB2.Is( uri ) )
-            uri = FB2.processOnFirstLoad( uri );
+    static public Uri processOnFirstLoad(Uri uri, ContentValues values) {
         final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
         final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
         if ( !fileInCache.exists() || fileInCache.length() == 0 )
@@ -57,29 +59,33 @@ public class LocalFile {
         }
     }
     private static Uri extractFileFromZIP(Uri sourceUri, String destFolder, String targetFileName, Charset charset)  {
-        InputStream is;
-        ZipInputStream inputStream;
+        Status().ChangeProgress( "extracting zip" );
         try {
             String filename;
-            is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
+            ZipEntry entry;
+            InputStream is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
+            ZipInputStream inputStream;
             if (Build.VERSION.SDK_INT >= 24 && charset != null)
                 inputStream = new ZipInputStream(new BufferedInputStream(is), charset);
             else
                 inputStream = new ZipInputStream(new BufferedInputStream(is));
-            ZipEntry entry;
-
-            while ((entry = inputStream.getNextEntry()) != null)
-            {
-                filename = entry.getName();
-                if (entry.isDirectory() || (!targetFileName.isEmpty() && filename != targetFileName) )
-                    continue;
-                return createFileFromZIP(destFolder, filename, inputStream);
+            try {
+                while ((entry = inputStream.getNextEntry()) != null) {
+                    filename = entry.getName();
+                    if (entry.isDirectory() || (!targetFileName.isEmpty() && !filename.contains(targetFileName)))
+                        continue;
+                    return createFileFromZIP(destFolder, targetFileName.isEmpty() ? filename : targetFileName, inputStream);
+                }
+            } finally {
+                inputStream.close();
             }
-            inputStream.close();
+            throw new FileNotFoundException( "File not found is zip archive " + targetFileName );
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Status().SetError( e );
         } catch (IOException e) {
-            e.printStackTrace();
+            Status().SetError( e );
+        } finally {
+            Status().ChangeProgress( "" );
         }
         return Uri.EMPTY;
     }

@@ -162,8 +162,10 @@ public class EntryActivity extends BaseActivity implements Observer {
             url = url.replace("#" + anchor, "");
             mEntryFragment.mAnchor = anchor;
         }
+        ContentValues values = new ContentValues();
+
         if (LocalFile.Is(Uri.parse(url)))
-            url = LocalFile.processOnFirstLoad(Uri.parse(url)).toString();
+            url = LocalFile.processOnFirstLoad( Uri.parse(url), values ).toString();
 
         String finalUrl = url;
         Uri entryUri = GetEntryUri(finalUrl);
@@ -171,8 +173,8 @@ public class EntryActivity extends BaseActivity implements Observer {
         final String feedID = GetExtrenalLinkFeedID();
         if (entryUri == null) {
             Timer timer = new Timer("LoadAndOpenLink insert");
-            ContentValues values = new ContentValues();
-            values.put(EntryColumns.TITLE, title);
+            if ( !values.containsKey(EntryColumns.TITLE) )
+                values.put(EntryColumns.TITLE, title);
             values.put(EntryColumns.SCROLL_POS, 0);
             values.put(EntryColumns.DATE, (new Date()).getTime());
             values.put(EntryColumns.ABSTRACT, text);

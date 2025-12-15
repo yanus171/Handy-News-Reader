@@ -762,5 +762,6 @@
     <string name="zoom_is_disabled">Zoom &amp; shift are disabled</string>
     <string name="page_number_from_count">%d from %d</string>
     <string name="page_jump_PDF_confirm">Jump to page %d?</string>
+    <string name="unknownLocalBookType">Unknown book type</string>
 
 </resources>

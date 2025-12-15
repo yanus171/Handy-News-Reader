@@ -813,7 +813,9 @@ public class FetcherService extends IntentService {
                         feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
 
                         if (FB2.Is(link))
-                            return new FB2().loadLocalFile( entryId, link );
+                            return FB2.loadLocalFile( entryId, link );
+                        else if (EPUB.Is(link))
+                            return EPUB.loadLocalFile( entryId, link );
                         String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                         String contentIndicator = null;
                         {

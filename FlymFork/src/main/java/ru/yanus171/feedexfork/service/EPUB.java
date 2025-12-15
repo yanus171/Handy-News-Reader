@@ -3,7 +3,6 @@ package ru.yanus171.feedexfork.service;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.getDownloadedImageLocaLPath;
 
 import android.annotation.SuppressLint;
@@ -34,36 +33,45 @@ import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 
-public class FB2 {
+public class EPUB {
     public static boolean Is(String uri ) {
         return Is( Uri.parse(uri) );
     }
     public static boolean Is(Uri uri ) {
         final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
-        return fileName.contains(".fb2");
+        return fileName.contains(".epub");
+    }
+    static private String getTitle(Document doc) {
+        return getElementText( doc, "docTitle" ) + " " + getElementText( doc, "docAuthor" );
+    }
+    static private String getElementText(Document doc, String tagName) {
+        Elements els = doc.getElementsByTag(tagName);
+        if ( !els.isEmpty() )
+            return els.first().text();
+        return "";
+
     }
     @SuppressLint("Range")
-    public static boolean loadLocalFile(final long entryId, String link ) throws IOException {
+    public static boolean loadLocalFile(final long entryId, String link) throws IOException {
         if (!Is(link))
             return false;
-        if ( LocalFile.IsZIP( Uri.parse(link)) )
-            link = LocalFile.extractFileFromZIP( Uri.parse(link), "" ).toString();
-        Timer timer = new Timer( "loadFB2LocalFile " + link );
+        Timer timer = new Timer( "loadEPUBLocalFile " + link );
         ClearContentStepToFile();
+        final Uri uri = LocalFile.extractFileFromZIP( Uri.parse(link), "Book.html" );
         Document doc;
-        try (InputStream is = contentResolver().openInputStream(Uri.parse(link))) {
+        try (InputStream is = contentResolver().openInputStream(uri)) {
             doc = loadDoc(is);
         }
-        convertImages(doc);
-        convertTitle(doc);
-        createImageFiles(link, doc);
-        final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
-        removeElements(doc);
+        //convertImages(doc);
+        //convertTitle(doc);
+        //createImageFiles(link, doc);
+        final String title = doc.getElementsByTag( "title" ).first().text();
+        //removeElements(doc);
         String content = getContent(doc);
-        content = removeTags(content);
-        content = removeWrongChars(content);
-        content = convertXMLSymbols(content);
-        content = AddFB2TableOfContent( content );
+//        content = removeTags(content);
+//        content = removeWrongChars(content);
+//        content = convertXMLSymbols(content);
+//        content = AddFB2TableOfContent( content );
         saveToDB(entryId, link, title, content);
         Status().ChangeProgress("");
         timer.End();
@@ -164,7 +172,7 @@ public class FB2 {
         return content;
     }
 
-    private static void removeElements(Document doc) {
+    private void removeElements(Document doc) {
         removeElementsWithTag(doc, "id");
         removeElementsWithTag(doc, "genre");
         removeElementsWithTag(doc, "lang" );
@@ -185,12 +193,12 @@ public class FB2 {
         return MainApplication.getContext().getContentResolver();
     }
 
-    private static void removeElementsWithTag(Document doc, String tag) {
+    private void removeElementsWithTag(Document doc, String tag) {
         for ( Element item: doc.getElementsByTag( tag ) )
             item.remove();
     }
 
-    private static String AddFB2TableOfContent(String content) {
+    private String AddFB2TableOfContent(String content) {
         final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
         Matcher matcher = PATTERN.matcher(content);
         StringBuilder tc = new StringBuilder();

@@ -186,6 +186,33 @@
                 <data android:scheme="https" />
             </intent-filter>
 
+
+            <intent-filter
+                android:icon="@drawable/cup_new_load_now"
+                android:label="@string/loadLink">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="application/epub+zip" />
+            </intent-filter>
+
+            <intent-filter
+                android:icon="@drawable/cup_new_load_now"
+                android:label="@string/loadLink">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="application/epub" />
+            </intent-filter>
+
             <intent-filter
                 android:icon="@drawable/cup_new_load_now"
                 android:label="@string/loadLink">
