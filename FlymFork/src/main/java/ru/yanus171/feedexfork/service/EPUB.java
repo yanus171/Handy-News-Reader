@@ -18,6 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,11 +58,8 @@ public class EPUB {
             return false;
         Timer timer = new Timer( "loadEPUBLocalFile " + link );
         ClearContentStepToFile();
-        final Uri uri = LocalFile.extractFileFromZIP( Uri.parse(link), "Book.html" );
-        Document doc;
-        try (InputStream is = contentResolver().openInputStream(uri)) {
-            doc = loadDoc(is);
-        }
+        final File file = LocalFile.extractFileFromZIP( Uri.parse(link), "Book.html" );
+        Document doc = loadDoc(file);
         //convertImages(doc);
         //convertTitle(doc);
         //createImageFiles(link, doc);
@@ -86,9 +84,9 @@ public class EPUB {
     }
 
     @NonNull
-    private static Document loadDoc(InputStream is) throws IOException {
+    private static Document loadDoc(File file) throws IOException {
         Status().ChangeProgress( "Jsoup.parse" );
-        Document doc = Jsoup.parse(is, null, "");
+        Document doc = Jsoup.parse(file, null, "");
         SaveContentStepToFile( doc, "Jsoup.parse" );
         return doc;
     }

@@ -49,7 +49,7 @@ public class LocalFile {
         final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
         return fileName.endsWith(".zip");
     }
-    public static Uri extractFileFromZIP(Uri sourceUri, String targetFileName) {
+    public static File extractFileFromZIP(Uri sourceUri, String targetFileName) {
         final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
         try {
             return extractFileFromZIP( sourceUri, cacheDir, targetFileName, null );
@@ -58,7 +58,7 @@ public class LocalFile {
             return extractFileFromZIP( sourceUri, cacheDir, targetFileName, Charset.forName("CP1251") );
         }
     }
-    private static Uri extractFileFromZIP(Uri sourceUri, String destFolder, String targetFileName, Charset charset)  {
+    private static File extractFileFromZIP(Uri sourceUri, String destFolder, String targetFileName, Charset charset)  {
         Status().ChangeProgress( "extracting zip" );
         try {
             String filename;
@@ -87,11 +87,11 @@ public class LocalFile {
         } finally {
             Status().ChangeProgress( "" );
         }
-        return Uri.EMPTY;
+        return null;
     }
 
     @NonNull
-    private static Uri createFileFromZIP(String destFolder, String filename, ZipInputStream inputStream) throws IOException {
+    private static File createFileFromZIP(String destFolder, String filename, ZipInputStream inputStream) throws IOException {
         byte[] buffer = new byte[1024];
         int count;
         final File destFile = new File(destFolder, filename);
@@ -100,7 +100,7 @@ public class LocalFile {
             fout.write(buffer, 0, count);
         fout.close();
         inputStream.closeEntry();
-        return FileUtils.INSTANCE.getUriForFile(destFile);
+        return destFile;
     }
 
 }

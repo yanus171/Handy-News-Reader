@@ -35,28 +35,29 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.Timer;
 
 public class FB2 {
-    public static boolean Is(String uri ) {
-        return Is( Uri.parse(uri) );
+    public static boolean IsFB2(String uri ) {
+        return IsFB2( Uri.parse(uri) );
     }
-    public static boolean Is(Uri uri ) {
+    public static boolean IsFB2(Uri uri ) {
         final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
         return fileName.contains(".fb2");
     }
     @SuppressLint("Range")
-    public static boolean loadLocalFile(final long entryId, String link ) throws IOException {
-        if (!Is(link))
+    public static boolean loadLocalFile(final long entryId, String fileLink ) throws IOException {
+        if (!IsFB2(fileLink))
             return false;
-        if ( LocalFile.IsZIP( Uri.parse(link)) )
-            link = LocalFile.extractFileFromZIP( Uri.parse(link), "" ).toString();
-        Timer timer = new Timer( "loadFB2LocalFile " + link );
+        Uri fileUri = Uri.parse(fileLink);
+        if ( LocalFile.IsZIP( fileUri ) )
+            fileUri = FileUtils.INSTANCE.getUriForFile( LocalFile.extractFileFromZIP( Uri.parse(fileLink), "" ) );
+        Timer timer = new Timer( "loadFB2LocalFile " + fileLink );
         ClearContentStepToFile();
         Document doc;
-        try (InputStream is = contentResolver().openInputStream(Uri.parse(link))) {
+        try (InputStream is = contentResolver().openInputStream(fileUri)) {
             doc = loadDoc(is);
         }
         convertImages(doc);
         convertTitle(doc);
-        createImageFiles(link, doc);
+        createImageFiles(fileLink, doc);
         final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
         removeElements(doc);
         String content = getContent(doc);
@@ -64,7 +65,7 @@ public class FB2 {
         content = removeWrongChars(content);
         content = convertXMLSymbols(content);
         content = AddFB2TableOfContent( content );
-        saveToDB(entryId, link, title, content);
+        saveToDB(entryId, fileLink, title, content);
         Status().ChangeProgress("");
         timer.End();
         return true;
