@@ -43,7 +43,9 @@ public class EPUB {
         return fileName.contains(".epub");
     }
     static private String getTitle(Document doc) {
-        return getElementText( doc, "docTitle" ) + " " + getElementText( doc, "docAuthor" );
+        return getElementText( doc, "dc:title" ) + " " +
+                getElementText( doc, "dc:title" ) + " " +
+                getElementText( doc, "dc:creator" );
     }
     static private String getElementText(Document doc, String tagName) {
         Elements els = doc.getElementsByTag(tagName);
@@ -58,22 +60,39 @@ public class EPUB {
             return false;
         Timer timer = new Timer( "loadEPUBLocalFile " + link );
         ClearContentStepToFile();
-        final File file = LocalFile.extractFileFromZIP( Uri.parse(link), "Book.html" );
-        Document doc = loadDoc(file);
+        Zip zip = new Zip( Uri.parse( link ) );
+        final String rootFileName = getAttributeValue( zip.GetDoc( "META-INF/container.xml" ), "rootfile", "full-path");
+        Document doc = zip.GetDoc( rootFileName );
+        StringBuilder content = new StringBuilder();
+        final String title = getTitle( doc );
+        for( Element item: doc.getElementsByTag( "item" ) ) {
+            Status().ChangeProgress( "Reading " + item.attr( "href" ) );
+            content.append( zip.GetDoc( item.attr( "href" ) ).getElementsByTag("body").first() );
+        }
+        Status().ChangeProgress("");
         //convertImages(doc);
         //convertTitle(doc);
         //createImageFiles(link, doc);
-        final String title = doc.getElementsByTag( "title" ).first().text();
         //removeElements(doc);
-        String content = getContent(doc);
+        //String content = getContent(doc);
 //        content = removeTags(content);
 //        content = removeWrongChars(content);
 //        content = convertXMLSymbols(content);
 //        content = AddFB2TableOfContent( content );
-        saveToDB(entryId, link, title, content);
+        saveToDB(entryId, link, title, content.toString());
         Status().ChangeProgress("");
         timer.End();
         return true;
+    }
+
+    private static String getAttributeValue(Document doc, String tagName, String attributeName) {
+        final Elements els = doc.getElementsByTag(tagName);
+        if ( els.isEmpty() )
+            throw new IllegalStateException( String.format( "Tag %s not found in doc", tagName ) );
+        final String result = els.first().attr( attributeName );
+        if ( result.isEmpty() )
+            throw new IllegalStateException( String.format( "Attribute %s not found in tag %s", attributeName, tagName ) );
+        return result;
     }
 
     @NonNull
@@ -83,13 +102,7 @@ public class EPUB {
         return content;
     }
 
-    @NonNull
-    private static Document loadDoc(File file) throws IOException {
-        Status().ChangeProgress( "Jsoup.parse" );
-        Document doc = Jsoup.parse(file, null, "");
-        SaveContentStepToFile( doc, "Jsoup.parse" );
-        return doc;
-    }
+
 
     private static void convertTitle(Document doc) {
         for (Element el : doc.getElementsByTag("title"))

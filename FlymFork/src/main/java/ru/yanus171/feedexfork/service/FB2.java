@@ -48,7 +48,7 @@ public class FB2 {
             return false;
         Uri fileUri = Uri.parse(fileLink);
         if ( LocalFile.IsZIP( fileUri ) )
-            fileUri = FileUtils.INSTANCE.getUriForFile( LocalFile.extractFileFromZIP( Uri.parse(fileLink), "" ) );
+            fileUri = FileUtils.INSTANCE.getUriForFile( Zip.extractFileFromZIP( Uri.parse(fileLink), "" ) );
         Timer timer = new Timer( "loadFB2LocalFile " + fileLink );
         ClearContentStepToFile();
         Document doc;

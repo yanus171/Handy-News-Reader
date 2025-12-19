@@ -949,7 +949,7 @@ public class FetcherService extends IntentService {
                             if (cursor.moveToFirst() && cursor.isNull(0))
                                 title_ = cursor.getString(0);
                             cursor.close();
-                            Status().SetError(title_ + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                            Status().SetError(title_ + ": ", "", String.valueOf(entryId), e);
                         }
                     }
                 } finally {

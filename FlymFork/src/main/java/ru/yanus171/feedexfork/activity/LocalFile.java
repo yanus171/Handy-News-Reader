@@ -3,28 +3,21 @@ package ru.yanus171.feedexfork.activity;
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 
 import android.content.ContentValues;
 import android.net.Uri;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 
-import java.io.BufferedInputStream;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import ru.yanus171.feedexfork.MainApplication;
-import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
-import ru.yanus171.feedexfork.service.EPUB;
-import ru.yanus171.feedexfork.service.FB2;
 import ru.yanus171.feedexfork.utils.FileUtils;
 
 public class LocalFile {
@@ -49,58 +42,13 @@ public class LocalFile {
         final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
         return fileName.endsWith(".zip");
     }
-    public static File extractFileFromZIP(Uri sourceUri, String targetFileName) {
-        final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
-        try {
-            return extractFileFromZIP( sourceUri, cacheDir, targetFileName, null );
-        } catch ( IllegalArgumentException e ) {
-            e.printStackTrace();
-            return extractFileFromZIP( sourceUri, cacheDir, targetFileName, Charset.forName("CP1251") );
-        }
-    }
-    private static File extractFileFromZIP(Uri sourceUri, String destFolder, String targetFileName, Charset charset)  {
-        Status().ChangeProgress( "extracting zip" );
-        try {
-            String filename;
-            ZipEntry entry;
-            InputStream is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
-            ZipInputStream inputStream;
-            if (Build.VERSION.SDK_INT >= 24 && charset != null)
-                inputStream = new ZipInputStream(new BufferedInputStream(is), charset);
-            else
-                inputStream = new ZipInputStream(new BufferedInputStream(is));
-            try {
-                while ((entry = inputStream.getNextEntry()) != null) {
-                    filename = entry.getName();
-                    if (entry.isDirectory() || (!targetFileName.isEmpty() && !filename.contains(targetFileName)))
-                        continue;
-                    return createFileFromZIP(destFolder, targetFileName.isEmpty() ? filename : targetFileName, inputStream);
-                }
-            } finally {
-                inputStream.close();
-            }
-            throw new FileNotFoundException( "File not found is zip archive " + targetFileName );
-        } catch (FileNotFoundException e) {
-            Status().SetError( e );
-        } catch (IOException e) {
-            Status().SetError( e );
-        } finally {
-            Status().ChangeProgress( "" );
-        }
-        return null;
-    }
 
     @NonNull
-    private static File createFileFromZIP(String destFolder, String filename, ZipInputStream inputStream) throws IOException {
-        byte[] buffer = new byte[1024];
-        int count;
-        final File destFile = new File(destFolder, filename);
-        FileOutputStream fout = new FileOutputStream(destFile );
-        while ((count = inputStream.read(buffer)) != -1)
-            fout.write(buffer, 0, count);
-        fout.close();
-        inputStream.closeEntry();
-        return destFile;
+    public static Document loadDoc(File file) throws IOException {
+        Status().ChangeProgress( "Jsoup.parse" );
+        Document doc = Jsoup.parse(file, null, "");
+        SaveContentStepToFile( doc, "Jsoup.parse" );
+        return doc;
     }
 
 }
