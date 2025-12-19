@@ -13,15 +13,12 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +26,6 @@ import java.util.regex.Pattern;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -60,7 +56,7 @@ public class EPUB {
             return false;
         Timer timer = new Timer( "loadEPUBLocalFile " + link );
         ClearContentStepToFile();
-        Zip zip = new Zip( Uri.parse( link ) );
+        ZIP zip = new ZIP( Uri.parse( link ) );
         final String rootFileName = getAttributeValue( zip.GetDoc( "META-INF/container.xml" ), "rootfile", "full-path");
         Document doc = zip.GetDoc( rootFileName );
         StringBuilder content = new StringBuilder();
