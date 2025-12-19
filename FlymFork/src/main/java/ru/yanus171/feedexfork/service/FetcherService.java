@@ -805,12 +805,12 @@ public class FetcherService extends IntentService {
             if (entryCursor.moveToFirst()) {
                 final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
-                int status = Status().Start( title, false ); try {
+                feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                int status = Status().Start( feedId.equals( GetExtrenalLinkFeedID() ) ? "" : title, false ); try {
 
                     int linkPos = entryCursor.getColumnIndex(LINK);
                     String link = entryCursor.getString(linkPos);
                     try {
-                        feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
 
                         if (FB2.IsFB2(link))
                             return FB2.loadLocalFile( entryId, link );

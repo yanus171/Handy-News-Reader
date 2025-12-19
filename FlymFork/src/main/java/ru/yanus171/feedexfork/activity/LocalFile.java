@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;

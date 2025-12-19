@@ -12,11 +12,13 @@ import android.net.Uri;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,12 +60,15 @@ public class EPUB {
         ClearContentStepToFile();
         ZIP zip = new ZIP( Uri.parse( link ) );
         final String rootFileName = getAttributeValue( zip.GetDoc( "META-INF/container.xml" ), "rootfile", "full-path");
+        final String parentFolder = getParentPath(rootFileName);
         Document doc = zip.GetDoc( rootFileName );
         StringBuilder content = new StringBuilder();
         final String title = getTitle( doc );
         for( Element item: doc.getElementsByTag( "item" ) ) {
             Status().ChangeProgress( "Reading " + item.attr( "href" ) );
-            content.append( zip.GetDoc( item.attr( "href" ) ).getElementsByTag("body").first() );
+            final String type = item.attr("media-type");
+            if (type.contains("xhtml"))
+                content.append( zip.GetDoc( parentFolder + item.attr( "href" ) ).getElementsByTag("body").first() );
         }
         Status().ChangeProgress("");
         //convertImages(doc);
@@ -79,6 +84,15 @@ public class EPUB {
         Status().ChangeProgress("");
         timer.End();
         return true;
+    }
+
+    private static String getParentPath(String rootFileName) {
+        String result = new File(rootFileName).getParent();
+        if ( result == null )
+            result = "";
+        else
+            result += "/";
+        return result;
     }
 
     private static String getAttributeValue(Document doc, String tagName, String attributeName) {
