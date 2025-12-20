@@ -734,4 +734,5 @@
     <string name="scroll_to_top_disabled_for_pdf">Zum Anfang blättern für PDFs deaktiviert</string>
     <string name="zoom_is_disabled">Vergrößerungsmodus deaktiviert</string>
     <string name="page_number_from_count">%d von %d</string>
+    <string name="page_jump_PDF_confirm">Zur Seite %d springen?</string>
 </resources>
