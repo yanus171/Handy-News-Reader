@@ -815,7 +815,7 @@ public class FetcherService extends IntentService {
                         if (FB2.IsFB2(link))
                             return FB2.loadLocalFile( entryId, link );
                         else if (EPUB.Is(link))
-                            return EPUB.loadLocalFile( entryId, link );
+                            return EPUB.loadLocalFile( entryId, link);
                         String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                         String contentIndicator = null;
                         {

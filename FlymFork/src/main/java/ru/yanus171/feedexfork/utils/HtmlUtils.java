@@ -55,6 +55,7 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.FB2;
 import ru.yanus171.feedexfork.service.FetcherService;
 
 public class HtmlUtils {
@@ -240,7 +241,7 @@ public class HtmlUtils {
                                           final ArrayList<Uri> externalImageList,
                                           final int maxImageDownloadCount,
                                           HashSet<String> notLoadedUrlSet ) {
-        if (LocalFile.Is(Uri.parse(entryLink)))
+        if ( LocalFile.Is(entryLink) && FB2.IsFB2( entryLink ) )
             return content;
         final int status = Status().Start("Reading images", true); try {
 

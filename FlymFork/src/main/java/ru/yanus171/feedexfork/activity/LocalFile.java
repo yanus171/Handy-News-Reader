@@ -31,6 +31,9 @@ public class LocalFile {
         uri = FileUtils.INSTANCE.getUriForFile( fileInCache );
         return uri;
     }
+    public static boolean Is(String uri ) {
+        return Is( Uri.parse( uri ) );
+    }
     public static boolean Is(Uri uri ) {
         return uri.toString().startsWith( CONTENT_SCHEME ) &&
                 ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
