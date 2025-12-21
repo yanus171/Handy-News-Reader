@@ -733,4 +733,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="article_list_restore_type_summary">На какую позицию прокручивать список статей при первом открытии</string>
     <string name="scroll_to_bottom_disabled_for_pdf">Прокрутка вниз недоступна для PDF</string>
     <string name="scroll_to_top_disabled_for_pdf">Прокрутка вверх недоступна для PDF</string>
+    <string name="page_number_from_count">%d из %d</string>
+    <string name="page_jump_PDF_confirm">Перейти к странице %d?</string>
 </resources>

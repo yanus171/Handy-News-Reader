@@ -256,6 +256,8 @@
     <string name="entry_text_align_justify_description">Інакше по лівому краю</string>
     <string name="linkColor">Колір посилань</string>
     <string name="linkColor_descr">Колір Посилання</string>
+    <string name="loadedLinkColor">Колір посилання яке завантажено</string>
+    <string name="loadedLinkColor_descr">Текст і тло</string>
     <string name="settings_color_link_sample_short">Посилання</string>
     <string name="settings_color_link_sample_long">Колір посилань</string>
     <string name="underline_links">Підкреслювати посилання</string>
@@ -733,4 +735,6 @@
     <string name="zoom_shift_enabled">Масштабування &amp; зміщення</string>
     <string name="scroll_to_bottom_disabled_for_pdf">Прокручування до низу вимкнуто для PDF</string>
     <string name="scroll_to_top_disabled_for_pdf">Прокручування вгору вимкнуто для PDF</string>
+    <string name="zoom_is_disabled">Масштабування &amp; зміщення вимкнено</string>
+    <string name="page_number_from_count">%d з %d</string>
 </resources>
