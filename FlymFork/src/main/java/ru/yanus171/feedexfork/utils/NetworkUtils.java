@@ -104,7 +104,6 @@ public class NetworkUtils {
 
     private static String getTempDownloadedImagePath(String entryLink, String imgUrl) {
         return getDownloadedImagePath(entryLink, TEMP_PREFIX, imgUrl);
-        //return FileUtils.GetImagesFolder().getAbsolutePath() + "/" + TEMP_PREFIX + entryId + ID_SEPARATOR + StringUtils.getMd5(imgUrl);
     }
 
     public static boolean downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
@@ -113,7 +112,6 @@ public class NetworkUtils {
             return result;
         String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
         String finalImgPath = getDownloadedImagePath(entryUrl, imgUrl);
-
 
         if (!new File(tempImgPath).exists() && !new File(finalImgPath).exists()) {
             boolean abort = false;

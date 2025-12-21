@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/menu_full_screen"
+        android:checkable="true"
+        android:icon="@drawable/ic_fullscreen"
+        android:title="@string/menu_full_screen"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_actionbar_visible"
+        android:checkable="true"
+        android:icon="@drawable/ic_web_asset"
+        android:title="@string/menu_actionbar_visible"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_font_bold"
+        android:checkable="true"
+        android:icon="@drawable/ic_format_bold"
+        android:title="@string/menu_font_bold" />
+    <item
+        android:id="@+id/menu_image_white_background"
+        android:checkable="true"
+        android:icon="@drawable/ic_photo_size_select_actual"
+        android:title="@string/image_white_background" />
+    <item
+        android:id="@+id/menu_show_progress_info"
+        android:checkable="true"
+        android:icon="@drawable/ic_info_outline"
+        android:title="@string/show_progress_info" />
+    <item
+        android:id="@+id/menu_toggle_theme"
+        android:title="@string/menu_toggle_theme"
+        android:icon="@drawable/ic_style"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_force_orientation_by_sensor"
+        android:checkable="true"
+        android:icon="@drawable/orientation_by_sensor"
+        android:title="@string/menu_force_orientation_by_sensor" />
+    <item
+        android:icon="@drawable/ic_visibility"
+        android:title="@string/menu_article_orientation"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/menu_force_landscape_orientation_toggle"
+                android:checkable="true"
+                android:icon="@drawable/landscape_orientation"
+                android:title="@string/force_landscape_orientation" />
+            <item
+                android:id="@+id/menu_force_portrait_orientation_toggle"
+                android:checkable="true"
+                android:icon="@drawable/portrait_orientation"
+                android:title="@string/force_portrait_orientation" />
+        </menu>
+    </item>
+</menu>

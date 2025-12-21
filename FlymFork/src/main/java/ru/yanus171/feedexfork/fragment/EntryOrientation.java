@@ -1,5 +1,7 @@
 package ru.yanus171.feedexfork.fragment;
 
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 
@@ -41,8 +43,9 @@ class EntryOrientation {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.menu_force_landscape_orientation_toggle).setChecked(mForceOrientation == Orientation.LANDSCAPE);
-        menu.findItem(R.id.menu_force_portrait_orientation_toggle).setChecked(mForceOrientation == Orientation.PORTRAIT);
+        setItemChecked( menu, R.id.menu_force_landscape_orientation_toggle, mForceOrientation == Orientation.LANDSCAPE);
+        setItemChecked( menu, R.id.menu_force_portrait_orientation_toggle, mForceOrientation == Orientation.PORTRAIT);
+        setVisible( menu, R.id.menu_force_orientation_by_sensor );
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -66,8 +69,8 @@ class EntryOrientation {
         }
     }
 
-    public void refreshUI( EntryView view, Uri uri) {
-        SetForceOrientation(ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos)), uri);
+    public void loadingDataFinished(EntryView view) {
+        mForceOrientation = ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos));
         applyForceOrientation();
     }
 
@@ -128,7 +131,6 @@ class EntryOrientation {
         if (mForceOrientation == forceOrientation)
             return;
         mForceOrientation = forceOrientation;
-        //final Uri uri = ContentUris.withAppendedId(mBaseUri, getCurrentEntryID());
         ContentValues values = new ContentValues();
         values.put(FeedData.EntryColumns.IS_LANDSCAPE, ForceOrientationToInt(mForceOrientation));
         ContentResolver cr = MainApplication.getContext().getContentResolver();

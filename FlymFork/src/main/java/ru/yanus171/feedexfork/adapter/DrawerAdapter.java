@@ -463,7 +463,6 @@ public class DrawerAdapter extends BaseAdapter {
                     cr.update(FeedData.FeedColumns.CONTENT_URI(getItemId(position)), values, null, null);
                 });
                 holder.titleTxt.setTextColor(GROUP_TEXT_COLOR);
-                holder.titleTxt.setAllCaps(true);
                 holder.separator.setVisibility(View.VISIBLE);
             } else {
                 holder.stateTxt.setVisibility(View.VISIBLE);

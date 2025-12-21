@@ -264,6 +264,8 @@
     <string name="entry_text_align_justify_description">Otherwise align to the left</string>
     <string name="linkColor">Link color</string>
     <string name="linkColor_descr">Text and background</string>
+    <string name="loadedLinkColor">Loaded link color</string>
+    <string name="loadedLinkColor_descr">Text and background</string>
     <string name="settings_color_link_sample_short">Links</string>
     <string name="settings_color_link_sample_long">Color of links</string>
     <string name="underline_links">Underline links</string>
@@ -759,5 +761,7 @@
     <string name="scroll_to_top_disabled_for_pdf">Scroll to top disabled for PDF</string>
     <string name="zoom_is_disabled">Zoom &amp; shift are disabled</string>
     <string name="page_number_from_count">%d from %d</string>
+    <string name="page_jump_PDF_confirm">Jump to page %d?</string>
+    <string name="unknownLocalBookType">Unknown book type</string>
 
 </resources>

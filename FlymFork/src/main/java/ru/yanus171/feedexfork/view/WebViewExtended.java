@@ -58,6 +58,8 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
+import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR;
+import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR_BACKGROUND;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
 import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
@@ -94,7 +96,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -104,15 +105,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -122,7 +127,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
     static final String TEXT_HTML = "text/html";
     private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
-    private static final String NO_MENU = "NO_MENU_";
+    public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
@@ -134,6 +139,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     private long mLastTimeScrolled = 0;
     private boolean mIsScrollScheduled = false;
     public WebEntryView mEntryView = null;
+    public Runnable mScrollChangeListener = null;
 
     public WebViewExtended( Context context, WebEntryView entryView ) {
         super(context);
@@ -211,9 +217,9 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if ( mEntryView.mActivity == null || mEntryView.mActivity.mEntryFragment == null )
+                if ( mEntryView.mEntryFragment == null )
                     return false;
-                mEntryView.mActivity.mEntryFragment.mAnchor = "";
+                mEntryView.mEntryFragment.mAnchor = "";
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mPressedX = event.getX();
                     mPressedY = event.getY();
@@ -241,7 +247,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                             System.currentTimeMillis() - mLastTimeScrolled > 500 &&
                             isArticleTapEnabledTemp() &&
                             //EntryActivity.GetIsActionBarHidden() &&
-                            !mEntryView.mActivity.mHasSelection) {
+                            !mEntryView.mEntryFragment.getEntryActivity().mHasSelection) {
                         //final HitTestResult hr = getHitTestResult();
                         //Log.v( TAG, "HitTestResult type=" + hr.getType() + ", extra=" + hr.getExtra()  );
                         mHandler.sendEmptyMessageDelayed(CLICK_ON_WEBVIEW, 0);
@@ -295,11 +301,15 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                                         replace( "&", "&amp;" ).
                                         replace( "*", "." ).
                                         replace( ",", "." );
-                        final Pattern REGEX = Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace("url", urlWithoutRegexSymbols ), Pattern.CASE_INSENSITIVE);
-                        Matcher matcher = REGEX.matcher(mEntryView.mData);
-                        String title = matcher.find() ? Jsoup.parse(matcher.group(1 ) ).text() : url;
-                        title = url.equals( title )  ? "" : title;
-
+                        String title = "";
+                        try {
+                            final Pattern REGEX = Pattern.compile("<a[^>]+?href=.url.+?>(.+?)</a>".replace("url", urlWithoutRegexSymbols), Pattern.CASE_INSENSITIVE);
+                            Matcher matcher = REGEX.matcher(mEntryView.mData);
+                            title = matcher.find() ? Jsoup.parse(matcher.group(1)).text() : url;
+                            title = url.equals(title) ? "" : title;
+                        } catch ( PatternSyntaxException e ){
+                            DebugApp.AddErrorToLog( null, e );
+                        }
                         ShowLinkMenu(url, title, context);
                     }
                 } catch ( ActivityNotFoundException e ) {
@@ -325,8 +335,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     Status().ChangeProgress("finished.");
                     if (!mEntryView.mLoadTitleOnly)
                         mEntryView.mContentWasLoaded = true;
-                    if (mEntryView.mActivity.mEntryFragment != null)
-                        mEntryView.DisableTapActionsIfVideo( mEntryView );
+                    mEntryView.DisableTapActionsIfVideo();
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
                             mEntryView.DownLoadImages();
@@ -339,7 +348,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             private void ScheduleScrollTo(final WebView view, long startTime) {
                 //Dog.v(TAG, "ScheduleScrollTo() mEntryID = " + mEntryId + ", mScrollPartY=" + mScrollPartY + ", GetScrollY() = " + GetScrollY() + ", GetContentHeight()=" + GetContentHeight() );
                 double newContentHeight = GetContentHeight();
-                final String searchText = mEntryView.mActivity.getIntent().getStringExtra( "SCROLL_TEXT" );
+                final String searchText = mEntryView.mEntryFragment.getActivity() != null ? mEntryView.mEntryFragment.getActivity().getIntent().getStringExtra( "SCROLL_TEXT" ) : null;
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
                 if ( !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if ( isSearch ) {
@@ -355,10 +364,10 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     } else
                         UiUtils.RunOnGuiThread(() ->
                         {
-                            if (mEntryView.mActivity.mEntryFragment != null)
-                                mEntryView.mActivity.mEntryFragment.UpdateHeader();
-                            if ( mEntryView.mActivity.mEntryFragment != null && !mEntryView.mActivity.mEntryFragment.mAnchor.isEmpty() )
-                                mEntryView.moveToAnchor( view, mEntryView.mActivity.mEntryFragment.mAnchor );
+                            if (mEntryView.mEntryFragment != null)
+                                mEntryView.mEntryFragment.UpdateHeader();
+                            if ( mEntryView.mEntryFragment != null && !mEntryView.mEntryFragment.mAnchor.isEmpty() )
+                                mEntryView.moveToAnchor( view, mEntryView.mEntryFragment.mAnchor );
                             else
                                 ScrollToY();
                         });
@@ -472,6 +481,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             + "title, h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
             + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
             + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
+            + "a.loaded_link {color: " + Theme.GetColor(LOADED_LINK_COLOR, R.string.default_loaded_link_color) + "; background: " + Theme.GetColor(LOADED_LINK_COLOR_BACKGROUND, R.string.default_text_color_background) + "}\n"
             + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
             + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
             (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
@@ -736,11 +746,12 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         if (msg.what == CLICK_ON_URL) {
             mHandler.removeMessages(CLICK_ON_WEBVIEW);
-            mEntryView.mActivity.closeContextMenu();
+            mEntryView.mEntryFragment.getActivity().closeContextMenu();
             return true;
         }
         if ( msg.what == TOGGLE_TAP_ZONE_VISIBIILTY ) {
-            mEntryView.toggleTapZoneVisibility();
+            if ( mEntryView.mEntryFragment.mTapZones != null )
+                mEntryView.mEntryFragment.mTapZones.toggleVisibility();
             return true;
         }
         if (msg.what == CLICK_ON_WEBVIEW)
@@ -757,11 +768,11 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         Status().HideByScroll();
-        if ( mEntryView.mActivity != null && mEntryView.mActivity.mEntryFragment != null )
-            mEntryView.mActivity.mEntryFragment.UpdateHeader();
+        if ( mEntryView.mEntryFragment != null )
+            mEntryView.mEntryFragment.UpdateHeader();
         mLastTimeScrolled = System.currentTimeMillis();
-        if (mEntryView.mScrollChangeListener != null)
-            mEntryView.mScrollChangeListener.run();
+        if (mScrollChangeListener != null)
+            mScrollChangeListener.run();
     }
 
 
@@ -848,7 +859,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mHandler.sendEmptyMessage(CLICK_ON_URL);
         if ( hideTapZones )
             mHandler.removeMessages( TOGGLE_TAP_ZONE_VISIBIILTY );
-        mEntryView.mActivity.closeOptionsMenu();
+        mEntryView.mEntryFragment.getActivity().closeOptionsMenu();
     }
 
     private class ImageDownloadJavaScriptObject {
@@ -913,7 +924,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mEntryView.EndStatus();
     }
     int getPageHeight() {
-        return getHeight() - mEntryView.mActivity.mEntryFragment.mStatusText.GetHeight();
+        return getHeight() - mEntryView.mEntryFragment.mStatusText.GetHeight();
     }
     int getPageCount() {
         return (int) (GetContentHeight() / getPageHeight());

@@ -13,14 +13,19 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.PDFView
+import com.github.barteksc.pdfviewer.link.LinkHandler
 import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
+import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
-import ru.yanus171.feedexfork.activity.EntryActivity
+import ru.yanus171.feedexfork.fragment.EntryMenu.setVisible
+import ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked
+import ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible
 import ru.yanus171.feedexfork.parser.FileSelectDialog
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE
@@ -33,9 +38,10 @@ import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
+import ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu
 import java.util.Date
 
-class PDFViewEntryView(private val activity: EntryActivity, private val mContainer: ViewGroup, entryID: Long) : EntryView(activity, entryID)
+class PDFViewEntryView(private val fragment: EntryFragment, private val mContainer: ViewGroup, entryID: Long, position: Int) : EntryView(fragment, entryID, position)
 {
     lateinit var mPDFView: PDFView
     var mXOffset: Float = 0.0F
@@ -51,7 +57,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
 
     private fun createView() {
-        var inflater  = activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater;
+        var inflater  = getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE ) as LayoutInflater;
         var rootView = inflater.inflate( R.layout.pdfview, null )
         mPDFView = rootView.findViewById<PDFView>(R.id.pdfView)!!
         if (mPDFView.parent != null)
@@ -82,6 +88,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             })
             .onPageScroll( object: OnPageScrollListener {
                 override fun onPageScrolled(page: Int, positionOffset: Float) {
+                    mEntryFragment.mTapZones.onPageScrolled();
                     if ( !mIsLoaded )
                         return
                     mScrollPartY = GetViewScrollPartY()
@@ -96,23 +103,43 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
                     }
                     mLastTimeScrolled = Date().time
                     saveState()
-                    mActivity.mEntryFragment.UpdateHeader();
+                    mEntryFragment.UpdateHeader();
                 }
             })
             .onTap( object : OnTapListener {
                 override fun onTap(e: MotionEvent): Boolean {
                     if ( Date().time - mLastTimeScrolled > TAP_TIMEOUT )
-                        toggleTapZoneVisibility()
+                        mEntryFragment.mTapZones.toggleVisibility()
                     return true
                 }
             })
             .scrollHandle(
-                if (PrefUtils.isArticleTapEnabledTemp()) null else DefaultScrollHandle( mActivity, true )
+                if (PrefUtils.isArticleTapEnabledTemp()) null else DefaultScrollHandle( getContext(), true )
             )
             .onError {
                 Status().SetError(mEntryLink, null, mEntryId.toString(), it as Exception)
                 EndStatus()
             }
+            .linkHandler(
+                object : LinkHandler {
+                    override fun handleLinkEvent(event: LinkTapEvent) {
+                        val uri = event.link.uri
+                        val page = event.link.destPageIdx
+                        if ( page != null )
+                            showPageJumpMenu( page )
+                        else if ( uri != null )
+                            ShowLinkMenu( uri, "", context )
+                    }
+
+                    private fun showPageJumpMenu( page: Int  ) {
+                        AlertDialog.Builder(context)
+                            .setMessage( context.getString( R.string.page_jump_PDF_confirm, page ) )
+                            .setPositiveButton( android.R.string.ok ) { dialog, _ -> mPDFView.jumpTo(page) }
+                            .setNeutralButton( android.R.string.cancel ){ dialog, _ -> dialog.dismiss() }
+                            .show()
+                    }
+                }
+            )
             .onRender {
             }
             .onLoad {
@@ -162,7 +189,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         private fun restoreSavedState() {
             mPDFView.zoomTo(savedZoom)
             mPDFView.positionOffset = xOffset
-            Toast.makeText(mActivity, R.string.zoom_is_disabled, Toast.LENGTH_SHORT).show()
+            Toast.makeText(getContext(), R.string.zoom_is_disabled, Toast.LENGTH_SHORT).show()
         }
 
         private fun schedule() {
@@ -193,7 +220,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
             Thread {
                 val values = ContentValues()
                 values.put( TITLE, title )
-                mActivity.contentResolver.update(FeedData.EntryColumns.CONTENT_URI( mEntryId), values, null, null )
+                getContext().contentResolver.update(FeedData.EntryColumns.CONTENT_URI( mEntryId), values, null, null )
             }.start()
     }
     override fun GetScrollY(): Int {
@@ -216,14 +243,14 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
 
     override fun LongClickOnBottom() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false);
-        refreshUI(true);
+        update(true);
         generateArticleContent(true);
     }
 
 
     override fun GoTop() {
         //mPDFView.positionOffset = 0F
-        Toast.makeText( mActivity, R.string.scroll_to_top_disabled_for_pdf, Toast.LENGTH_LONG ).show()
+        Toast.makeText( mEntryFragment.activity, R.string.scroll_to_top_disabled_for_pdf, Toast.LENGTH_LONG ).show()
     }
 
     override fun ScrollOneScreen(direction: Int) {
@@ -231,7 +258,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
     private fun getScreenHeight() : Int {
         var result = mPDFView.height;
-        result -= mActivity.mEntryFragment.mStatusText.GetHeight()
+        result -= mEntryFragment.mStatusText.GetHeight()
         return result
     }
     private fun getPageFloatSize() : Float {
@@ -285,8 +312,8 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
         return result
     }
 
-    override fun refreshUI(invalidateContent: Boolean){
-        super.refreshUI(invalidateContent)
+    override fun update(invalidateContent: Boolean){
+        super.update(invalidateContent)
         if ( !mIsLoaded )
             return
         generateArticleContent(false)
@@ -307,7 +334,7 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     @SuppressLint("Range")
     override fun loadingDataFinished() {
         super.loadingDataFinished()
-        mActivity.mEntryFragment.refreshUI(false)
+        mEntryFragment.update(false)
         if ( mCursor != null && !mContentWasLoaded ) {
             mZoom = readFloat( ZOOM, mZoom )
             mXOffset = readFloat( X_OFFSET, mXOffset )
@@ -321,8 +348,14 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
 
     override fun onPrepareOptionsMenu(menu: Menu ) {
         super.onPrepareOptionsMenu(menu)
-        menu.findItem( R.id.menu_zoom_shift_enabled ).isVisible = true
-        menu.findItem( R.id.menu_zoom_shift_enabled ).isChecked = PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )
+        setItemVisible( menu, R.id.menu_zoom_shift_enabled, true )
+        setItemChecked( menu, R.id.menu_zoom_shift_enabled, getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) )
+
+        setVisible( menu, R.id.menu_labels );
+        setVisible( menu, R.id.menu_reload_full_text );
+        setVisible( menu, R.id.menu_cancel_refresh );
+        setVisible( menu, R.id.menu_share );
+        setVisible( menu, R.id.menu_zoom_shift_enabled );
     }
     override fun onOptionsItemSelected(item: android.view.MenuItem ) {
         super.onOptionsItemSelected(item);
@@ -333,17 +366,17 @@ class PDFViewEntryView(private val activity: EntryActivity, private val mContain
     }
 
     private fun share() {
-        mActivity.startActivity(Intent.createChooser( Intent(Intent.ACTION_SEND)
+        getContext().startActivity(Intent.createChooser( Intent(Intent.ACTION_SEND)
                 .setData(Uri.parse(mEntryLink)),
-            mActivity.getString(R.string.menu_share)))
+            getContext().getString(R.string.menu_share)))
     }
 
     private fun toggleZoomShiftEnabled() {
         saveState();
         PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
-        mActivity.mEntryFragment.SetupZones()
-        UiUtils.toast(if (PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
-        refreshUI(true)
+        mEntryFragment.mTapZones.Update()
+        UiUtils.toast(if (getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
+        update(true)
     }
 
     override fun leftBottomBtnClick() {

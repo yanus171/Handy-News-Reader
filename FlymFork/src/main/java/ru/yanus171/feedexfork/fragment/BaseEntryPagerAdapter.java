@@ -36,20 +36,18 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    void generateArticleContent(int pagerPos, boolean forceUpdate, boolean invalidateCache ) {
+    void generateArticleContent(int pagerPos ) {
         Dog.d( "EntryPagerAdapter.articleDataWasLoaded" + pagerPos +  ", mAnchor = " + mEntryFragment.mAnchor);
-
         EntryView view = GetEntryView( pagerPos );
         if (view != null ) {
             view.StatusStartPageLoading();
-            if ( invalidateCache ) {
+            view.InvalidateContentCache();
+            if ( mSetupChanged )
                 view.InvalidateContentCache();
-                if ( mSetupChanged )
-                    view.InvalidateContentCache();
-                view.generateArticleContent(forceUpdate );
-            }
+            view.generateArticleContent( true );
         }
-        mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.Update();
     }
 
     void onResume() {
@@ -90,7 +88,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Dog.d( "EntryPagerAdapter.instantiateItem" + position );
-        final EntryView view = mEntryFragment.CreateWebEntryView( mEntryFragment.getEntryActivity(), position, container );
+        final EntryView view = mEntryFragment.CreateWebEntryView( position, container );
         mEntryViews.put(position, view);
 
 //            NestedScrollView sv = new NestedScrollView( getContext() );
@@ -98,7 +96,6 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
 //            sv.setFillViewport( true );
 //            container.addView(sv, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        view.mLoadTitleOnly = true;
         Entry entry = GetEntry( position );
         if ( entry != null ) {
             FetcherService.addActiveEntryID(entry.mID);
@@ -168,15 +165,5 @@ class SingleEntryPagerAdapter extends BaseEntryPagerAdapter {
         return 1;
     }
 
-
-    @NotNull
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        final View view = (View)super.instantiateItem(container, position);
-        final EntryView entryView = (EntryView)view.getTag();
-        entryView.mLoadTitleOnly = false;
-        //entryView.mActivity.mEntryFragment.refreshUI();
-        return view;
-    }
 }
 

@@ -64,8 +64,6 @@ import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.mCurrentUri;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.WHERE_SQL_EXTRA;
 import static ru.yanus171.feedexfork.parser.OPML.EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT;
@@ -77,7 +75,6 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IMAGES_SIZE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.MOBILIZED_HTML;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_NOT_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.WHERE_READ;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -88,11 +85,9 @@ import static ru.yanus171.feedexfork.service.AutoWorker.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
-import static ru.yanus171.feedexfork.utils.HtmlUtils.convertXMLSymbols;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.NATIVE;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
-import static ru.yanus171.feedexfork.utils.NetworkUtils.getDownloadedImageLocaLPath;
 import static ru.yanus171.feedexfork.utils.PrefUtils.MAX_IMAGE_DOWNLOAD_COUNT;
 import static ru.yanus171.feedexfork.utils.PrefUtils.NOTIFICATIONS_ENABLED;
 import static ru.yanus171.feedexfork.utils.PrefUtils.REFRESH_INTERVAL;
@@ -118,7 +113,6 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Pair;
 import android.util.Xml;
 import android.webkit.WebView;
@@ -132,7 +126,6 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -141,11 +134,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -172,7 +163,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
@@ -196,9 +186,7 @@ import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.WebEntryView;
 
@@ -784,138 +772,7 @@ public class FetcherService extends IntentService {
 
     public enum AutoDownloadEntryImages {Yes, No}
 
-    @SuppressLint("Range")
-    public static boolean loadFB2LocalFile(final long entryId, String link ) throws IOException {
-        boolean result = false;
-        if (!FileUtils.INSTANCE.getFileName(Uri.parse(link)).toLowerCase().contains(".fb2"))
-            return result;
-        Timer timer = new Timer( "loadFB2LocalFile " + link );
-        try (InputStream is = contentResolver().openInputStream(Uri.parse(link))) {
-            ClearContentStepToFile();
-            Status().ChangeProgress( "Jsoup.parse" );
-            Document doc = Jsoup.parse(is, null, "");
-            SaveContentStepToFile( doc, "Jsoup.parse" );
 
-            Status().ChangeProgress( "images" );
-            Elements list = doc.getElementsByTag("image");
-            list.addAll( doc.getElementsByTag("img") );
-            for (Element el : list ) {
-                final String id = el.attr( "l:href" ).replace( "#", "" );
-                if ( id.isEmpty() )
-                    continue;
-                Elements images = doc.getElementsByAttributeValue( "id", id );
-                if ( images.isEmpty() )
-                    continue;
-                el.insertChildren( -1, images.first() );
-                el.attr( "align", "middle" );
-            }
-            SaveContentStepToFile( doc, "binary_move" );
-
-            for (Element el : doc.getElementsByTag("title"))
-                el.tagName( "h1" );
-            SaveContentStepToFile( doc, "h1" );
-
-            Status().ChangeProgress( "binary" );
-
-            int imageIndex = 0;
-            for (Element el : doc.getElementsByTag("binary")) {
-                if (!el.hasAttr("content-type"))
-                    continue;
-                el.tagName("img");
-                imageIndex++;
-                final String imgFilePath = getDownloadedImageLocaLPath( link, imageIndex );
-                final String imageData = el.ownText().replace( "\n", "" ).replace( " ", "" );
-                if ( imageData.isEmpty() )
-                    continue;
-                Status().ChangeProgress( String.format( "image file %d", imageIndex ) ) ;
-                byte[] data = Base64.decode(imageData, Base64.DEFAULT );
-                try (OutputStream stream = new FileOutputStream(imgFilePath)) {
-                    stream.write(data);
-                }
-                el.attr("src", Constants.FILE_SCHEME + imgFilePath);
-                el.text("");
-            }
-            SaveContentStepToFile( doc, "binary_to_img" );
-
-
-            removeElementsWithTag(doc, "id");
-            removeElementsWithTag(doc, "genre");
-            removeElementsWithTag(doc, "lang" );
-            removeElementsWithTag(doc, "src-lang" );
-            removeElementsWithTag(doc, "translator" );
-            removeElementsWithTag(doc, "document-info" );
-            removeElementsWithTag(doc, "publish-info" );
-            removeElementsWithTag(doc, "custom-info" );
-            removeElementsWithTag(doc, "home-page" );
-            final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
-            removeElementsWithTag(doc, "first-name" );
-            removeElementsWithTag(doc, "last-name" );
-            removeElementsWithTag(doc, "author" );
-            removeElementsWithTag(doc, "book-title" );
-            removeElementsWithTag(doc, "stylesheet" );
-
-            Status().ChangeProgress( "doc.toString()" );
-            String content = doc.toString();
-            //content = content.replaceAll( "[^\\s]{50,}", "" );
-            content = content.replace( "<style>", "" );
-            content = content.replace( "</style>", "" );
-            content = content.replace( "<empty-line", "<br" );
-            content = content.replace( "emphasis>", "i>" );
-            //content = content.replace( "</i>, ", ",</i>" );
-            content = content.replace( "strong>", "b>" );
-            content = content.replace( "strikethrough>.", "del>" );
-            content = content.replace( "xlink:href", "href" );
-            content = content.replaceAll( "\\n\\s+<", "<" );
-            //content = content.replace( "\n\r<", "<" );
-            //content = content.replace( "\r\n<", "<" );
-
-            Status().ChangeProgress( "replace 0" );
-            content = content.replace( "&#x0;", "" );
-            SaveContentStepToFile( content, "after_remove_0" );
-
-            Status().ChangeProgress( "convertXMLSymbols" );
-            content = convertXMLSymbols(content);
-
-            content = AddFB2TableOfContent( content );
-
-            ContentValues values = new ContentValues();
-            values.put(EntryColumns.TITLE, title );
-            Status().ChangeProgress( "saveMobilizedHTML" );
-            FileUtils.INSTANCE.saveMobilizedHTML(link, content, values);
-            contentResolver().update(EntryColumns.CONTENT_URI(entryId), values, null, null);
-            Status().ChangeProgress("");
-            result = true;
-        }
-        timer.End();
-        return result;
-    }
-
-    private static void removeElementsWithTag(Document doc, String tag) {
-        for ( Element item: doc.getElementsByTag( tag ) )
-            item.remove();
-    }
-
-    private static String AddFB2TableOfContent(String content) {
-        final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = PATTERN.matcher(content);
-        StringBuilder tc = new StringBuilder();
-        int i = 1;
-        String TC_START = "TC_START";
-        while (matcher.find()) {
-            String match = matcher.group();
-            String newText = "<div id=\"tc" + i + "\" >" + match.replaceAll( "<?p>", "") + "</div>";
-            if ( i == 1 )
-                newText = TC_START + newText;
-            content = content.replaceFirst(match, newText);
-            String caption = matcher.group(2).replaceAll( "<.*?>", "");
-            tc.append("<p class=\"toc\"><a href=\"#tc").append(i).append("\">").append(caption).append("</a></p>");
-            i++;
-        }
-        if ( tc.length() > 0 )
-            tc.insert( 0, String.format("<h2>%s</h2>", MainApplication.getContext().getString( R.string.tableOfContent )) );
-        content = content.replaceFirst( TC_START, "<div class=\"toc\">" + tc + "</div>" );
-        return content;
-    }
     static boolean isOptionsAttrOn(Cursor entryCursor, String attrName) {
         boolean result = false;
         final int optionsCol = entryCursor.getColumnIndex(FeedColumns.OPTIONS);
@@ -948,15 +805,17 @@ public class FetcherService extends IntentService {
             if (entryCursor.moveToFirst()) {
                 final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
-                int status = Status().Start( title, false ); try {
+                feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
+                int status = Status().Start( feedId.equals( GetExtrenalLinkFeedID() ) ? "" : title, false ); try {
 
                     int linkPos = entryCursor.getColumnIndex(LINK);
                     String link = entryCursor.getString(linkPos);
                     try {
-                        feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
 
-                        if (IsLocalFile(Uri.parse(link)))
-                            return loadFB2LocalFile(entryId, link);
+                        if (FB2.IsFB2(link))
+                            return FB2.loadLocalFile( entryId, link );
+                        else if (EPUB.Is(link))
+                            return EPUB.loadLocalFile( entryId, link);
                         String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
                         String contentIndicator = null;
                         {
@@ -1056,7 +915,7 @@ public class FetcherService extends IntentService {
                             }
                             ArrayList<String> imgUrlsToDownload = new ArrayList<>();
                             if (autoDownloadEntryImages == AutoDownloadEntryImages.Yes && NetworkUtils.needDownloadPictures())
-                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount);
+                                HtmlUtils.replaceImageURLs(mobilizedHtml, "", entryId, link, true, imgUrlsToDownload, null, mMaxImageDownloadCount, null);
 
                             String mainImgUrl;
                             if (!imgUrlsToDownload.isEmpty())
@@ -1090,7 +949,7 @@ public class FetcherService extends IntentService {
                             if (cursor.moveToFirst() && cursor.isNull(0))
                                 title_ = cursor.getString(0);
                             cursor.close();
-                            Status().SetError(title_ + ": ", String.valueOf(feedId), String.valueOf(entryId), e);
+                            Status().SetError(title_ + ": ", "", String.valueOf(entryId), e);
                         }
                     }
                 } finally {

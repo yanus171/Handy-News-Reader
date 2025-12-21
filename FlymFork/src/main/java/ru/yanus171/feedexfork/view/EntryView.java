@@ -1,6 +1,11 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.addArticleShortcut;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.updateMenuWithIcon;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.SCROLL_POS;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE;
 import static ru.yanus171.feedexfork.provider.FeedData.PutFavorite;
@@ -8,7 +13,6 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -23,18 +27,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.BaseColumns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -46,10 +46,8 @@ import java.util.Stack;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.EntryActivity;
-import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
-import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
+import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -57,50 +55,50 @@ import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
-import ru.yanus171.feedexfork.utils.WaitDialog;
 
 public abstract class EntryView {
-    private final View mRootView;
-    public EntryActivity mActivity = null;
-    public boolean mLoadTitleOnly = false;
-    public boolean mContentWasLoaded = false;
-    public double mScrollPartY = -1;
+    protected double mScrollPartY = -1;
     public Cursor mCursor = null;
-    protected int mStatus = 0;
     public String mTitle = "";
     public static final String TAG = "EntryView";
-    public boolean mWasAutoUnStar = false;
     public boolean mFavorite;
     public int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos,
-            mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
-
-
-    private final Stack<Integer> mHistoryAnchorScrollY = new Stack<>();
+    mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
     public long mEntryId = -1;
     public String mEntryLink = "";
     public View mView = null;
-    public Runnable mScrollChangeListener = null;
-
     public static final long TAP_TIMEOUT = 1000;
+    public boolean mContentWasLoaded = false;
 
-    protected EntryView(EntryActivity activity, long entryId) {
-        mActivity = activity;
+    protected EntryFragment mEntryFragment = null;
+    protected final int mPosition;
+
+    private int mStatus = 0;
+    private final Stack<Integer> mHistoryAnchorScrollY = new Stack<>();
+
+    protected EntryView(EntryFragment fragment, long entryId, int position) {
+        mEntryFragment = fragment;
         mEntryId = entryId;
-        mRootView = mActivity.mEntryFragment.mRootView;
+        mPosition = position;
     }
 
+    protected Context getContext() {
+        return mEntryFragment.getContext();
+    }
     public boolean CanGoBack() {
         return !mHistoryAnchorScrollY.isEmpty();
     }
     public void ClearHistoryAnchor() {
         mHistoryAnchorScrollY.clear();
-        mActivity.mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.Update();
     }
 
     public void GoBack() {
         if (CanGoBack())
             ScrollTo(mHistoryAnchorScrollY.pop(), false);
-        mActivity.mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.Update();
     }
 
     public void GoTop() {
@@ -110,7 +108,8 @@ public abstract class EntryView {
 
     public void AddNavigationHistoryStep() {
         mHistoryAnchorScrollY.push(GetScrollY());
-        mActivity.mEntryFragment.SetupZones();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.Update();
     }
 
     protected abstract int GetScrollY();
@@ -147,16 +146,32 @@ public abstract class EntryView {
 
     }
 
-    public void refreshUI( boolean invalidateContent ) {
+    public void update(boolean invalidateContent ) {
         if ( invalidateContent )
             InvalidateContentCache();
-        mActivity.mEntryFragment.hideTapZones();
-        mActivity.mEntryFragment.mControlPanel.hide();
+        if ( mEntryFragment.mTapZones != null )
+            mEntryFragment.mTapZones.Hide();
+        mEntryFragment.mControlPanel.hide();
     }
 
     public void onStart() {
     }
     public abstract void ScrollToPage(int page);
+
+    public void onCreateOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_star);
+        if ( item == null )
+            return;
+        if (mFavorite)
+            item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
+        else
+            item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
+        updateMenuWithIcon(item);
+    }
+
+    public void onPageSelected() {
+
+    }
 
     static public class ProgressInfo {
         public int max;
@@ -170,15 +185,6 @@ public abstract class EntryView {
                 if (mStatus == 0)
                     mStatus = Status().Start(R.string.web_page_loading, true);
             }
-    }
-    public void EndStatus() {
-        synchronized (this) {
-            if ( !mContentWasLoaded && !mLoadTitleOnly )
-                return;
-            if (mStatus != 0)
-                Status().End(mStatus);
-            mStatus = 0;
-        }
     }
     public boolean IsStatusStartPageLoading() {
         synchronized (this) {
@@ -195,27 +201,13 @@ public abstract class EntryView {
 
     }
 
-    public static EntryView Create(String link, long entryId, EntryActivity activity, ViewGroup container) {
-        Dog.v( TAG, "EntryView.Create link = " + link);
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && link.endsWith( "pdf" ) )
-            return new PDFViewEntryView( activity, container, entryId);//PDFEntryView
-        else
-            return new WebEntryView( activity, container, entryId );
-
-    }
-
-    protected void toggleTapZoneVisibility() {
-        if ( mActivity != null && mActivity.mEntryFragment != null )
-            mActivity.mEntryFragment.toggleTapZoneVisibility();
-    }
     public void setCursor( Cursor cursor ) {
         mCursor = cursor;
     }
     @SuppressLint("Range")
     public void generateArticleContent( boolean forceUpdate ) {
-        //refreshUI();
         Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
-        mActivity.mEntryFragment.UpdateHeader();
+        mEntryFragment.UpdateHeader();
     }
 
     @SuppressLint("Range")
@@ -278,7 +270,7 @@ public abstract class EntryView {
             }
 
             case R.id.menu_copy_clipboard: {
-                ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("Copied Text 1", mEntryLink);
                 clipboard.setPrimaryClip(clip);
 
@@ -290,14 +282,14 @@ public abstract class EntryView {
                 break;
             }
             case R.id.menu_setting: {
-                mActivity.startActivity(new Intent(mActivity, GeneralPrefsActivity.class));
+                OpenSettings();
                 break;
             }
 
             case R.id.menu_edit_article_title: {
-                final EditText editText = new EditText(mActivity);
+                final EditText editText = new EditText(getContext());
                 editText.setText( mTitle );
-                final AlertDialog d = new AlertDialog.Builder( mActivity )
+                final AlertDialog d = new AlertDialog.Builder( getContext() )
                         .setView( editText )
                         .setTitle( R.string.menu_edit_article_title )
                         .setIcon( R.drawable.ic_edit )
@@ -306,7 +298,7 @@ public abstract class EntryView {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 final Uri uri = getUri();
-                                if ( !mActivity.mIsNewTask )
+                                if ( !mEntryFragment.getEntryActivity().mIsNewTask )
                                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
                                 new Thread() {
                                     @Override
@@ -316,7 +308,7 @@ public abstract class EntryView {
                                         final String newTitle = editText.getText().toString();
                                         values.put( TITLE, newTitle );
                                         cr.update(uri, values, null, null);
-                                        mActivity.mEntryFragment.restartCurrentEntryLoader();
+                                        mEntryFragment.restartCurrentEntryLoader();
                                     }
 
 
@@ -334,58 +326,33 @@ public abstract class EntryView {
             }
             case R.id.menu_disable_all_tap_actions: {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                mActivity.mEntryFragment.SetupZones();
+                mEntryFragment.mTapZones.Update();
                 UiUtils.toast( R.string.tap_actions_were_disabled );
-                refreshUI(true);
+                update(true);
                 break;
             }
 
 
             case R.id.menu_add_entry_shortcut: {
-                if ( ShortcutManagerCompat.isRequestPinShortcutSupported(mActivity) ) {
-                    //Adding shortcut for MainActivity on Home screen
-                    if (mCursor != null) {
-                        final String name = mCursor.getString(mTitlePos);
-                        final long entryID = mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID));
-                        final Uri uri = Uri.parse( mCursor.getString(mLinkPos) );
-                        final String iconUrl = mCursor.getString(mCursor.getColumnIndex( FeedData.EntryColumns.IMAGE_URL ));
-
-                        new WaitDialog(mActivity, R.string.downloadImage, new Runnable() {
-                            @Override
-                            public void run() {
-
-                                final IconCompat icon = LoadIcon(iconUrl);
-                                mActivity.runOnUiThread(() -> {
-                                    final Intent intent = new Intent(mActivity, EntryActivityNewTask.class)
-                                            .setAction(Intent.ACTION_VIEW)
-                                            .setData(uri)
-                                            .putExtra( NEW_TASK_EXTRA, true );
-                                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(mActivity, String.valueOf(entryID))
-                                            .setIcon(icon)
-                                            .setShortLabel(name)
-                                            .setIntent( intent )
-                                            .build();
-
-
-                                    ShortcutManagerCompat.requestPinShortcut(mActivity, pinShortcutInfo, null);
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-                                        UiUtils.toast( R.string.new_entry_shortcut_added );
-                                });
-                            }
-                        }).execute();
-                    }
-                } else
-                    UiUtils.toast( R.string.new_feed_shortcut_add_failed );
+                if (mCursor != null)
+                    addArticleShortcut( mEntryFragment.getActivity(),
+                                        mCursor.getString(mTitlePos),
+                                        mCursor.getLong(mCursor.getColumnIndex(BaseColumns._ID)),
+                                        Uri.parse( mCursor.getString(mLinkPos) ),
+                                        mCursor.getString(mCursor.getColumnIndex( FeedData.EntryColumns.IMAGE_URL )) );
                 break;
             }
 
         }
+    }
 
+    private void OpenSettings() {
+        getContext().startActivity(new Intent(getContext(), GeneralPrefsActivity.class));
     }
 
     protected void toggleImageWhiteBackground() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
-        refreshUI(true);
+        update(true);
         generateArticleContent(true);
     }
 
@@ -403,7 +370,7 @@ public abstract class EntryView {
 
 
     public void OpenLabelSetup() {
-        LabelVoc.INSTANCE.showDialogToSetArticleLabels(mActivity, mEntryId, null);
+        LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), mEntryId, null);
     }
 
     public abstract void leftBottomBtnClick();
@@ -424,16 +391,16 @@ public abstract class EntryView {
                 cr.update(uri, values, null, null);
                 if ( !mFavorite )
                     LabelVoc.INSTANCE.removeLabels( mEntryId );
-                mActivity.mEntryFragment.restartCurrentEntryLoader();
+                mEntryFragment.restartCurrentEntryLoader();
             }
         }.start();
-        mActivity.invalidateOptionsMenu();
+        mEntryFragment.getActivity().invalidateOptionsMenu();
         if ( mFavorite ) {
             if ( showToast )
                 UiUtils.toast( R.string.entry_marked_favourite );
         } else {
-            Snackbar snackbar = Snackbar.make(mActivity.mEntryFragment.getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
-                    .setActionTextColor(ContextCompat.getColor(mActivity.mEntryFragment.getView().getContext(), R.color.light_theme_color_primary))
+            Snackbar snackbar = Snackbar.make(mEntryFragment.getView().getRootView().findViewById(R.id.pageDownBtn), R.string.removed_from_favorites, Snackbar.LENGTH_LONG)
+                    .setActionTextColor(ContextCompat.getColor(getContext(), R.color.light_theme_color_primary))
                     .setAction(R.string.undo, v -> {
                         SetIsFavorite( true, false );
                         LabelVoc.INSTANCE.setEntry( mEntryId, oldLabels );
@@ -445,33 +412,46 @@ public abstract class EntryView {
     }
     @NonNull
     public Uri getUri() {
-        return ContentUris.withAppendedId(mActivity.mEntryFragment.mBaseUri, mEntryId);
+        return ContentUris.withAppendedId(mEntryFragment.mBaseUri, mEntryId);
     }
     public void onPrepareOptionsMenu (Menu menu) {
-        menu.findItem(R.id.menu_image_white_background).setChecked(PrefUtils.isImageWhiteBackground());
-        menu.findItem(R.id.menu_show_progress_info).setChecked(PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
-        menu.findItem(R.id.menu_force_orientation_by_sensor).setChecked( PrefUtils.isForceOrientationBySensor() );
+        setItemChecked( menu, R.id.menu_image_white_background, PrefUtils.isImageWhiteBackground());
+        setItemChecked( menu, R.id.menu_show_progress_info, PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false ));
 
-        menu.findItem(R.id.menu_full_screen).setChecked(GetIsStatusBarHidden() );
-        menu.findItem(R.id.menu_actionbar_visible).setChecked(!GetIsStatusBarHidden() );
+        setItemChecked( menu, R.id.menu_full_screen, GetIsStatusBarHidden() );
+        setItemChecked( menu, R.id.menu_actionbar_visible, !GetIsStatusBarHidden() );
+        setItemChecked( menu, R.id.menu_go_back, CanGoBack() );
+        setItemChecked( menu, R.id.menu_zoom_shift_enabled, false );
+        setItemChecked( menu, R.id.menu_disable_all_tap_actions, mEntryFragment.mTapZones != null );
 
-        menu.findItem(R.id.menu_go_back).setVisible( CanGoBack() );
-        menu.findItem( R.id.menu_zoom_shift_enabled).setVisible( false );
+        hideAllMenuItems(menu);
+
+        setVisible( menu, R.id.menu_star );
+        setVisible( menu, R.id.menu_share );
+        setVisible( menu, R.id.menu_mark_as_unread );
+        setVisible( menu, R.id.menu_article_web_search );
+        //showItem( menu, R.id.menu_share_group );
+        //showItem( menu, R.id.menu_display_options_group );
+        setVisible( menu, R.id.menu_labels );
+        //showItem( menu, R.id.menu_reload_group );
+        setVisible( menu, R.id.menu_setting );
+        setVisible( menu, R.id.menu_close );
+        setVisible( menu, R.id.menu_toggle_theme );
+        setVisible( menu, R.id.menu_copy_clipboard );
+        setVisible( menu, R.id.menu_setting );
+        setVisible( menu, R.id.menu_edit_article_title );
+        setVisible( menu, R.id.menu_image_white_background );
+        setVisible( menu, R.id.menu_disable_all_tap_actions );
+        setVisible( menu, R.id.menu_add_entry_shortcut );
     }
 
-//    private String getTitle() {
-//        if (GetExtrenalLinkFeedID().equals(mCursor.getString(mFeedIDPos))) {
-//            if (!mCursor.isNull(mTitlePos))
-//                return mCursor.getString(mTitlePos);
-//            else
-//                return "";
-//        }
-//        if ( !mCursor.isNull(mFeedNamePos) )
-//            return mCursor.getString(mFeedNamePos);
-//        if ( !mCursor.isNull(mFeedUrlPos) )
-//            return mCursor.getString(mFeedUrlPos);
-//        return "";
-//    }
+    private static void hideAllMenuItems(Menu menu) {
+        for (int i = 0; i < menu.size(); i++ )
+            if ( menu.getItem(i).hasSubMenu() )
+                hideAllMenuItems( menu.getItem(i).getSubMenu() );
+            else
+                setItemVisible(menu, menu.getItem(i).getItemId(), false );
+    }
 
     protected static float getPageChangeMultiplier() {
         return PrefUtils.isPageUpDown90Pct() ? 0.9F : 0.98F;
@@ -479,9 +459,27 @@ public abstract class EntryView {
 
 
     public void setupControlPanelButtonActions() {
+        setupButtonAction(R.id.btn_label_setup, false, v -> OpenLabelSetup());
+        setupButtonAction(R.id.btn_settings, false, v -> OpenSettings());
+        setupButtonLongClickAction( R.id.btn_share, v -> mEntryFragment.mMenu.openShare());
+        setupButtonLongClickAction( R.id.btn_force_orientation_by_sensor, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_force_portrait_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_force_landscape_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
+        setupButtonLongClickAction( R.id.btn_reload, v -> mEntryFragment.mMenu.openReload());
     }
     protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
-        mActivity.mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
+        mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
     }
+    protected void setupButtonLongClickAction(int viewId, View.OnClickListener click ) {
+        mEntryFragment.mControlPanel.setupButtonLongClickAction( viewId, click );
+    }
+    protected void EndStatus() {
+        synchronized (this) {
+            if (mStatus != 0)
+                Status().End(mStatus);
+            mStatus = 0;
+        }
+    }
+
 }
 

@@ -78,7 +78,8 @@ public class StatusText implements Observer {
 
         mErrorView.setVisibility(View.GONE);
         mErrorView.setGravity(Gravity.START | Gravity.TOP);
-        mErrorView.setBackgroundColor(Color.parseColor( Theme.GetBackgroundColor() ) );
+        mErrorView.setBackgroundColor( Theme.GetErrorTextBackroundColorInt() );
+        mErrorView.setTextColor( Theme.GetErrorTextColorInt() );
         mErrorView.setOnClickListener(v -> {
             FetcherObservable status = (FetcherObservable)observable;
             status.ClearError();
@@ -271,6 +272,9 @@ public class StatusText implements Observer {
                 mProgressText = text;
             }
             UpdateText();
+        }
+        public void SetError( Exception e ) {
+            SetError( "", "", "", e );
         }
         public void SetError( String text, String feedID, String entryID, Exception e ) {
             Dog.e( "Error", e );

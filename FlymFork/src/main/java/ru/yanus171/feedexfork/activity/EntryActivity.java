@@ -21,7 +21,6 @@ package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
-import static ru.yanus171.feedexfork.fragment.EntryFragment.IsLocalFile;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
@@ -37,7 +36,6 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -46,19 +44,10 @@ import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.regex.Matcher;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -66,7 +55,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.adapter.EntriesCursorAdapter;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
-import ru.yanus171.feedexfork.parser.FileSelectDialog;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
 import ru.yanus171.feedexfork.service.FetcherService;
@@ -98,25 +86,7 @@ public class EntryActivity extends BaseActivity implements Observer {
 
         mEntryFragment = (EntryFragment) getSupportFragmentManager().findFragmentById(R.id.entry_fragment);
 
-        mIsNewTask = getIntent() != null && getIntent().getBooleanExtra( NEW_TASK_EXTRA, false );
-
-        final Intent intent = getIntent();
-        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
-            if (m.find()) {
-                final String url = text.substring(m.start(), m.end());
-                final String title = text.substring(0, m.start());
-                LoadAndOpenLink(url, title, TEXT);
-            }
-        } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
-            final String url = intent.getDataString();
-            final String title = intent.getDataString();
-            LoadAndOpenLink(url, title, TEXT);
-        }
-
-        mEntryFragment.setData(getIntent().getData());
+        setDataFrom(getIntent());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -129,8 +99,6 @@ public class EntryActivity extends BaseActivity implements Observer {
             }
         });
 
-
-        FetcherService.mCancelRefresh = false;
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {
@@ -149,6 +117,27 @@ public class EntryActivity extends BaseActivity implements Observer {
             setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
     }
 
+    private void setDataFrom(final Intent intent) {
+        mIsNewTask = intent != null && intent.getBooleanExtra( NEW_TASK_EXTRA, false );
+
+        final String TEXT = MainApplication.getContext().getString(R.string.loadingLink) + "...";
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND) && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
+            if (m.find()) {
+                final String url = text.substring(m.start(), m.end());
+                final String title = text.substring(0, m.start());
+                LoadAndOpenLink(url, title, TEXT);
+            }
+        } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
+            final String url = intent.getDataString();
+            final String title = intent.getDataString();
+            LoadAndOpenLink(url, title, TEXT);
+        }
+
+        mEntryFragment.setData(getIntent().getData());
+        FetcherService.mCancelRefresh = false;
+    }
 
 
     @Override
@@ -163,50 +152,6 @@ public class EntryActivity extends BaseActivity implements Observer {
         mBrightness.mTapAction = () -> mEntryFragment.PageDown();
     }
 
-    private Uri extractFileToZip(Uri sourceUri, String destFolder ) {
-        try {
-            return extractFileToZip( sourceUri, destFolder, null );
-         } catch ( IllegalArgumentException e ) {
-            e.printStackTrace();
-            return extractFileToZip( sourceUri, destFolder, Charset.forName("CP1251") );
-        }
-    }
-    private Uri extractFileToZip(Uri sourceUri, String destFolder, Charset charset)
-    {
-        InputStream is;
-        ZipInputStream zis;
-        try {
-            String filename;
-            is = MainApplication.getContext().getContentResolver().openInputStream(sourceUri);
-            if (Build.VERSION.SDK_INT >= 24 && charset != null)
-                zis = new ZipInputStream(new BufferedInputStream(is), charset);
-            else
-                zis = new ZipInputStream(new BufferedInputStream(is));
-            ZipEntry ze;
-            byte[] buffer = new byte[1024];
-            int count;
-
-            while ((ze = zis.getNextEntry()) != null)
-            {
-                filename = ze.getName();
-                if (ze.isDirectory())
-                    continue;
-                final File destFile = new File( destFolder, filename );
-                FileOutputStream fout = new FileOutputStream(destFile );
-                while ((count = zis.read(buffer)) != -1)
-                    fout.write(buffer, 0, count);
-                fout.close();
-                zis.closeEntry();
-                return FileUtils.INSTANCE.getUriForFile( destFile );
-            }
-            zis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Uri.EMPTY;
-    }
 
     private void LoadAndOpenLink(final String urlParam, final String title, final String text) {
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
@@ -217,19 +162,10 @@ public class EntryActivity extends BaseActivity implements Observer {
             url = url.replace("#" + anchor, "");
             mEntryFragment.mAnchor = anchor;
         }
-        if (IsLocalFile(Uri.parse(url))) {
-            final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
-            Uri uri = Uri.parse(url);
-            if ( FileSelectDialog.Companion.getFileName(uri).endsWith( ".zip" ) ) {
-                Status().ChangeProgress( "extracting zip" );
-                uri = extractFileToZip( uri, cacheDir );
-                Status().ChangeProgress( "" );
-            }
-            final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
-            if ( !fileInCache.exists() || fileInCache.length() == 0 )
-                FileSelectDialog.Companion.copyFile(uri, fileInCache.getAbsolutePath(), EntryActivity.this, false);
-            url = FileUtils.INSTANCE.getUriForFile( fileInCache ).toString();
-        }
+        ContentValues values = new ContentValues();
+
+        if (LocalFile.Is(Uri.parse(url)))
+            url = LocalFile.processOnFirstLoad( Uri.parse(url), values ).toString();
 
         String finalUrl = url;
         Uri entryUri = GetEntryUri(finalUrl);
@@ -237,8 +173,8 @@ public class EntryActivity extends BaseActivity implements Observer {
         final String feedID = GetExtrenalLinkFeedID();
         if (entryUri == null) {
             Timer timer = new Timer("LoadAndOpenLink insert");
-            ContentValues values = new ContentValues();
-            values.put(EntryColumns.TITLE, title);
+            if ( !values.containsKey(EntryColumns.TITLE) )
+                values.put(EntryColumns.TITLE, title);
             values.put(EntryColumns.SCROLL_POS, 0);
             values.put(EntryColumns.DATE, (new Date()).getTime());
             values.put(EntryColumns.ABSTRACT, text);
@@ -268,6 +204,8 @@ public class EntryActivity extends BaseActivity implements Observer {
         } else
             RestartLoadersOnGUI();
     }
+
+
 
 
     private void SetEntryID(Uri entryUri, String entryLink) {
@@ -309,7 +247,10 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mEntryFragment.onNewIntent();
+        final EntryView view = mEntryFragment.GetSelectedEntryView();
+        if (view != null )
+            view.StatusStartPageLoading();
+        setDataFrom(intent);
     }
 
     @Override
@@ -467,7 +408,7 @@ public class EntryActivity extends BaseActivity implements Observer {
             return;
         if ( !(view instanceof WebEntryView ) )
             return;
-        ((WebEntryView)view).UpdateImages( false );
+        ((WebEntryView)view).UpdateImagesAndLinks( false );
         Dog.v("EntryView", "EntryView.update() " + view.mEntryId );
     }
     @Override

@@ -65,96 +65,16 @@
         android:icon="@drawable/ic_share"
         android:title="@string/menu_share">
         <menu>
-            <item
-                android:id="@id/menu_share"
-                android:icon="@drawable/ic_share"
-                app:showAsAction="always"
-                android:title="@string/menu_share"/>
-            <item
-                android:id="@+id/menu_open_link"
-                android:icon="@drawable/ic_open_in_browser"
-                android:title="@string/open_link" />
-            <item
-                android:id="@+id/menu_share_all_text"
-                android:icon="@drawable/ic_share"
-                android:title="@string/share_all_text" />
-            <item
-                android:id="@+id/menu_copy_clipboard"
-                android:icon="@drawable/ic_content_copy"
-                android:title="@string/menu_copy_clipboard" />
-            <item
-                android:id="@+id/menu_show_html"
-                android:icon="@drawable/ic_developer_mode"
-                android:title="@string/show_html" />
-            <item
-                android:id="@+id/menu_add_entry_shortcut"
-                android:icon="@drawable/ic_home"
-                android:title="@string/add_entry_shortcut" />
         </menu>
     </item>
 
     <item
-        android:id="@+id/menu_display_options"
+        android:id="@+id/menu_display_options_group"
         android:icon="@drawable/ic_visibility"
         android:title="@string/menu_display_options"
         app:showAsAction="never">
         <menu>
-            <item
-                android:id="@+id/menu_full_screen"
-                android:checkable="true"
-                android:icon="@drawable/ic_fullscreen"
-                android:title="@string/menu_full_screen"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/menu_actionbar_visible"
-                android:checkable="true"
-                android:icon="@drawable/ic_web_asset"
-                android:title="@string/menu_actionbar_visible"
-                app:showAsAction="never" />
 
-            <item
-                android:id="@+id/menu_font_bold"
-                android:checkable="true"
-                android:icon="@drawable/ic_format_bold"
-                android:title="@string/menu_font_bold" />
-            <item
-                android:id="@+id/menu_image_white_background"
-                android:checkable="true"
-                android:icon="@drawable/ic_photo_size_select_actual"
-                android:title="@string/image_white_background" />
-            <item
-                android:id="@+id/menu_show_progress_info"
-                android:checkable="true"
-                android:icon="@drawable/ic_info_outline"
-                android:title="@string/show_progress_info" />
-            <item
-                android:id="@+id/menu_toggle_theme"
-                android:title="@string/menu_toggle_theme"
-                android:icon="@drawable/ic_style"
-                android:visible="true"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/menu_force_orientation_by_sensor"
-                android:checkable="true"
-                android:icon="@drawable/orientation_by_sensor"
-                android:title="@string/menu_force_orientation_by_sensor" />
-            <item
-                android:icon="@drawable/ic_visibility"
-                android:title="@string/menu_article_orientation"
-                app:showAsAction="never">
-                <menu>
-                    <item
-                    android:id="@+id/menu_force_landscape_orientation_toggle"
-                    android:checkable="true"
-                    android:icon="@drawable/landscape_orientation"
-                    android:title="@string/force_landscape_orientation" />
-                <item
-                    android:id="@+id/menu_force_portrait_orientation_toggle"
-                    android:checkable="true"
-                    android:icon="@drawable/portrait_orientation"
-                    android:title="@string/force_portrait_orientation" />
-                </menu>
-            </item>
         </menu>
     </item>
     <item
@@ -162,64 +82,12 @@
         android:icon="@drawable/label_white"
         android:title="@string/menu_labels" />
     <item
-        android:id="@+id/menu_reload"
+        android:id="@+id/menu_reload_group"
         android:icon="@drawable/ic_sync"
         android:title="@string/menu_reload"
         app:showAsAction="never">
         <menu>
-            <item
-                android:id="@+id/menu_edit_article_url"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit_article_url" />
-            <item
-                android:id="@+id/menu_edit_article_title"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit_article_title" />
-            <item
-                android:id="@+id/menu_reload_full_text_with_tags"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/reload_full_text_with_tags" />
-            <item
-                android:id="@+id/menu_cancel_refresh"
-                android:icon="@drawable/ic_action_cancel"
-                android:orderInCategory="0"
-                android:title="@string/menu_cancel_refresh"
-                android:visible="true" />
-            <item
-                android:id="@+id/menu_edit_feed"
-                android:icon="@drawable/ic_edit"
-                android:title="@string/menu_edit_feed" />
-            <item
-                android:id="@+id/menu_reload_full_text_without_mobilizer"
-                android:icon="@drawable/ic_sync_problem"
-                android:title="@string/menu_reload_full_text_without_mobilizer" />
-            <item
-                android:id="@+id/menu_reload_full_text_with_scripts"
-                android:icon="@drawable/ic_sync_problem"
-                android:title="@string/menu_reload_full_text_with_scripts" />
-            <item
-                android:id="@+id/menu_reload_with_tables_toggle"
-                android:checkable="true"
-                android:icon="@drawable/ic_view_module"
-                android:title="@string/menu_reload_with_tables_toggle" />
-            <item
-                android:id="@+id/menu_replace_img_with_a_link_toggle"
-                android:checkable="true"
-                android:icon="@drawable/ic_view_module"
-                android:title="@string/menu_replace_img_with_a_link_toggle" />
-            <item
-                android:id="@+id/menu_reload_full_text_with_debug_toggle"
-                android:checkable="true"
-                android:icon="@drawable/ic_developer_mode"
-                android:title="@string/menu_reload_full_text_with_debug" />
-            <item
-                android:id="@+id/menu_load_all_images"
-                android:icon="@drawable/ic_photo_size_select_actual"
-                android:title="@string/menu_load_all_images" />
-            <item
-                android:id="@+id/menu_reload_full_text"
-                android:icon="@drawable/ic_sync"
-                android:title="@string/menu_reload_full_text" />
+
         </menu>
     </item>
     <item

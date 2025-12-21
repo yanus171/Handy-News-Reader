@@ -12,6 +12,7 @@ import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.fragment.EntryFragment
 import ru.yanus171.feedexfork.utils.Theme
+import ru.yanus171.feedexfork.utils.UiUtils.SetFont
 
 class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     private var mView: View? = null
@@ -27,6 +28,8 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
 
     fun hide() {
         mView?.visibility = View.GONE
+        val titleTextView: TextView = mRootView.findViewById(R.id.title)
+        titleTextView.visibility = View.GONE
     }
 
     @SuppressLint("InflateParams")
@@ -42,11 +45,17 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
         setupPageSeekbar()
         setupControlPanelButtonActions()
         mEntryView?.setupControlPanelButtonActions()
+        val titleTextView: TextView = mRootView.findViewById(R.id.title)
+        titleTextView.visibility = View.VISIBLE
+        titleTextView.setBackgroundColor(Theme.GetMenuBackgroundColor())
+        titleTextView.text = mEntryView!!.mTitle;
+        SetFont(titleTextView, 1F);
+
     }
 
     fun setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_menu, false) {
-            mEntryFragment.activity?.openOptionsMenu()
+            mEntryFragment.mMenu.open()
         }
     }
 
@@ -56,8 +65,8 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
             return
         btn.setOnClickListener {
             click.onClick(btn)
-            mEntryFragment.mControlPanel.hide()
-            mEntryFragment.hideTapZones()
+            hide()
+            mEntryFragment.mTapZones.Hide()
         }
         btn.visibility = View.VISIBLE
         if (checked)
@@ -65,11 +74,23 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
         else
             btn.setBackgroundResource(android.R.drawable.screen_background_dark)
     }
+    fun setupButtonLongClickAction(viewId: Int, click: View.OnClickListener) {
+        val btn = mView!!.findViewById<ImageButton>(viewId)
+        if ( btn == null )
+            return
+        btn.setOnLongClickListener {
+            click.onClick(btn)
+            hide()
+            mEntryFragment.mTapZones.Hide()
+            return@setOnLongClickListener true
+        }
+    }
 
     private fun setupPageSeekbar() {
         val seekBar = mRootView.findViewById<SeekBar>(R.id.seekbar)
         val seekBarText = mRootView.findViewById<TextView>(R.id.seekbar_text)
         seekBarText.setTextColor( Theme.GetTextColorInt() )
+        SetFont(seekBarText, 1F);
         val info = mEntryView!!.getProgressInfo()
         seekBar.setOnSeekBarChangeListener(null)
         seekBar.max = info.max

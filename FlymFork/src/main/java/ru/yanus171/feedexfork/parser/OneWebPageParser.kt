@@ -137,7 +137,7 @@ object OneWebPageParser {
                         val imagesToDl = ArrayList<String>()
                         if ( mainImageUrl.isNotEmpty() )
                             imagesToDl.add(mainImageUrl)
-                        HtmlUtils.replaceImageURLs(content, "", entryID, entryUrl, true, imagesToDl, null, mMaxImageDownloadCount)
+                        HtmlUtils.replaceImageURLs(content, "", entryID, entryUrl, true, imagesToDl, null, mMaxImageDownloadCount, null)
                         FetcherService.addImagesToDownload(entryID.toString(), imagesToDl)
                     }
                 }

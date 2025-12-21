@@ -51,6 +51,7 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
 import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
+import static ru.yanus171.feedexfork.fragment.EntryFragment.addArticleShortcut;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
@@ -179,7 +180,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private final boolean mShowFeedInfo;
     private final boolean mShowEntryTextFromFeedSetup;
     private final boolean mShowUnread;
-    private final HomeActivity mActivity;
+    private final EntriesListFragment mEntriesListFragment;
     private boolean mIsAutoSetAsRead = false;
     private boolean mIsLoadImages;
     private boolean mBackgroundColorLight = false;
@@ -211,7 +212,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mNeedScrollToTopExpandedArticle = false;
     private static Cursor mCursor = null;
     HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
-    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, HomeActivity activity) {
+    public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, EntriesListFragment entriesListFragment) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
         mContext = context;
@@ -220,7 +221,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mShowEntryTextFromFeedSetup = showEntryTextFromFeedSetup;
         mShowUnread = showUnread;
         mIsLoadImages = true;
-        mActivity = activity;
+        mEntriesListFragment = entriesListFragment;
         //SetIsReadMakredList();
 
         TakeMarkAsReadList( true );
@@ -392,25 +393,38 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                             final MenuItem[] items = {
                                 new MenuItem(R.string.context_menu_delete, R.drawable.delete, (_1, _2) ->
                                     EntriesListFragment.ShowDeleteDialog(view.getContext(), holder.titleTextView.getText().toString(), holder.entryID, holder.entryLink) ),
+
                                 new MenuItem(R.string.menu_mark_upper_as_read, R.drawable.ic_arrow_drop_up, (_1, _2) -> {
                                     for (int i = 0; i < pos; i++)
                                         posList.add(i);
                                     ShowMarkPosListAsReadDialog(context, R.string.question_mark_upper_as_read, posList);
                                 } ),
+
                                 new MenuItem(R.string.menu_mark_lower_as_read, R.drawable.arrow_drop_down, (_1, _2) -> {
                                     for (int i = pos + 1; i < getCount(); i++)
                                         posList.add(i);
                                     ShowMarkPosListAsReadDialog(context, R.string.question_mark_lower_as_read, posList);
                                     }),
+
                                 new MenuItem(R.string.menu_edit_labels, R.drawable.ic_label, (_1, _2) ->
                                     LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
+
                                 new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
                                     context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
                                                                                 .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
                                                                                 .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
                                                                                 .setType(Constants.MIMETYPE_TEXT_PLAIN),
                                                                                 context.getString(R.string.menu_share)))),
-                                new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(holder.entryLink) )
+
+                                new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(holder.entryLink) ),
+
+                                new MenuItem(R.string.add_entry_shortcut, R.drawable.ic_home, (_1, _2) -> {
+                                    addArticleShortcut( getActivity(holder),
+                                                        holder.titleTextView.getText().toString(),
+                                                        holder.entryID,
+                                                        EntryUri(holder.entryID),
+                                                        "");
+                                }),
                             };
                             ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
                             //wasMove = true;
@@ -814,14 +828,14 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             if ( bottomPos - showIdPos <= 2 && cursorPosition == bottomPos) {
                 holder.bottomEmptyPage.setVisibility(View.VISIBLE);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
-                ((Activity) holder.bottomEmptyPage.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                getActivity(holder).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 holder.bottomEmptyPage.setMinHeight((int) (displayMetrics.heightPixels * 0.7));
             }
         }
 
 
         holder.dayTextView.setVisibility( View.GONE );
-        if ( !mActivity.mEntriesFragment.mIsSingleLabel ) {
+        if ( !mEntriesListFragment.mIsSingleLabel ) {
             if ( cursor.isFirst() ) {
                 holder.dayTextView.setVisibility(View.VISIBLE);
                 holder.dayTextView.setText(DATE_FORMAT.format(new Date(date.getTimeInMillis())));
@@ -841,6 +855,10 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
 
 
+    }
+
+    private static Activity getActivity(ViewHolder holder) {
+        return (Activity) holder.bottomEmptyPage.getContext();
     }
 
     static private void setupImageViewClick(ImageView view, String feedTitle, String mainImgUrl) {
@@ -948,7 +966,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                                true,
                                                imagesToDl,
                                                mImageUrlList,
-                                               3 );
+                                               3,
+                                               null );
             temp = temp.replace(mTitle, "");
             temp = temp.replaceAll( "<p[^>]+>", "" );
             temp = temp.replace( "</p>", "" ).trim();
@@ -984,8 +1003,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private void OpenArticle( ViewHolder holder ) {
         holder.textTextView.getContext().startActivity(FetcherService.GetEntryActivityIntent(Intent.ACTION_VIEW, ContentUris.withAppendedId(mUri, holder.entryID))
                                    .putExtra( "SCROLL_TEXT", holder.getSearchText() )
-                                   .putExtra( NEW_TASK_EXTRA, mActivity.mIsNewTask )
-                                   .putExtra( EntryFragment.WHERE_SQL_EXTRA, mActivity.mEntriesFragment.GetWhereSQL() ));
+                                   .putExtra( NEW_TASK_EXTRA, false )
+                                   .putExtra( EntryFragment.WHERE_SQL_EXTRA, mEntriesListFragment.GetWhereSQL() ));
         if( isTextShown( holder )) {
             mImageDownloadObservable.notifyObservers(new ListViewTopPos(GetPosByID(holder.entryID)));
             PrefUtils.putLong( STATE_TEXTSHOWN_ENTRY_ID, 0 );

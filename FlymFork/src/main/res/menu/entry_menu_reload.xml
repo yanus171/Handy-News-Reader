@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/menu_edit_article_url"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/menu_edit_article_url" />
+    <item
+        android:id="@+id/menu_edit_article_title"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/menu_edit_article_title" />
+    <item
+        android:id="@+id/menu_reload_full_text_with_tags"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/reload_full_text_with_tags" />
+    <item
+        android:id="@+id/menu_cancel_refresh"
+        android:icon="@drawable/ic_action_cancel"
+        android:orderInCategory="0"
+        android:title="@string/menu_cancel_refresh"
+        android:visible="true" />
+    <item
+        android:id="@+id/menu_edit_feed"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/menu_edit_feed" />
+    <item
+        android:id="@+id/menu_reload_full_text_without_mobilizer"
+        android:icon="@drawable/ic_sync_problem"
+        android:title="@string/menu_reload_full_text_without_mobilizer" />
+    <item
+        android:id="@+id/menu_reload_full_text_with_scripts"
+        android:icon="@drawable/ic_sync_problem"
+        android:title="@string/menu_reload_full_text_with_scripts" />
+    <item
+        android:id="@+id/menu_reload_with_tables_toggle"
+        android:checkable="true"
+        android:icon="@drawable/ic_view_module"
+        android:title="@string/menu_reload_with_tables_toggle" />
+    <item
+        android:id="@+id/menu_replace_img_with_a_link_toggle"
+        android:checkable="true"
+        android:icon="@drawable/ic_view_module"
+        android:title="@string/menu_replace_img_with_a_link_toggle" />
+    <item
+        android:id="@+id/menu_reload_full_text_with_debug_toggle"
+        android:checkable="true"
+        android:icon="@drawable/ic_developer_mode"
+        android:title="@string/menu_reload_full_text_with_debug" />
+    <item
+        android:id="@+id/menu_load_all_images"
+        android:icon="@drawable/ic_photo_size_select_actual"
+        android:title="@string/menu_load_all_images" />
+    <item
+        android:id="@+id/menu_reload_full_text"
+        android:icon="@drawable/ic_sync"
+        android:title="@string/menu_reload_full_text" />
+</menu>

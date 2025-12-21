@@ -25,6 +25,10 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|bottom">
         <ImageButton
+            android:id="@+id/btn_label_setup"
+            android:src="@drawable/ic_label"
+            style="@style/ControlButton"/>
+        <ImageButton
             android:id="@+id/btn_zoom_shift_enabled"
             android:src="@drawable/arrow_left_right"
             style="@style/ControlButton"/>
@@ -47,6 +51,10 @@
         <ImageButton
             android:id="@+id/btn_force_portrait_orientation_toggle"
             android:src="@drawable/portrait_orientation"
+            style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:src="@drawable/ic_settings"
             style="@style/ControlButton"/>
         <ImageButton
             android:id="@+id/btn_force_orientation_by_sensor"

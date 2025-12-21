@@ -29,17 +29,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,7 +50,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
@@ -70,6 +67,8 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.BaseActivity;
 import ru.yanus171.feedexfork.activity.EntryActivity;
+import ru.yanus171.feedexfork.activity.EntryActivityNewTask;
+import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -81,9 +80,11 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.utils.WaitDialog;
 import ru.yanus171.feedexfork.view.ControlPanel;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
+import ru.yanus171.feedexfork.view.EntryViewFactory;
 import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.WebEntryView;
 import ru.yanus171.feedexfork.view.WebViewExtended;
@@ -97,16 +98,16 @@ import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsActionBarHidden;
 import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE;
 import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabled;
-import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
+import static ru.yanus171.feedexfork.utils.PrefUtils.isTapActionEnabled;
+import static ru.yanus171.feedexfork.view.EntryView.LoadIcon;
 import static ru.yanus171.feedexfork.view.EntryView.TAG;
-import static ru.yanus171.feedexfork.view.TapZonePreviewPreference.UpdateTapZonesTextAndVisibility;
 
 
 public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -121,9 +122,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public FeedFilters mFilters = null;
     public String mAnchor = "";
     public View mRootView = null;
-    public ControlPanel mControlPanel = null;
-    MenuItem mSearchNextItem = null;
-    MenuItem mSearchPreviousItem = null;
     static public final String WHERE_SQL_EXTRA = "WHERE_SQL_EXTRA";
 
     public static final String NEW_TASK_EXTRA = "NEW_TASK_EXTRA";
@@ -134,22 +132,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     private int mCurrentPagerPos = 0;
     private int mLastPagerPos = -1;
     private long mInitialEntryId = -1;
-    private boolean mIsTapZoneVisible = false;
     private ViewPager mEntryPager;
     private View mStarFrame = null;
     @SuppressLint("StaticFieldLeak")
     private static EntryView mLeakEntryView = null;
     private String mWhereSQL;
-    private String mSearchText = "";
-    private EntryOrientation mOrientation;
+    EntryOrientation mOrientation;
     private static final String STATE_BASE_URI = "STATE_BASE_URI";
     private static final String STATE_CURRENT_PAGER_POS = "STATE_CURRENT_PAGER_POS";
     private static final String STATE_INITIAL_ENTRY_ID = "STATE_INITIAL_ENTRY_ID";
-
+    public EntryTapZones mTapZones = null;
+    public ControlPanel mControlPanel = null;
+    public EntryMenu mMenu = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu( true );
+        mMenu = new EntryMenu( getActivity() );
         mOrientation = new EntryOrientation( this );
         if ( IsExternalLink( getActivity().getIntent().getData() ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
@@ -167,41 +166,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         super.onCreate(savedInstanceState);
     }
 
-    public void SetupZones() {
-        final boolean visible = mIsTapZoneVisible;
-        UpdateTapZoneButton( R.id.pageUpBtn, false );
-        UpdateTapZoneButton( R.id.pageDownBtn, false );
-        UpdateTapZoneButton( R.id.brightnessSliderLeft, false );
-        UpdateTapZoneButton( R.id.brightnessSliderRight, false );
-        UpdateTapZoneButton( R.id.entryLeftBottomBtn, visible );
-        UpdateTapZoneButton( R.id.entryRightBottomBtn, visible );
-        UpdateTapZoneButton( R.id.leftTopBtn, visible );
-        UpdateTapZoneButton( R.id.rightTopBtn, visible );
-        UpdateTapZoneButton( R.id.backBtn, visible );
-        UpdateTapZoneButton( R.id.leftTopBtnFS, visible );
-        UpdateTapZoneButton( R.id.rightTopBtnFS, visible );
-        UpdateTapZoneButton( R.id.entryCenterBtn, visible );
-
-        final EntryView view = GetSelectedEntryView();
-        final boolean isBackBtnVisible = view != null && view.CanGoBack() && visible; //&& IsZoneEnabled( R.id.backBtn, false, false );
-        getBaseActivity().mRootView.findViewById( R.id.backBtn ).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
-
-        if ( !isArticleTapEnabledTemp() ) {
-            UpdateTapZoneButton(R.id.rightTopBtn, true);
-            getBaseActivity().mRootView.findViewById(R.id.rightTopBtn).setVisibility( View.VISIBLE );
-        }
-    }
 
     public static boolean IsExternalLink( Uri uri ) {
         return uri == null ||
             uri.toString().startsWith( HTTP_SCHEME ) ||
             uri.toString().startsWith( HTTPS_SCHEME ) ||
-            IsLocalFile( uri );
-    }
-    public static boolean IsLocalFile(Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) &&
-            ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
-            uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
+            LocalFile.Is( uri );
     }
 
     private BaseActivity getBaseActivity() {
@@ -212,8 +182,23 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getBaseActivity().mRootView = inflater.inflate(R.layout.fragment_entry, container, true);
         mRootView = getBaseActivity().mRootView;
+        if ( PrefUtils.isTapActionEnabled() )
+            mTapZones = new EntryTapZones( this );
+        else {
+            mTapZones = null;
+            EntryTapZones.hideAll( mRootView );
+        }
         mControlPanel = new ControlPanel( mRootView, this );
-        SetupZones();
+        if ( mTapZones != null )
+            mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
+                mTapZones.Hide();
+                if ( mControlPanel.isVisible() )
+                    mControlPanel.hide();
+                else {
+                    mControlPanel.show(GetSelectedEntryView());
+                    setupControlPanelButtonActions();
+                }
+            });
 
         mStatusText = new StatusText( mRootView.findViewById(R.id.statusText ),
                                       mRootView.findViewById(R.id.errorText ),
@@ -221,7 +206,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                                       mRootView.findViewById(R.id.progressText),
                                       FetcherService.Status() );
 
-        setupTapZoneButtonActions();
         setupEndEditingButton();
 
         mEntryPager = mRootView.findViewById(R.id.pager);
@@ -236,18 +220,56 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         mRootView.findViewById(R.id.layoutColontitul).setVisibility(View.VISIBLE);
         mRootView.findViewById(R.id.statusText).setVisibility(View.GONE);
+        if ( mTapZones != null ) {
+            mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
+                getEntryActivity().setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
+                if (!isTapActionEnabled())
+                    return true;
+                GetSelectedEntryView().OpenLabelSetup();
+                return true;
+            });
+
+            mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
+                GetSelectedEntryView().leftBottomBtnClick();
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
+                if (GetSelectedEntryWebView() == null)
+                    return true;
+                GetSelectedEntryWebView().DownloadAllImages();
+                UiUtils.toast(R.string.downloadAllImagesStarted);
+                return true;
+            });
+
+            mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
+                GetSelectedEntryView().rightBottomBtnClick();
+                mControlPanel.hide();
+            });
+            mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
+                if (GetSelectedEntryWebView() == null)
+                    return true;
+                GetSelectedEntryWebView().ReloadFullText();
+                UiUtils.toast(R.string.fullTextReloadStarted);
+                return true;
+            });
+
+            TextView.OnClickListener listener = view -> {
+                PageDown();
+                mControlPanel.hide();
+            };
+
+            mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
+            //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
+            mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
+                GetSelectedEntryView().LongClickOnBottom();
+                return true;
+            });
+        }
 
         setupUpStarSwipe();
-
-        mRootView.findViewById(R.id.entryCenterBtn).setOnClickListener(v -> {
-            hideTapZones();
-            if ( mControlPanel.isVisible() )
-                mControlPanel.hide();
-            else {
-                mControlPanel.show(GetSelectedEntryView());
-                setupControlPanelButtonActions();
-            }
-        });
 
         SetStarFrameWidth(0);
         UpdateHeader();
@@ -255,7 +277,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return mRootView;
     }
 
-    private void setupControlPanelButtonActions() {
+    void setupControlPanelButtonActions() {
         mOrientation.setupControlPanelButtonActions( mControlPanel, getUri() );
     }
 
@@ -275,8 +297,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( mEntryPager.getCurrentItem() > 0  )
             mEntryPager.setCurrentItem( mEntryPager.getCurrentItem() - 1, true );
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -320,11 +340,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMarkAsUnreadOnFinish = false;
         if ( mSetupChanged ) {
             mSetupChanged = false;
-            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos, true, false);
+            mEntryPagerAdapter.generateArticleContent(mCurrentPagerPos);
         }
         mOrientation.onResume();
-        UpdateTapZonesTextAndVisibility(getView().getRootView(), mIsTapZoneVisible );
-        refreshUI(false);
+        if ( mTapZones != null )
+            mTapZones.onResune();
+        update(false);
+        markPrevArticleAsRead();
     }
 
     @Override
@@ -367,83 +389,20 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.entry, menu);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            menu.setGroupDividerEnabled( true );
-        for ( int i = 0; i < menu.size(); i++ )
-            updateMenuWithIcon( menu.getItem( i ) );
-
-        menu.findItem(R.id.menu_star).setShowAsAction( GetIsActionBarHidden() ? MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW : MenuItem.SHOW_AS_ACTION_IF_ROOM );
-
+        mMenu.onCreateOptionsMenu(menu, inflater);
         final EntryView view = GetSelectedEntryView();
-        if ( view != null ){
-            MenuItem item = menu.findItem(R.id.menu_star);
-            if (view.mFavorite)
-                item.setTitle(R.string.menu_unstar).setIcon(R.drawable.ic_star);
-            else
-                item.setTitle(R.string.menu_star).setIcon(R.drawable.ic_star_border);
-            updateMenuWithIcon(item);
-        }
-
-        final MenuItem searchItem = menu.findItem(R.id.menu_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        mSearchNextItem = menu.findItem(R.id.menu_search_next);
-        mSearchPreviousItem = menu.findItem(R.id.menu_search_previous);
-        mSearchNextItem.setVisible( false );
-        mSearchPreviousItem.setVisible( false );
-
+        if ( view != null )
+            view.onCreateOptionsMenu(menu);
         mOrientation.onCreateOptionsMenu( menu );
-
-        // Use a custom search icon for the SearchView in AppBar
-        int searchImgId = androidx.appcompat.R.id.search_button;
-        ImageView v = searchView.findViewById(searchImgId);
-        v.setImageResource(R.drawable.ic_search);
-
-        if (!mSearchText.isEmpty()) {
-            searchItem.expandActionView();
-            // Without that, it just does not work
-            searchView.post(() -> {
-                searchView.setQuery(mSearchText, false);
-                searchView.clearFocus();
-            });
-        }
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                mSearchText = newText;
-                mSearchNextItem.setVisible( false );
-                mSearchPreviousItem.setVisible( false );
-
-                if (!TextUtils.isEmpty(newText)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                        GetSelectedEntryWebViewExtended().findAllAsync( newText );
-                    else
-                        GetSelectedEntryWebViewExtended().findAll( newText );
-                }
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(() -> {
-            mSearchText = "";
-            mSearchNextItem.setVisible( false );
-            mSearchPreviousItem.setVisible( false );
-            GetSelectedEntryWebViewExtended().clearMatches();
-            return false;
-        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        mOrientation.onPrepareOptionsMenu( menu );
         if ( GetSelectedEntryView() != null )
             GetSelectedEntryView().onPrepareOptionsMenu( menu );
+        setItemVisible( menu, R.id.menu_actionbar_visible, PrefUtils.isTapActionEnabled() );
+        mOrientation.onPrepareOptionsMenu( menu );
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -557,13 +516,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     try ( Cursor entriesCursor = cr.query( mBaseUri, FeedData.EntryColumns.PROJECTION_ID, mWhereSQL, null, FeedData.EntryColumns.DATE + entriesOrder) ) {
                         mEntryPagerAdapter.setData(entriesCursor );
                     }
-                    {
+                    if ( mInitialEntryId != -1 ){
                         final int index = mEntryPagerAdapter.GetEntryIndexByID( mInitialEntryId );
                         if ( index >= 0 ) {
                             mCurrentPagerPos = index;
                             mLastPagerPos = index;
                         }
-
                     }
 
                     if ( getCurrentEntryID() != -1 ) {
@@ -607,11 +565,12 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         EntryView.ProgressInfo info = new EntryView.ProgressInfo();
         if (entryView != null)
             info = entryView.getProgressInfo();
-        getBaseActivity().UpdateHeader(info.max,
-                info.progress,
-                info.step,
-                GetIsStatusBarHidden(),
-                GetIsActionBarHidden());
+        if ( getBaseActivity() != null )
+            getBaseActivity().UpdateHeader( info.max,
+                                            info.progress,
+                                            info.step,
+                                            GetIsStatusBarHidden(),
+                                            GetIsActionBarHidden() );
     }
 
     @NonNull
@@ -639,6 +598,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( view != null ) {
             view.setCursor( cursor );
             view.loadingDataFinished();
+            if ( view == GetSelectedEntryView() )
+                mOrientation.loadingDataFinished( view );
         }
     }
 
@@ -667,39 +628,17 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return ((WebEntryView)entryView).mWebView;
     }
 
-    public void toggleTapZoneVisibility() {
-        if ( mControlPanel.isVisible() ) {
-            mIsTapZoneVisible = false;
-            mControlPanel.hide();
-        } else
-            mIsTapZoneVisible = !mIsTapZoneVisible;
-        SetupZones();
-    }
-    public void hideTapZones() {
-        mIsTapZoneVisible = false;
-        SetupZones();
-    }
-    public boolean hasVideo() {
-        final WebEntryView view = GetSelectedEntryWebView();
-        if ( view != null )
-            return view.hasVideo();
-        return false;
-    }
-    public void refreshUI( boolean invalidateContent ) {
+    public void update(boolean invalidateContent ) {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         EntryView view = GetSelectedEntryView();
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
             getEntryActivity().invalidateOptionsMenu();
-            view.refreshUI( invalidateContent );
-
+            view.update( invalidateContent );
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
-
             startMobilizationTask(view.mEntryId);
-            mOrientation.refreshUI( view, getUri() );
         }
-        markPrevArticleAsRead();
     }
     public void restartCurrentEntryLoader() {
         UiUtils.RunOnGuiThread(() -> {
@@ -709,25 +648,47 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     @NonNull
-    public EntryView CreateWebEntryView(EntryActivity activity, int position, ViewGroup container ) {
+    public EntryView CreateWebEntryView(int position, ViewGroup container ) {
         final Entry entry = mEntryPagerAdapter.GetEntry(position);
-        final EntryView view = EntryView.Create( entry.mLink, entry.mID, activity, container );
+        final EntryView view = EntryViewFactory.Create( entry.mLink, entry.mID, this, container, position );
         view.mView.setTag(view);
 
         if ( mLeakEntryView == null )
             mLeakEntryView  = view;
-
-        final WebViewExtended webView = GetSelectedEntryWebViewExtended();
-        if (Build.VERSION.SDK_INT >= 16 && webView != null ) {
-            webView.setFindListener((activeMatchOrdinal, numberOfMatches, isDoneCounting) -> {
-                if (mSearchNextItem == null || mSearchPreviousItem == null)
-                    return;
-                mSearchNextItem.setVisible(numberOfMatches > 1);
-                mSearchPreviousItem.setVisible(numberOfMatches > 1);
-            });
-        }
         view.StatusStartPageLoading();
         return view;
+    }
+    public boolean hasVideo() {
+        final WebEntryView view = GetSelectedEntryWebView();
+        if ( view != null )
+            return view.hasVideo();
+        return false;
+    }
+
+    public static void addArticleShortcut( final Activity activity, final String name, final long entryID, final Uri uri, String iconUrl ) {
+        if ( ShortcutManagerCompat.isRequestPinShortcutSupported(activity) ) {
+            //Adding shortcut for MainActivity on Home screen
+            new WaitDialog(activity, R.string.downloadImage, () -> {
+                final IconCompat icon = LoadIcon(iconUrl);
+                UiUtils.RunOnGuiThread(() -> {
+                    final Intent intent = new Intent(activity, EntryActivityNewTask.class)
+                            .setAction(Intent.ACTION_VIEW)
+                            .setData(uri)
+                            .putExtra(NEW_TASK_EXTRA, true);
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(activity, String.valueOf(entryID))
+                            .setIcon(icon)
+                            .setShortLabel(name)
+                            .setIntent(intent)
+                            .build();
+
+
+                    ShortcutManagerCompat.requestPinShortcut(activity, pinShortcutInfo, null);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+                        UiUtils.toast(R.string.new_entry_shortcut_added);
+                });
+            }).execute();
+        } else
+            UiUtils.toast( R.string.new_feed_shortcut_add_failed );
     }
     private void setupEndEditingButton() {
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
@@ -739,90 +700,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
     }
 
-    private void setupTapZoneButtonActions() {
-        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> GetSelectedEntryView().GoBack() );
-        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
-            GetSelectedEntryView().ClearHistoryAnchor();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
-            if ( isArticleTapEnabled() ) {
-                EntryActivity activity = (EntryActivity) getActivity();
-                activity.setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );
-            } else
-                EnableTapActions();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.rightTopBtn).setOnLongClickListener(view -> {
-            if ( isArticleTapEnabled() ) {
-                PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
-                SetupZones();
-                GetSelectedEntryView().refreshUI( true );
-                UiUtils.toast( R.string.tap_actions_were_disabled );
-            } else
-                EnableTapActions();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.leftTopBtn).setOnClickListener(v -> {
-            EntryActivity activity = (EntryActivity) getActivity();
-            activity.setFullScreen(!GetIsStatusBarHidden(), GetIsActionBarHidden());
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.leftTopBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().OpenLabelSetup();
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().leftBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryLeftBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().DownloadAllImages();
-            UiUtils.toast( R.string.downloadAllImagesStarted );
-            return true;
-        });
-
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnClickListener(v -> {
-            GetSelectedEntryView().rightBottomBtnClick();
-            mControlPanel.hide();
-        });
-        mRootView.findViewById(R.id.entryRightBottomBtn).setOnLongClickListener(view -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            if ( GetSelectedEntryWebView() == null )
-                return true;
-            GetSelectedEntryWebView().ReloadFullText();
-            UiUtils.toast( R.string.fullTextReloadStarted );
-            return true;
-        });
-
-        TextView.OnClickListener listener = view -> {
-            PageDown();
-            mControlPanel.hide();
-        };
-
-        mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
-        //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
-        mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
-            if ( !isArticleTapEnabled() )
-                return true;
-            GetSelectedEntryView().LongClickOnBottom();
-            return true;
-        });
-    }
-
-    private void UpdateTapZoneButton( int viewID, boolean visible ) {
-        UiUtils.UpdateTapZoneButton( getBaseActivity().mRootView, viewID, visible );
-    }
 
     private void setupPageChangeListener() {
         mEntryPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -843,17 +720,14 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 CancelStarNotification( getCurrentEntryID() );
 
-                mLastPagerPos = i;
-                refreshUI(false);
+                update(false);
+                markPrevArticleAsRead();
 
-                EntryView view = mEntryPagerAdapter.GetEntryView( i );
-                if ( view != null && GetSelectedEntryWebView() != null ) {
-                    if ( view.mLoadTitleOnly )
-                        getLoaderManager().restartLoader(i, null, EntryFragment.this);
-                    else
-                        GetSelectedEntryWebView().DisableTapActionsIfVideo( view );
-                    view.mLoadTitleOnly = false;
-                }
+                if ( GetSelectedEntryView() != null )
+                    GetSelectedEntryView().onPageSelected();
+
+                mLastPagerPos = i;
+
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                 Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
                 TextView textView = new TextView(getContext());
@@ -942,13 +816,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         });
     }
 
-    private void EnableTapActions() {
-        PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
-        SetupZones();
-        GetSelectedEntryView().refreshUI( true );
-        UiUtils.toast( R.string.tap_actions_were_enabled );
-    }
-
 
     private void SetStarFrameWidth(int w) {
         mStarFrame.setLayoutParams( new FrameLayout.LayoutParams( FrameLayout.LayoutParams.FILL_PARENT, w));
@@ -956,36 +823,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
 
 
-    /**
-     * Updates a menu item in the dropdown to show it's icon that was declared in XML.
-     *
-     * @param item
-     *         the item to update
-     */
-    private static void updateMenuWithIcon(@NonNull final MenuItem item) {
-        SpannableStringBuilder builder = new SpannableStringBuilder()
-                .append("*") // the * will be replaced with the icon via ImageSpan
-                .append("    ") // This extra space acts as padding. Adjust as you wish
-                .append(item.getTitle());
-
-
-
-        // Retrieve the icon that was declared in XML and assigned during inflation
-        if (item.getIcon() != null && item.getIcon().getConstantState() != null) {
-            Drawable drawable = item.getIcon().getConstantState().newDrawable();
-
-            // Mutate this drawable so the tint only applies here
-            // drawable.mutate().setTint(color);
-
-            // Needs bounds, or else it won't show up (doesn't know how big to be)
-            //drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            drawable.setBounds(0, 0, DpToPx( 30 ), DpToPx( 30 ) );
-            //drawable.setBounds(-DpToPx( 30 ), 0, 0, 0 );
-            ImageSpan imageSpan = new ImageSpan(drawable);
-            builder.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            item.setTitle(builder);
-        }
-    }
 
 
     private String getCurrentEntryLink() {
@@ -1059,7 +896,5 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.SetID(currentEntryID).start();
     }
-
-
 
 }
