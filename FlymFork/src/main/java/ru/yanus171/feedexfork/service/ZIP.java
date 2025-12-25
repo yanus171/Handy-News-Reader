@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -30,9 +31,7 @@ public class ZIP {
         init();
     }
 
-    public Document GetDoc(String relativeFileName ) throws IOException {
-        return loadDoc( GetFile( relativeFileName ) );
-    }
+    
     public File GetFile(String relativeFileName) throws FileNotFoundException {
         if ( !mFileMap.containsKey( relativeFileName ) )
             throw new FileNotFoundException( String.format("Zip: %s file not found", relativeFileName) );

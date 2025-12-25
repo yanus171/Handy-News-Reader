@@ -219,7 +219,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         ProgressInfo result = new ProgressInfo();
         final int screenCount = mWebView.getPageHeight() == 0 ? 1 : contentHeight / mWebView.getPageHeight();
         result.max = screenCount;
-        result.progress = (int) ((screenCount * mWebView.getScrollY()) / (float)contentHeight);
+        result.progress = (int) (((long)screenCount * mWebView.getScrollY()) / (float)contentHeight);
         result.step = 1;
         return result;
     }

@@ -1,6 +1,7 @@
 package ru.yanus171.feedexfork.service;
 
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.activity.LocalFile.loadDoc;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.getDownloadedImagePath;
@@ -30,6 +31,50 @@ public class EPUB {
         final String fileName = FileUtils.INSTANCE.getFileName(uri).toLowerCase();
         return fileName.contains(".epub");
     }
+    @SuppressLint("Range")
+    public static boolean loadLocalFile(final long entryId, String entryLink) throws IOException {
+        if (!Is(entryLink))
+            return false;
+        Timer timer = new Timer( "loadEPUBLocalFile " + entryLink );
+        ClearContentStepToFile();
+        ZIP zip = new ZIP( Uri.parse( entryLink ) );
+        final String rootFileName = getAttributeValue( getDoc( zip, "META-INF/container.xml" ), "rootfile", "full-path");
+        final String parentFolder = getParentPath(rootFileName);
+        Document doc = getDoc( zip, rootFileName );
+        StringBuilder content = new StringBuilder();
+        final String title = getTitle( doc );
+        for( Element item: doc.getElementsByTag( "item" ) ) {
+            Status().ChangeProgress( "Reading " + item.attr( "href" ) );
+            final String type = item.attr("media-type");
+            final String href = item.attr( "href" );
+            final String relativeFileName = parentFolder + href;
+            if (type.contains("xhtml"))
+                content.append( getDoc( zip, relativeFileName ).getElementsByTag("body").first() );
+            else if ( type.contains("image") )
+                saveImage( zip.GetFile( relativeFileName ), href, entryLink );
+        }
+        saveToDB(entryId, entryLink, title, content.toString());
+        Status().ChangeProgress("");
+        timer.End();
+        return true;
+    }
+
+    public static Document getDoc(ZIP zip, String relativeFileName) throws IOException {
+        Document doc = loadDoc( zip.GetFile( relativeFileName ) );
+        fixAnchors(doc);
+        return doc;
+    }
+
+    private static void fixAnchors(Document doc) {
+        for (Element item: doc.getElementsByTag( "a" ))
+            if ( item.attr("href").contains( "#" ) ) {
+                item.tagName( "sub" );
+                if ( item.hasAttr("title" ) )
+                    item.text( " ["+ item.attr("title") + "]" );
+            }
+    }
+
+
     static private String getTitle(Document doc) {
         return getElementText( doc, "dc:title" ) + " " +
                 getElementText( doc, "dc:title" ) + " " +
@@ -40,37 +85,7 @@ public class EPUB {
         if ( !els.isEmpty() )
             return els.first().text();
         return "";
-
     }
-    @SuppressLint("Range")
-    public static boolean loadLocalFile(final long entryId, String entryLink) throws IOException {
-        if (!Is(entryLink))
-            return false;
-        Timer timer = new Timer( "loadEPUBLocalFile " + entryLink );
-        ClearContentStepToFile();
-        ZIP zip = new ZIP( Uri.parse( entryLink ) );
-        final String rootFileName = getAttributeValue( zip.GetDoc( "META-INF/container.xml" ), "rootfile", "full-path");
-        final String parentFolder = getParentPath(rootFileName);
-        Document doc = zip.GetDoc( rootFileName );
-        StringBuilder content = new StringBuilder();
-        final String title = getTitle( doc );
-        for( Element item: doc.getElementsByTag( "item" ) ) {
-            Status().ChangeProgress( "Reading " + item.attr( "href" ) );
-            final String type = item.attr("media-type");
-            final String href = item.attr( "href" );
-            final String relativeFileName = parentFolder + href;
-            if (type.contains("xhtml"))
-                content.append( zip.GetDoc( relativeFileName ).getElementsByTag("body").first() );
-            else if ( type.contains("image") )
-                saveImage( zip.GetFile( relativeFileName ), href, entryLink );
-        }
-        Status().ChangeProgress("");
-        saveToDB(entryId, entryLink, title, content.toString());
-        Status().ChangeProgress("");
-        timer.End();
-        return true;
-    }
-
     private static void saveImage( File file, String relativeFileName, String entryLink ) throws IOException {
         final String downloadedFilePath = getDownloadedImagePath( entryLink, relativeFileName );
         FileUtils.INSTANCE.copy( file, new File( downloadedFilePath ) );
