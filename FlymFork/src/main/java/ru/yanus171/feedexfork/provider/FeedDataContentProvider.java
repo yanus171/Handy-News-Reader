@@ -967,5 +967,11 @@ public class FeedDataContentProvider extends ContentProvider {
 
     }
 
+    public static boolean IsEntryUri( Uri uri ) {
+        int match = FeedDataContentProvider.URI_MATCHER.match( uri );
+        return ( match == URI_ENTRY_FOR_FEED ||
+                 match == URI_ENTRY_FOR_GROUP ||
+                 match == URI_UNREAD_ENTRY );
 
+    }
 }

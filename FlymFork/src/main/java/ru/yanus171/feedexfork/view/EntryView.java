@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.view.Menu;
@@ -47,10 +48,12 @@ import java.util.Stack;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
+import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -358,7 +361,10 @@ public abstract class EntryView {
 
     @NotNull
     public static IconCompat LoadIcon(String iconUrl) {
-        Bitmap bitmap = iconUrl != null ? NetworkUtils.downloadImage(iconUrl) : null;
+        Bitmap bitmap =
+                iconUrl == null ? null :
+                LocalFile.Is( iconUrl ) ? FileUtils.INSTANCE.loadBitmapFromUri( Uri.parse(iconUrl) ) :
+                NetworkUtils.downloadImage(iconUrl);
         if ( bitmap == null )
             UiUtils.RunOnGuiThread(() -> UiUtils.toast( R.string.unable_to_load_article_icon ));
         else
@@ -367,7 +373,6 @@ public abstract class EntryView {
                 IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
                 IconCompat.createWithBitmap(bitmap);
     }
-
 
     public void OpenLabelSetup() {
         LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), mEntryId, null);

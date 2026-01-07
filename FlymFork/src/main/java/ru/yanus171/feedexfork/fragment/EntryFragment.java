@@ -150,7 +150,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         setHasOptionsMenu( true );
         mMenu = new EntryMenu( getActivity() );
         mOrientation = new EntryOrientation( this );
-        if ( IsExternalLink( getActivity().getIntent().getData() ) )
+        Uri uri = getActivity().getIntent().getData();
+        if ( IsExternalLink( uri ) || LocalFile.IsForEntryUri( uri ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
         else
             mEntryPagerAdapter = new EntryPagerAdapter( this );
@@ -171,7 +172,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return uri == null ||
             uri.toString().startsWith( HTTP_SCHEME ) ||
             uri.toString().startsWith( HTTPS_SCHEME ) ||
-            LocalFile.Is( uri );
+            LocalFile.Is( uri ) ;
     }
 
     private BaseActivity getBaseActivity() {
@@ -499,7 +500,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
                 //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
-                if ( !IsExternalLink( uri ) ) {
+                if ( mEntryPagerAdapter instanceof EntryPagerAdapter ) {
                     SetEntryReadTime( uri );
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
                     if ( mBaseUri.toString().endsWith( "-1" ) )

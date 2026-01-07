@@ -422,8 +422,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                     addArticleShortcut( getActivity(holder),
                                                         holder.titleTextView.getText().toString(),
                                                         holder.entryID,
-                                                        EntryUri(holder.entryID),
-                                                        "");
+                                                        Uri.parse( holder.entryLink ),// EntryUri(holder.entryID),
+                                                        holder.iconUrl);
                                 }),
                             };
                             ShowMenu(items, String.valueOf(holder.titleTextView.getText()), context );
@@ -604,15 +604,15 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.mainImgView.setVisibility( View.GONE );
         holder.mainBigImgView.setVisibility( View.GONE );
         if ( !isTextShown && getBoolean( "setting_show_article_icon", true ) ) {
-            String mainImgUrl = cursor.getString(mMainImgPos);
-            mainImgUrl = TextUtils.isEmpty(mainImgUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, mainImgUrl);
+            holder.iconUrl = cursor.getString(mMainImgPos);
+            holder.iconUrl = TextUtils.isEmpty(holder.iconUrl) ? null : NetworkUtils.getDownloadedOrDistantImageUrl(holder.entryLink, holder.iconUrl);
 
             //ColorGenerator generator = ColorGenerator.DEFAULT;
             //int color = generator.getColor(feedId); // The color is specific to the feedId (which shouldn't change)
-            if ( showBigImage && mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
+            if ( showBigImage && holder.iconUrl != null && mImageFileVoc.isExists(holder.iconUrl) ) {
                 holder.mainBigImgView.setVisibility( View.VISIBLE );
                 //setupImageViewClick(holder.mainBigImgView, feedTitle, mainImgUrl);
-                Glide.with(context).load(mainImgUrl)
+                Glide.with(context).load(holder.iconUrl)
                     .fitCenter()
                     .addListener(new RequestListener<Drawable>() {
                         @Override
@@ -632,12 +632,12 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                         }
                     })
                     .into(holder.mainBigImgView);
-            } else if ( mainImgUrl != null && mImageFileVoc.isExists(mainImgUrl) ) {
+            } else if ( holder.iconUrl != null && mImageFileVoc.isExists(holder.iconUrl) ) {
                 final int dim = UiUtils.dpToPixel(70);
                 //String lettersForName = feedName != null ? (feedName.length() < 2 ? feedName.toUpperCase() : feedName.substring(0, 2).toUpperCase()) : "";
                 //TextDrawable letterDrawable = TextDrawable.builder().buildRect(lettersForName, color);
 
-                Glide.with(context).load(mainImgUrl)
+                Glide.with(context).load(holder.iconUrl)
                     .override(dim, dim)
                     .centerCrop()
                     .addListener(new RequestListener<Drawable>() {
@@ -1450,6 +1450,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         boolean isMobilized;
         long entryID = -1;
         String entryLink;
+        String iconUrl;
         ImageView contentImgView1;
         ImageView contentImgView2;
         ImageView contentImgView3;

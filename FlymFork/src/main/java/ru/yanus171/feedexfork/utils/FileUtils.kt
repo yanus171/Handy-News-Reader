@@ -21,6 +21,8 @@ package ru.yanus171.feedexfork.utils
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -318,6 +320,14 @@ object FileUtils {
             deleteMobilized(cursor.getString(1), FeedData.EntryColumns.CONTENT_URI(cursor.getString(0)))
         cursor.close()
 
+    }
+
+    fun loadBitmapFromUri( uri: Uri ): Bitmap? {
+        val imageStream = MainApplication.getContext().contentResolver.openInputStream(uri); try {
+            return BitmapFactory.decodeStream(imageStream, null, BitmapFactory.Options());
+        } finally {
+            imageStream?.close();
+        }
     }
 
     public fun deleteMobilizedFile(link: String) {

@@ -2,10 +2,12 @@ package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.IsEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,10 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
+import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.FileUtils;
 
 public class LocalFile {
@@ -34,12 +36,21 @@ public class LocalFile {
     public static boolean Is(String uri ) {
         return Is( Uri.parse( uri ) );
     }
-    public static boolean Is(Uri uri ) {
+    public static boolean Is( Uri uri ) {
         return uri.toString().startsWith( CONTENT_SCHEME ) &&
                 ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
                 uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
     }
+    public static boolean IsForEntryUri( Uri uri ) {
+        if ( !IsEntryUri(uri) )
+            return false;
+        Cursor cursor = MainApplication.getContext().getContentResolver().query(uri, new String[] {FeedData.EntryColumns.LINK}, null, null, null );
+        if ( cursor.moveToFirst() && !cursor.isNull( 0 ) )
+            return Is( Uri.parse( cursor.getString( 0 ) ) );
+        cursor.close();
+        return false;
 
+    }
     public static boolean IsZIP(Uri uri ) {
         if ( !Is(uri) )
             return false;
