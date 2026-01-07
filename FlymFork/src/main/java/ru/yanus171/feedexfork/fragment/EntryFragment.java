@@ -73,6 +73,7 @@ import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -100,6 +101,8 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.IsEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_PROGRESS_INFO;
@@ -151,7 +154,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mMenu = new EntryMenu( getActivity() );
         mOrientation = new EntryOrientation( this );
         Uri uri = getActivity().getIntent().getData();
-        if ( IsExternalLink( uri ) || LocalFile.IsForEntryUri( uri ) )
+        if ( IsExternalLink( uri ) || LocalFile.Is( uri ) )
             mEntryPagerAdapter = new SingleEntryPagerAdapter( this );
         else
             mEntryPagerAdapter = new EntryPagerAdapter( this );
@@ -166,7 +169,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
         super.onCreate(savedInstanceState);
     }
-
 
     public static boolean IsExternalLink( Uri uri ) {
         return uri == null ||
@@ -555,6 +557,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void SetEntryReadTime(Uri entryUri) {
+        if ( !IsEntryUri( entryUri ) )
+            return;
         ContentValues values = new ContentValues();
         values.put(EntryColumns.READ_DATE, new Date().getTime());
         final ContentResolver cr = MainApplication.getContext().getContentResolver();

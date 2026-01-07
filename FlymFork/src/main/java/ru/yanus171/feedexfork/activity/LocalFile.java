@@ -33,24 +33,15 @@ public class LocalFile {
         uri = FileUtils.INSTANCE.getUriForFile( fileInCache );
         return uri;
     }
-    public static boolean Is(String uri ) {
-        return Is( Uri.parse( uri ) );
-    }
     public static boolean Is( Uri uri ) {
-        return uri.toString().startsWith( CONTENT_SCHEME ) &&
-                ( uri.toString().contains( "document" ) || uri.toString().contains( "media" )  || uri.toString().contains( "storage" ) ) ||
-                uri.toString().startsWith( FILE_SCHEME ) || uri.toString().contains( "cache_root" );
+        return Is( uri.toString() );
     }
-    public static boolean IsForEntryUri( Uri uri ) {
-        if ( !IsEntryUri(uri) )
-            return false;
-        Cursor cursor = MainApplication.getContext().getContentResolver().query(uri, new String[] {FeedData.EntryColumns.LINK}, null, null, null );
-        if ( cursor.moveToFirst() && !cursor.isNull( 0 ) )
-            return Is( Uri.parse( cursor.getString( 0 ) ) );
-        cursor.close();
-        return false;
+    public static boolean Is( String uri ) {
+        return uri.startsWith( CONTENT_SCHEME ) && ( uri.contains( "attachment" ) || uri.contains( "document" ) || uri.contains( "media" ) || uri.contains( "storage" ) ) ||
+               uri.startsWith( FILE_SCHEME ) ||
+               uri.contains( "cache_root" );
+    }
 
-    }
     public static boolean IsZIP(Uri uri ) {
         if ( !Is(uri) )
             return false;
