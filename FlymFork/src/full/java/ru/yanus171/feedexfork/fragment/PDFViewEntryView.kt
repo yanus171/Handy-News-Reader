@@ -21,6 +21,7 @@ import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
+import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.fragment.EntryMenu.setVisible
@@ -366,8 +367,11 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     }
 
     private fun share() {
-        getContext().startActivity(Intent.createChooser( Intent(Intent.ACTION_SEND)
-                .setData(Uri.parse(mEntryLink)),
+        getContext().startActivity(Intent.createChooser(
+                Intent(Intent.ACTION_SEND)
+                    .putExtra( Intent.EXTRA_STREAM, Uri.parse(mEntryLink) )
+                    .setType( Constants.MIMETYPE_PDF )
+                    .setFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION ),
             getContext().getString(R.string.menu_share)))
     }
 
