@@ -117,7 +117,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public String mDataWithWebLinks = "";
     public boolean mHasScripts = false;
     public boolean mIsEditingMode = false;
-    private int mScrollY = 0;
     public boolean mIsFullTextShown = true;
     private boolean mRetrieveFullText = false;
     public long mLastSetHTMLTime = 0;
@@ -173,8 +172,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
     @Override
     protected int GetScrollY() {
-        if (mScrollY != 0)
-            return mScrollY;
         return mWebView.GetContentHeight() * mScrollPartY != 0 ? (int) (mWebView.GetContentHeight() * mScrollPartY) : 0;
     }
 
@@ -314,7 +311,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                     mHasScripts = dataWithLinks.contains("<script");
                     mNotLoadedUrlSet = notLoadedUrlSet;
                 }
-                UiUtils.RunOnGuiThread(() -> LoadData());
+                UiUtils.RunOnGuiThread(() -> LoadData( false ));
             }
         }.start();
         mTitle = title;
@@ -365,18 +362,16 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                     mData = data;
                 }
                 UiUtils.RunOnGuiThread(() -> {
-                    if (!IsStatusStartPageLoading())
-                        mScrollY = mWebView.getScrollY();
                     if (!downloadImages)
-                        LoadData();
+                        LoadData( true );
                 });
             }
         }.start();
     }
 
-    public void LoadData() {
+    public void LoadData( boolean updateScrollPart ) {
         Dog.v(EntryView.TAG, "LoadDate");
-        if (mContentWasLoaded && GetViewScrollPartY() > 0)
+        if ( updateScrollPart && mContentWasLoaded && GetViewScrollPartY() > 0)
             mScrollPartY = GetViewScrollPartY();
         final String data;
         synchronized (mWebView) {
@@ -410,7 +405,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Dog.v(TAG, "EntryView.moveToAnchor " + hash);
             view.evaluateJavascript("javascript:window.location.hash = '" + hash + "';", null);
-            mScrollY = 0;
         }
     }
 
@@ -422,12 +416,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         synchronized (mWebView) {
             mData = data;
         }
-        mScrollY = mWebView.getScrollY();
-        LoadData();
+        LoadData( true );
         Status().End(status);
     }
 
-        public static void NotifyToUpdate(final long entryId, final String entryLink, final boolean restorePosition) {
+    public static void NotifyToUpdate(final long entryId, final String entryLink, final boolean restorePosition) {
         UiUtils.RunOnGuiThread(() -> {
             Dog.v(EntryView.TAG, String.format("NotifyToUpdate( %d )", entryId));
             WebViewExtended.mImageDownloadObservable.notifyObservers(new Entry(entryId, entryLink, restorePosition));
@@ -555,7 +548,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 forceUpdate);
         mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
         update(false);
-        Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
+        Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
     }
 
@@ -1167,7 +1160,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void ScrollToPage(int page) {
-        mScrollPartY = (double) page / mWebView.getPageCount();
+        mScrollPartY = page / (double) mWebView.getPageCount();
         mWebView.ScrollToY();
     }
 
