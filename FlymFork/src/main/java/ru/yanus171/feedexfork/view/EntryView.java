@@ -45,12 +45,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Stack;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
+import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.EPUB;
+import ru.yanus171.feedexfork.service.FB2;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
@@ -486,5 +490,22 @@ public abstract class EntryView {
         }
     }
 
+    public static void share( Context context, Uri entryUri, String title ) {
+        final Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+        intent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+        if ( LocalFile.Is( entryUri ) ) {
+            intent.putExtra(Intent.EXTRA_STREAM, entryUri);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (entryUri.toString().toLowerCase().endsWith("pdf"))
+                intent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+            else if (EPUB.Is(entryUri))
+                intent.setType(Constants.MIMETYPE_EPUB);
+            else if (FB2.IsFB2(entryUri))
+                intent.setType(Constants.MIMETYPE_FB2);
+        }
+        context.startActivity(
+                Intent.createChooser( intent, MainApplication.getContext().getString(R.string.menu_share) ) );
+    }
 }
 

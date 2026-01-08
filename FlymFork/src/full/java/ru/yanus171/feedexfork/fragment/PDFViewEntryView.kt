@@ -367,12 +367,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     }
 
     private fun share() {
-        getContext().startActivity(Intent.createChooser(
-                Intent(Intent.ACTION_SEND)
-                    .putExtra( Intent.EXTRA_STREAM, Uri.parse(mEntryLink) )
-                    .setType( Constants.MIMETYPE_PDF )
-                    .setFlags( Intent.FLAG_GRANT_READ_URI_PERMISSION ),
-            getContext().getString(R.string.menu_share)))
+        share( mPDFView.context, Uri.parse(mEntryLink), mTitle );
     }
 
     private fun toggleZoomShiftEnabled() {

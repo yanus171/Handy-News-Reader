@@ -88,6 +88,8 @@ public final class Constants {
 
   public static final String MIMETYPE_TEXT_PLAIN = "text/plain";
   public static final String MIMETYPE_PDF = "application/pdf";
+  public static final String MIMETYPE_EPUB = "application/epub+zip";
+  public static final String MIMETYPE_FB2 = "application/fb2";
 
   public static final int UPDATE_THROTTLE_DELAY = 200;
 

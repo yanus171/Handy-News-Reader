@@ -1085,13 +1085,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     private void share() {
-        if (mEntryLink != null) {
-            String title = mCursor.getString(mTitlePos);
-
-            getContext().startActivity(Intent.createChooser(
-                    new Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_SUBJECT, title).putExtra(Intent.EXTRA_TEXT, mEntryLink)
-                            .setType(Constants.MIMETYPE_TEXT_PLAIN), getContext().getString(R.string.menu_share)));
-        }
+        if (mEntryLink != null)
+            share( getContext(), Uri.parse(mEntryLink), mCursor.getString(mTitlePos) );
     }
 
     private void showHTML() {

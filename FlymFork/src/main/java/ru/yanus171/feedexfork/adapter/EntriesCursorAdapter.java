@@ -165,6 +165,7 @@ import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.StringUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
+import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.MenuItem;
 import ru.yanus171.feedexfork.view.WebEntryView;
 
@@ -410,11 +411,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
                                     LabelVoc.INSTANCE.showDialogToSetArticleLabels(context, holder.entryID, EntriesCursorAdapter.this)),
 
                                 new MenuItem(R.string.menu_share, R.drawable.ic_share, (_1, _2) ->
-                                    context.startActivity(Intent.createChooser( new Intent(Intent.ACTION_SEND)
-                                                                                .putExtra(Intent.EXTRA_TEXT, holder.entryLink )
-                                                                                .putExtra(Intent.EXTRA_SUBJECT, holder.titleTextView.getText().toString())
-                                                                                .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                                                                                context.getString(R.string.menu_share)))),
+                                        EntryView.share( getActivity(holder), Uri.parse(holder.entryLink), holder.titleTextView.getText().toString() )),
 
                                 new MenuItem(R.string.open_link, android.R.drawable.ic_menu_send, GetShowInBrowserIntent(holder.entryLink) ),
 
