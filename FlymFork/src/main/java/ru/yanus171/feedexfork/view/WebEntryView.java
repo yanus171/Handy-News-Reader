@@ -136,6 +136,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         mWebView.mScrollChangeListener = () -> {
             if ( mEntryFragment.mTapZones != null )
                 mEntryFragment.mTapZones.Hide();
+            if ( mEntryFragment.mControlPanel != null )
+                mEntryFragment.mControlPanel.hide();
+            
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)
