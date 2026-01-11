@@ -262,6 +262,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     private void setupWebViewClient() {
         setWebViewClient( new WebViewClient() {
 
+            private boolean mIsPageFinished = false;
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return super.shouldOverrideUrlLoading(view, request);
@@ -322,6 +324,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 Status().ChangeProgress( "started..." );
+                mIsPageFinished = false;
                 mEntryView.mContentWasLoaded = false;
                 mEntryView.StatusStartPageLoading();
                 super.onPageStarted( view, url, favicon );
@@ -330,11 +333,10 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished( view, url );
+                mIsPageFinished = true;
                 //Dog.v( "EntryView.onPageFinished url = " + url );
                 if ( url.equals( "about:blank" ) ) {
                     Status().ChangeProgress("finished.");
-                    if (!mEntryView.mLoadTitleOnly)
-                        mEntryView.mContentWasLoaded = true;
                     mEntryView.DisableTapActionsIfVideo();
                     if ( !mIsScrollScheduled ) {
                         if (mEntryView.mContentWasLoaded)
@@ -350,7 +352,11 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                 double newContentHeight = GetContentHeight();
                 final String searchText = mEntryView.mEntryFragment.getActivity() != null ? mEntryView.mEntryFragment.getActivity().getIntent().getStringExtra( "SCROLL_TEXT" ) : null;
                 final boolean isSearch = searchText != null && !searchText.isEmpty();
-                if ( !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
+                if ( mIsPageFinished && !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
+                    if (!mEntryView.mLoadTitleOnly) {
+                        mEntryView.mContentWasLoaded = true;
+                        mEntryView.EndStatus();
+                    }
                     if ( isSearch ) {
                         //Dog.v(TAG, "ScheduleScrollTo() isSearchText" );
                         UiUtils.RunOnGuiThread(() -> {
@@ -373,13 +379,13 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                         });
                     if ( new Date().getTime() - startTime < 1000 )
                         PostDelayed( view, startTime );
-                    mEntryView.EndStatus();
                 } else
                     PostDelayed( view, startTime );
                 mLastContentHeight = newContentHeight;
             }
 
             void PostDelayed( final WebView view, long startTime ) {
+                mEntryView.StatusStartPageLoading();
                 if ( !mIsScrollScheduled ) {
                     mIsScrollScheduled = true;
                     view.postDelayed(() -> {

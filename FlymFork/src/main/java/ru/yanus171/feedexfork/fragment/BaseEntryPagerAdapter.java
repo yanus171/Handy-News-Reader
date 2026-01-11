@@ -42,8 +42,6 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         if (view != null ) {
             view.StatusStartPageLoading();
             view.InvalidateContentCache();
-            if ( mSetupChanged )
-                view.InvalidateContentCache();
             view.generateArticleContent( true );
         }
         if ( mEntryFragment.mTapZones != null )
