@@ -493,17 +493,19 @@ public abstract class EntryView {
     public static void share( Context context, Uri entryUri, String title ) {
         final Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_SUBJECT, title);
-        intent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+        intent.setType( Constants.MIMETYPE_TEXT_PLAIN);
         if ( LocalFile.Is( entryUri ) ) {
             intent.putExtra(Intent.EXTRA_STREAM, entryUri);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (entryUri.toString().toLowerCase().endsWith("pdf"))
-                intent.setType(Constants.MIMETYPE_TEXT_PLAIN);
+                intent.setType(Constants.MIMETYPE_PDF);
             else if (EPUB.Is(entryUri))
                 intent.setType(Constants.MIMETYPE_EPUB);
             else if (FB2.IsFB2(entryUri))
                 intent.setType(Constants.MIMETYPE_FB2);
-        }
+        } else
+            intent.putExtra( Intent.EXTRA_TEXT, entryUri.toString() );
+
         context.startActivity(
                 Intent.createChooser( intent, MainApplication.getContext().getString(R.string.menu_share) ) );
     }
