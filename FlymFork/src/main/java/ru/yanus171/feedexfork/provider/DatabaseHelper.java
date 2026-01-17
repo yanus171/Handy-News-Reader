@@ -62,7 +62,7 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryLabelColumns;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "FeedEx.db";
-    private static final int DATABASE_VERSION = 44;
+    private static final int DATABASE_VERSION = 45;
 
     private static final String ALTER_TABLE = "ALTER TABLE ";
     private static final String ADD = " ADD ";
@@ -216,6 +216,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.ZOOM + ' ' + FeedData.TYPE_FLOAT);
             executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.X_OFFSET + ' ' + FeedData.TYPE_FLOAT);
         }
+
+        if (oldVersion < 45)
+            executeCatchedSQL(database, ALTER_TABLE + EntryColumns.TABLE_NAME + ADD + EntryColumns.IS_SCROLL_ZOOM + ' ' + FeedData.TYPE_BOOLEAN);
+
     }
     private void executeCatchedSQL(SQLiteDatabase database, String query) {
         try {

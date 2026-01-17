@@ -111,6 +111,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_FAVORITE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_LANDSCAPE;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_NEW;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_READ;
+import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_SCROLL_ZOOM;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.IS_WITH_TABLES;
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
@@ -382,7 +383,7 @@ public class OPML {
             IS_NEW, IS_READ, SCROLL_POS, ABSTRACT,
             AUTHOR, DATE, FETCH_DATE, IMAGE_URL,
             IS_FAVORITE, EntryColumns._ID, GUID, IS_WAS_AUTO_UNSTAR,
-            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE, MOBILIZED_HTML, _ID, ZOOM, X_OFFSET };
+            IS_WITH_TABLES, READ_DATE, IS_LANDSCAPE, MOBILIZED_HTML, _ID, ZOOM, X_OFFSET, IS_SCROLL_ZOOM };
 
 //    private static String GetMobilizedText(long entryID ) {
 //        String result = "";
@@ -436,6 +437,7 @@ public class OPML {
                 }
                 WriteText(writer, cur, ZOOM, 19);
                 WriteText(writer, cur, X_OFFSET, 20);
+                WriteBoolValue(writer, cur, IS_SCROLL_ZOOM, 21);
 
                 writer.write(CLOSING);
             }
@@ -668,6 +670,7 @@ public class OPML {
                 putString( values, GUID, attributes, GUID);
                 putString( values, IS_WAS_AUTO_UNSTAR, attributes, IS_WAS_AUTO_UNSTAR);
                 putString( values, IS_WITH_TABLES, attributes, IS_WITH_TABLES);
+                putString( values, IS_SCROLL_ZOOM, attributes, IS_SCROLL_ZOOM);
                 putString( values, IS_LANDSCAPE, attributes, IS_LANDSCAPE);
                 putString( values, ZOOM, attributes, ZOOM);
                 if ( attributes.getIndex( MOBILIZED_HTML ) >= 0 )

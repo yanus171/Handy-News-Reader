@@ -273,6 +273,7 @@ public class FeedData {
         public static final String IS_NEW = "new";
         public static final String IS_WAS_AUTO_UNSTAR = "was_auto_unstar";
         public static final String IS_WITH_TABLES = "with_tables";
+        public static final String IS_SCROLL_ZOOM = "scroll_zoom";
         public static final String IS_LANDSCAPE = "landscape";
         public static final String IMAGES_SIZE = "images_size";
         public static final String CATEGORIES = "categories";
@@ -310,7 +311,8 @@ public class FeedData {
                              FeedColumns.NAME,
                              FeedColumns.OPTIONS,
                              TEXT_LEN_EXPR,
-                             EntryColumns.READ_DATE };
+                             EntryColumns.READ_DATE,
+                             EntryColumns.IS_SCROLL_ZOOM};
         public static final String[] PROJECTION_WITH_TEXT =
                 new String[]{EntryColumns._ID,
                         EntryColumns.AUTHOR,
@@ -339,7 +341,8 @@ public class FeedData {
                         EntryColumns.ZOOM,
                         EntryColumns.X_OFFSET,
                         FeedColumns.IS_IMAGE_AUTO_LOAD,
-                        EntryColumns.READ_DATE};
+                        EntryColumns.READ_DATE,
+                        EntryColumns.IS_SCROLL_ZOOM};
         public static final String WHERE_READ = IS_READ + DB_IS_TRUE;
         public static final String WHERE_UNREAD = "(" + IS_READ + DB_IS_NULL + DB_OR + IS_READ + DB_IS_FALSE + ")";
         public static final String WHERE_FAVORITE = "(" + IS_FAVORITE + DB_IS_TRUE + ")";
@@ -361,7 +364,7 @@ public class FeedData {
                 {ABSTRACT, TYPE_TEXT}, {MOBILIZED_HTML, TYPE_TEXT}, {DATE, TYPE_DATE_TIME}, {FETCH_DATE, TYPE_DATE_TIME}, {IS_READ, TYPE_BOOLEAN}, {LINK, TYPE_TEXT},
                 {IS_FAVORITE, TYPE_BOOLEAN}, {IS_NEW, TYPE_BOOLEAN}, {ENCLOSURE, TYPE_TEXT}, {GUID, TYPE_TEXT}, {AUTHOR, TYPE_TEXT},
                 {IMAGE_URL, TYPE_TEXT}, {SCROLL_POS, TYPE_INT}, {IS_WAS_AUTO_UNSTAR, TYPE_BOOLEAN}, {IS_WITH_TABLES, TYPE_BOOLEAN}, {IS_LANDSCAPE, TYPE_BOOLEAN},
-                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT}, {READ_DATE, TYPE_DATE_TIME}, {ZOOM, TYPE_FLOAT}, {X_OFFSET, TYPE_FLOAT} };
+                {IMAGES_SIZE, TYPE_INT}, {CATEGORIES, TYPE_TEXT}, {READ_DATE, TYPE_DATE_TIME}, {ZOOM, TYPE_FLOAT}, {X_OFFSET, TYPE_FLOAT}, {IS_SCROLL_ZOOM, TYPE_BOOLEAN} };
 
         public static Uri ENTRIES_FOR_FEED_CONTENT_URI(long feedId) {
             return Uri.parse(CONTENT_AUTHORITY + "/feeds/" + feedId + "/entries");

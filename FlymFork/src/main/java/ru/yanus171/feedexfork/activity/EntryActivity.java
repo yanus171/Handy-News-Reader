@@ -180,6 +180,7 @@ public class EntryActivity extends BaseActivity implements Observer {
             values.put(EntryColumns.DATE, (new Date()).getTime());
             values.put(EntryColumns.ABSTRACT, text);
             values.put(EntryColumns.IS_WITH_TABLES, 1);
+            values.put(EntryColumns.IS_SCROLL_ZOOM, 1);
             values.put(EntryColumns.IMAGES_SIZE, 0);
             FileUtils.INSTANCE.saveMobilizedHTML(finalUrl, text, values );
             entryUri = cr.insert(EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI(feedID), values);

@@ -22,6 +22,7 @@ import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 import ru.yanus171.feedexfork.Constants
+import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
 import ru.yanus171.feedexfork.fragment.EntryMenu.setVisible
@@ -34,7 +35,6 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.X_OFFSET
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
-import ru.yanus171.feedexfork.utils.PrefUtils.PREF_ZOOM_SHIFT_ENABLED
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
 import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.utils.UiUtils
@@ -52,6 +52,8 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     var mIsBlockScroll = false
     val mRestoreZoom = RestoreZoom()
     var mLastTimeScrolled = 0L
+    var mIsScrollZoomEnabledPos = 0
+    var mIsScrollZoomEnabled = true
 
     init {
         createView()
@@ -93,7 +95,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
                     if ( !mIsLoaded )
                         return
                     mScrollPartY = GetViewScrollPartY()
-                    if (!getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) ) {
+                    if ( !mIsScrollZoomEnabled ) {
                         if ( !mIsBlockScroll ) {
                             mIsBlockScroll = true
                             if ( mPDFView.zoom == mZoom )
@@ -277,7 +279,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     fun saveState(){
         if ( mIsBlockScroll )
             return
-        if ( !PrefUtils.getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) )
+        if ( !mIsScrollZoomEnabled )
             return
         mXOffset = mPDFView.currentXOffset
         mZoom = mPDFView.zoom
@@ -339,7 +341,9 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         if ( mCursor != null && !mContentWasLoaded ) {
             mZoom = readFloat( ZOOM, mZoom )
             mXOffset = readFloat( X_OFFSET, mXOffset )
+            mIsScrollZoomEnabledPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_SCROLL_ZOOM)
         }
+        mIsScrollZoomEnabled = mCursor.getInt(mIsScrollZoomEnabledPos) == 1 || mCursor.isNull( mIsScrollZoomEnabledPos)
         UiUtils.RunOnGuiThread(object: Runnable {
             override fun run(){
                 generateArticleContent(false)
@@ -350,7 +354,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     override fun onPrepareOptionsMenu(menu: Menu ) {
         super.onPrepareOptionsMenu(menu)
         setItemVisible( menu, R.id.menu_zoom_shift_enabled, true )
-        setItemChecked( menu, R.id.menu_zoom_shift_enabled, getBoolean( PREF_ZOOM_SHIFT_ENABLED, true ) )
+        setItemChecked( menu, R.id.menu_zoom_shift_enabled, mIsScrollZoomEnabled )
 
         setVisible( menu, R.id.menu_labels );
         setVisible( menu, R.id.menu_reload_full_text );
@@ -372,9 +376,14 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
 
     private fun toggleZoomShiftEnabled() {
         saveState();
-        PrefUtils.toggleBoolean(PREF_ZOOM_SHIFT_ENABLED, true )
+        mIsScrollZoomEnabled = !mIsScrollZoomEnabled;
+        let {
+            val values = ContentValues()
+            values.put(FeedData.EntryColumns.IS_SCROLL_ZOOM, if ( mIsScrollZoomEnabled )  1 else 0 );
+            MainApplication.getContext().contentResolver.update(uri, values, null, null);
+        }
         mEntryFragment.mTapZones.Update()
-        UiUtils.toast(if (getBoolean( PREF_ZOOM_SHIFT_ENABLED, true )) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
+        UiUtils.toast(if (mIsScrollZoomEnabled) R.string.zoom_shift_were_enabled else R.string.zoom_shift_were_disabled)
         update(true)
     }
 
@@ -389,7 +398,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     override fun setupControlPanelButtonActions() {
         super.setupControlPanelButtonActions()
         setupButtonAction( R.id.btn_share, false) { share() }
-        setupButtonAction( R.id.btn_zoom_shift_enabled, getBoolean(PREF_ZOOM_SHIFT_ENABLED, true)) {
+        setupButtonAction( R.id.btn_zoom_shift_enabled, mIsScrollZoomEnabled) {
             toggleZoomShiftEnabled()
         }
         setupButtonAction( R.id.btn_image_white_background, getBoolean(STATE_IMAGE_WHITE_BACKGROUND, false)) {
