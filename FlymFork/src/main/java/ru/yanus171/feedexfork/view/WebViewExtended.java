@@ -345,6 +345,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     }
                 } else
                     DoNotShowMenu(false);
+                if ( !mEntryView.mEntryFragment.isCurrentPage( mEntryView.mPosition ) )
+                    mEntryView.EndStatus();
             }
 
             private void ScheduleScrollTo(final WebView view, long startTime) {

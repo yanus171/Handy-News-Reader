@@ -128,17 +128,17 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     HashSet<String> mNotLoadedUrlSet = new HashSet<>();
     public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId, int position) {
         super(fragment, entryId, position);
+        mLoadTitleOnly = true;
         mWebView = new WebViewExtended(getContext(), this);
         container.addView(mWebView);
         mView = mWebView;
-        mLoadTitleOnly = true;
         mWebView.setListener(this);
         mWebView.mScrollChangeListener = () -> {
             if ( mEntryFragment.mTapZones != null )
                 mEntryFragment.mTapZones.Hide();
             if ( mEntryFragment.mControlPanel != null )
                 mEntryFragment.mControlPanel.hide();
-            
+
             if (!mFavorite)
                 return;
             if (mRetrieveFullText && !mIsFullTextShown)
@@ -889,7 +889,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
             generateArticleContent(false);
             mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
-            if (mLoadTitleOnly) {
+            if (mLoadTitleOnly && mEntryFragment.isCurrentPage( mPosition ) ) {
                 mLoadTitleOnly = false;
                 mEntryFragment.restartCurrentEntryLoader();
             }
@@ -1076,7 +1076,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if ( mLoadTitleOnly )
             mEntryFragment.getLoaderManager().restartLoader(mPosition, null, mEntryFragment);
         else if ( mEntryFragment.mTapZones != null )
-            DisableTapActionsIfVideo();;
+            DisableTapActionsIfVideo();
         mLoadTitleOnly = false;
     }
 
@@ -1219,5 +1219,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
     }
 
+    @Override
+    public void StatusStartPageLoading() {
+        if ( !mLoadTitleOnly )
+            super.StatusStartPageLoading();
+    }
 }
 //

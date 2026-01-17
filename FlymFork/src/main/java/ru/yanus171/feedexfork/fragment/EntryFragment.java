@@ -695,6 +695,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         } else
             UiUtils.toast( R.string.new_feed_shortcut_add_failed );
     }
+    public boolean isCurrentPage( int position ) {
+        return mCurrentPagerPos == position;
+    }
     private void setupEndEditingButton() {
         mBtnEndEditing = mRootView.findViewById(R.id.btnEndEditing);
         mBtnEndEditing.setVisibility( View.GONE );
@@ -716,10 +719,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             @SuppressLint("DefaultLocale")
             @Override
             public void onPageSelected(int i) {
-                final boolean isForward = mCurrentPagerPos < i;
                 mCurrentPagerPos = i;
-                mEntryPagerAdapter.onPause(); // pause all webviews
-                mEntryPagerAdapter.onResume(); // resume the current webview
+
+                final boolean isForward = mLastPagerPos < mCurrentPagerPos;
+                mLastPagerPos = i;
+
                 if ( !getEntryActivity().mIsNewTask )
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
 
@@ -730,8 +734,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 if ( GetSelectedEntryView() != null )
                     GetSelectedEntryView().onPageSelected();
-
-                mLastPagerPos = i;
 
                 final String text = String.format( "+%d", isForward ? mEntryPagerAdapter.getCount() - mLastPagerPos - 1 : mLastPagerPos );
                 Toast toast = Toast.makeText( getContext(), text, Toast.LENGTH_SHORT );
@@ -901,5 +903,4 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.SetID(currentEntryID).start();
     }
-
 }
