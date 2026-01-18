@@ -952,9 +952,8 @@ public class FeedDataContentProvider extends ContentProvider {
             cr.notifyChange(uri, null);
 
         if (matchCode != URI_FILTERS && matchCode != URI_FILTERS_FOR_FEED && matchCode != URI_TASKS && matchCode != URI_TASK) {
-            // Notify everything else (except EntryColumns.CONTENT_URI to not update the
-            // entry WebView when clicking on "favorite" button)
             cr.notifyChange(FeedColumns.GROUPED_FEEDS_CONTENT_URI, null);
+            cr.notifyChange(EntryColumns.CONTENT_URI, null);
             cr.notifyChange(EntryColumns.UNREAD_ENTRIES_CONTENT_URI, null);
             cr.notifyChange(EntryColumns.FAVORITES_CONTENT_URI, null);
             cr.notifyChange(EntryColumns.LAST_READ_CONTENT_URI, null);

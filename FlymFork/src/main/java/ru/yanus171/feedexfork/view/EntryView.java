@@ -193,12 +193,9 @@ public abstract class EntryView {
                     mStatus = Status().Start(R.string.web_page_loading, true);
             }
     }
-    public boolean IsStatusStartPageLoading() {
-        synchronized (this) {
-            return mStatus == 0;
-        }
-    }
     public void InvalidateContentCache() {
+        if ( mContentWasLoaded )
+            SaveScrollPos();
         mContentWasLoaded = false;
     }
     public void onResume() {
@@ -220,7 +217,7 @@ public abstract class EntryView {
     @SuppressLint("Range")
     public void loadingDataFinished(){
         //Timer.End( loader.getId() );
-        if (mCursor != null && mCursor.moveToFirst() ) {
+        if ( mCursor != null && mCursor.moveToFirst() && !mContentWasLoaded ) {
             if (mTitlePos == -1) {
                 mTitlePos = mCursor.getColumnIndex(TITLE);
                 mDatePos = mCursor.getColumnIndex(FeedData.EntryColumns.DATE);
@@ -259,6 +256,11 @@ public abstract class EntryView {
         return !mCursor.isNull(mCursor.getColumnIndex(fieldName)) ?
                 mCursor.getDouble( mCursor.getColumnIndex(fieldName)) :
                 defaultValue;
+    }
+    @SuppressLint("Range")
+    protected boolean readBooleanWithNullTrue( String fieldName) {
+        final int fieldPos = mCursor.getColumnIndex(fieldName);
+        return mCursor.getInt(fieldPos) == 1 || mCursor.isNull(fieldPos);
     }
 
     @SuppressLint("Range")
@@ -301,26 +303,23 @@ public abstract class EntryView {
                         .setTitle( R.string.menu_edit_article_title )
                         .setIcon( R.drawable.ic_edit )
                         .setNegativeButton( android.R.string.cancel, null )
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Uri uri = getUri();
-                                if ( !mEntryFragment.getEntryActivity().mIsNewTask )
-                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                        ContentValues values = new ContentValues();
-                                        final String newTitle = editText.getText().toString();
-                                        values.put( TITLE, newTitle );
-                                        cr.update(uri, values, null, null);
-                                        mEntryFragment.restartCurrentEntryLoader();
-                                    }
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                            final Uri uri = getUri();
+                            if ( !mEntryFragment.getEntryActivity().mIsNewTask )
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                    ContentValues values = new ContentValues();
+                                    final String newTitle = editText.getText().toString();
+                                    values.put( TITLE, newTitle );
+                                    cr.update(uri, values, null, null);
+                                    InvalidateContentCache();
+                                }
 
 
-                                }.start();
-                            }
+                            }.start();
                         }).create();
                 d.show();
                 break;
@@ -398,9 +397,10 @@ public abstract class EntryView {
                 PutFavorite( values, mFavorite );
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
-                if ( !mFavorite )
-                    LabelVoc.INSTANCE.removeLabels( mEntryId );
-                mEntryFragment.restartCurrentEntryLoader();
+                if ( !mFavorite ) {
+                    LabelVoc.INSTANCE.removeLabels(mEntryId);
+                    InvalidateContentCache();
+                }
             }
         }.start();
         mEntryFragment.getActivity().invalidateOptionsMenu();
@@ -470,6 +470,7 @@ public abstract class EntryView {
     public void setupControlPanelButtonActions() {
         setupButtonAction(R.id.btn_label_setup, false, v -> OpenLabelSetup());
         setupButtonAction(R.id.btn_settings, false, v -> OpenSettings());
+        setupButtonAction(R.id.btn_image_white_background, PrefUtils.isImageWhiteBackground(), v -> toggleImageWhiteBackground() );
         setupButtonLongClickAction( R.id.btn_share, v -> mEntryFragment.mMenu.openShare());
         setupButtonLongClickAction( R.id.btn_force_orientation_by_sensor, v -> mEntryFragment.mMenu.openDisplay());
         setupButtonLongClickAction( R.id.btn_force_portrait_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());

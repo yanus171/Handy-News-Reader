@@ -645,10 +645,10 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             startMobilizationTask(view.mEntryId);
         }
     }
-    public void restartCurrentEntryLoader() {
+    public void restartCurrentEntryLoader( EntryView view ) {
         UiUtils.RunOnGuiThread(() -> {
             getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
-            GetSelectedEntryView().InvalidateContentCache();
+            view.InvalidateContentCache();
         });
     }
 

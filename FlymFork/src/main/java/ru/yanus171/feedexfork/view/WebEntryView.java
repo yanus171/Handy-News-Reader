@@ -891,7 +891,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
             if (mLoadTitleOnly && mEntryFragment.isCurrentPage( mPosition ) ) {
                 mLoadTitleOnly = false;
-                mEntryFragment.restartCurrentEntryLoader();
+                mEntryFragment.restartCurrentEntryLoader( this );
             }
         }
     }
@@ -995,28 +995,24 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                         .setIcon(R.drawable.ic_edit)
                         .setMessage(Html.fromHtml(getContext().getString(R.string.edit_article_url_title_message)))
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                final Uri uri = getUri();
-                                if (!mEntryFragment.getEntryActivity().mIsNewTask)
-                                    PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                        ContentValues values = new ContentValues();
-                                        final String newLink = editText.getText().toString();
-                                        values.put(FeedData.EntryColumns.LINK, newLink);
-                                        cr.update(uri, values, null, null);
-                                        EntryUrlVoc.INSTANCE.set(newLink, mEntryId);
-                                        mEntryFragment.restartCurrentEntryLoader();
-                                    }
-                                }.start();
-                            }
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                            final Uri uri = getUri();
+                            if (!mEntryFragment.getEntryActivity().mIsNewTask)
+                                PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, getUri().toString());
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    ContentResolver cr = MainApplication.getContext().getContentResolver();
+                                    ContentValues values = new ContentValues();
+                                    final String newLink = editText.getText().toString();
+                                    values.put(FeedData.EntryColumns.LINK, newLink);
+                                    cr.update(uri, values, null, null);
+                                    EntryUrlVoc.INSTANCE.set(newLink, mEntryId);
+                                }
+                            }.start();
                         }).create();
                 d.show();
-                final TextView tv = d.findViewById(android.R.id.message);//.setMovementMethod(LinkMovementMethod.getInstance());
+                final TextView tv = d.findViewById(android.R.id.message);
                 tv.setAutoLinkMask(Linkify.ALL);
                 tv.setTextIsSelectable(true);
                 break;

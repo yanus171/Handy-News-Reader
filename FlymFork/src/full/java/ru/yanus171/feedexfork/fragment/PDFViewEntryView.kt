@@ -30,6 +30,7 @@ import ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked
 import ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible
 import ru.yanus171.feedexfork.parser.FileSelectDialog
 import ru.yanus171.feedexfork.provider.FeedData
+import ru.yanus171.feedexfork.provider.FeedData.EntryColumns
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.TITLE
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.X_OFFSET
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
@@ -52,7 +53,6 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     var mIsBlockScroll = false
     val mRestoreZoom = RestoreZoom()
     var mLastTimeScrolled = 0L
-    var mIsScrollZoomEnabledPos = 0
     var mIsScrollZoomEnabled = true
 
     init {
@@ -341,9 +341,8 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         if ( mCursor != null && !mContentWasLoaded ) {
             mZoom = readFloat( ZOOM, mZoom )
             mXOffset = readFloat( X_OFFSET, mXOffset )
-            mIsScrollZoomEnabledPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_SCROLL_ZOOM)
+            mIsScrollZoomEnabled = readBooleanWithNullTrue( EntryColumns.IS_SCROLL_ZOOM )
         }
-        mIsScrollZoomEnabled = mCursor.getInt(mIsScrollZoomEnabledPos) == 1 || mCursor.isNull( mIsScrollZoomEnabledPos)
         UiUtils.RunOnGuiThread(object: Runnable {
             override fun run(){
                 generateArticleContent(false)
@@ -400,9 +399,6 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         setupButtonAction( R.id.btn_share, false) { share() }
         setupButtonAction( R.id.btn_zoom_shift_enabled, mIsScrollZoomEnabled) {
             toggleZoomShiftEnabled()
-        }
-        setupButtonAction( R.id.btn_image_white_background, getBoolean(STATE_IMAGE_WHITE_BACKGROUND, false)) {
-            toggleImageWhiteBackground()
         }
     }
 

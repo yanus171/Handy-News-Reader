@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.view.ControlPanel;
 import ru.yanus171.feedexfork.view.EntryView;
@@ -70,7 +71,8 @@ class EntryOrientation {
     }
 
     public void loadingDataFinished(EntryView view) {
-        mForceOrientation = ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos));
+        if ( !view.mContentWasLoaded )
+            mForceOrientation = ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos));
         applyForceOrientation();
     }
 
@@ -124,6 +126,7 @@ class EntryOrientation {
 
     private void setOrientationBySensor( boolean value ) {
         PrefUtils.putBoolean(PREF_FORCE_ORIENTATION_BY_SENSOR, value);
+        mEntryFragment.getEntryActivity().applyOrientation();
         applyForceOrientation();
     }
 
@@ -131,12 +134,17 @@ class EntryOrientation {
         if (mForceOrientation == forceOrientation)
             return;
         mForceOrientation = forceOrientation;
-        ContentValues values = new ContentValues();
-        values.put(FeedData.EntryColumns.IS_LANDSCAPE, ForceOrientationToInt(mForceOrientation));
-        ContentResolver cr = MainApplication.getContext().getContentResolver();
-        cr.update(uri, values, null, null);
+
+        FeedDataContentProvider.SetNotifyEnabled( false );
+        try {
+            ContentValues values = new ContentValues();
+            values.put(FeedData.EntryColumns.IS_LANDSCAPE, ForceOrientationToInt(mForceOrientation));
+            ContentResolver cr = MainApplication.getContext().getContentResolver();
+            cr.update(uri, values, null, null);
+        } finally {
+            FeedDataContentProvider.SetNotifyEnabled( true );
+        }
         mEntryFragment.GetSelectedEntryView().InvalidateContentCache();
-        mEntryFragment.restartCurrentEntryLoader();
         mActivity.invalidateOptionsMenu();
     }
 
