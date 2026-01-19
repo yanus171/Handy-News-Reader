@@ -72,7 +72,7 @@ class EntryOrientation {
 
     public void loadingDataFinished(EntryView view) {
         if ( !view.mContentWasLoaded )
-            mForceOrientation = ForceOrientationFromInt(view.mCursor.getInt(view.mIsLandscapePos));
+            mForceOrientation = ForceOrientationFromInt(view.getForceOrientationFromCursor());
         applyForceOrientation();
     }
 

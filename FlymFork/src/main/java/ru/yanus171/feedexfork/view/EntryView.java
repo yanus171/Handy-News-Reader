@@ -22,11 +22,9 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.view.Menu;
@@ -51,7 +49,6 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.GeneralPrefsActivity;
 import ru.yanus171.feedexfork.activity.LocalFile;
 import ru.yanus171.feedexfork.fragment.EntryFragment;
-import ru.yanus171.feedexfork.fragment.PDFViewEntryView;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.EPUB;
 import ru.yanus171.feedexfork.service.FB2;
@@ -69,8 +66,8 @@ public abstract class EntryView {
     public String mTitle = "";
     public static final String TAG = "EntryView";
     public boolean mFavorite;
-    public int mTitlePos = -1, mDatePos, mAbstractPos, mLinkPos, mIsFavoritePos,
-    mIsWithTablePos, mIsLandscapePos, mIsReadPos, mIsNewPos, mIsWasAutoUnStarPos, mEnclosurePos, mAuthorPos, mFeedNamePos, mFeedUrlPos, mFeedIconUrlPos, mFeedIDPos, mScrollPosPos, mRetrieveFullTextPos;
+    protected int mTitlePos = -1;
+    private int mFeedIDPos, mLinkPos, mIsFavoritePos, mIsLandscapePos, mIsReadPos;
     public long mEntryId = -1;
     public String mEntryLink = "";
     public View mView = null;
@@ -186,6 +183,24 @@ public abstract class EntryView {
         public int step;
     }
 
+    public String getFeedID() {
+        if (mCursor != null)
+            return mCursor.getString(mFeedIDPos);
+        else
+            return "";
+    }
+    public boolean getIsUnReadFromCursor() {
+        if (mCursor != null)
+            return mCursor.getInt(mIsReadPos) != 1;
+        else
+            return false;
+    }
+    public int getForceOrientationFromCursor() {
+        if (mCursor != null)
+            return mCursor.getInt(mIsLandscapePos);
+        else
+            return 0;
+    }
     public void StatusStartPageLoading() {
         if ( !mContentWasLoaded )
             synchronized (this) {
@@ -207,6 +222,8 @@ public abstract class EntryView {
 
     public void setCursor( Cursor cursor ) {
         mCursor = cursor;
+        if ( mCursor != null && mCursor.moveToFirst() && !mContentWasLoaded )
+            readDataFromDB();
     }
     @SuppressLint("Range")
     public void generateArticleContent( boolean forceUpdate ) {
@@ -217,32 +234,22 @@ public abstract class EntryView {
     @SuppressLint("Range")
     public void loadingDataFinished(){
         //Timer.End( loader.getId() );
-        if ( mCursor != null && mCursor.moveToFirst() && !mContentWasLoaded ) {
-            if (mTitlePos == -1) {
-                mTitlePos = mCursor.getColumnIndex(TITLE);
-                mDatePos = mCursor.getColumnIndex(FeedData.EntryColumns.DATE);
-                mAbstractPos = mCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT);
-                mLinkPos = mCursor.getColumnIndex(FeedData.EntryColumns.LINK);
-                mIsFavoritePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_FAVORITE);
-                mIsWithTablePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_WITH_TABLES);
-                mIsLandscapePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_LANDSCAPE);
-                mIsReadPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_READ);
-                mIsNewPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_NEW);
-                mIsWasAutoUnStarPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR);
-                mEnclosurePos = mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE);
-                mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
-                mAuthorPos = mCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR);
-                mScrollPosPos = mCursor.getColumnIndex(SCROLL_POS);
-                mFeedNamePos = mCursor.getColumnIndex(FeedData.FeedColumns.NAME);
-                mFeedUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.URL);
-                mFeedIconUrlPos = mCursor.getColumnIndex(FeedData.FeedColumns.ICON_URL);
-                mRetrieveFullTextPos = mCursor.getColumnIndex(FeedData.FeedColumns.RETRIEVE_FULLTEXT);
-            }
-            mEntryLink = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.LINK));
-            mScrollPartY = readDouble( SCROLL_POS, 0);
-            mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
-            mTitle = mCursor.getString(mCursor.getColumnIndex(TITLE));
+        //readDataFromDB();
+    }
+
+    protected void readDataFromDB() {
+        if (mTitlePos == -1) {
+            mTitlePos = mCursor.getColumnIndex(TITLE);
+            mLinkPos = mCursor.getColumnIndex(FeedData.EntryColumns.LINK);
+            mIsFavoritePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_FAVORITE);
+            mIsLandscapePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_LANDSCAPE);
+            mIsReadPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_READ);
+            mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
         }
+        mEntryLink = mCursor.getString(mLinkPos);
+        mScrollPartY = readDouble( SCROLL_POS, 0);
+        mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
+        mTitle = mCursor.getString(mTitlePos);
     }
 
     @SuppressLint("Range")

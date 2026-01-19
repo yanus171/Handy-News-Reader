@@ -73,7 +73,6 @@ import ru.yanus171.feedexfork.adapter.DrawerAdapter;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
-import ru.yanus171.feedexfork.provider.FeedDataContentProvider;
 import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -90,9 +89,7 @@ import ru.yanus171.feedexfork.view.StatusText;
 import ru.yanus171.feedexfork.view.WebEntryView;
 import ru.yanus171.feedexfork.view.WebViewExtended;
 
-import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.DB_AND;
-import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTPS_SCHEME;
 import static ru.yanus171.feedexfork.Constants.HTTP_SCHEME;
 import static ru.yanus171.feedexfork.Constants.VIBRATE_DURATION;
@@ -101,7 +98,6 @@ import static ru.yanus171.feedexfork.activity.EntryActivity.GetIsStatusBarHidden
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemVisible;
 import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
-import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.LINK;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.IsEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.CancelStarNotification;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
@@ -483,9 +479,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             return -1;
     }
     public String getCurrentFeedID() {
-        Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-        if (cursor != null)
-            return cursor.getString(GetSelectedEntryView().mFeedIDPos);
+        if ( GetSelectedEntryView() != null )
+            return GetSelectedEntryView().getFeedID();
         else
             return "";
     }
@@ -645,10 +640,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             startMobilizationTask(view.mEntryId);
         }
     }
-    public void restartCurrentEntryLoader( EntryView view ) {
+    public void restartCurrentEntryLoader() {
         UiUtils.RunOnGuiThread(() -> {
             getLoaderManager().restartLoader(mCurrentPagerPos, null, EntryFragment.this);
-            view.InvalidateContentCache();
         });
     }
 
@@ -880,7 +874,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
                 }
             }.init( mLastPagerPos,
-                    view.mCursor.getInt(view.mIsReadPos) != 1,
+                    view.getIsUnReadFromCursor(),
                     getCurrentFeedID() ).start();
         }
     }

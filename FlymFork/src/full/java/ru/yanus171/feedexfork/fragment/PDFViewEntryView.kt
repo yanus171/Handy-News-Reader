@@ -338,16 +338,18 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     override fun loadingDataFinished() {
         super.loadingDataFinished()
         mEntryFragment.update(false)
-        if ( mCursor != null && !mContentWasLoaded ) {
-            mZoom = readFloat( ZOOM, mZoom )
-            mXOffset = readFloat( X_OFFSET, mXOffset )
-            mIsScrollZoomEnabled = readBooleanWithNullTrue( EntryColumns.IS_SCROLL_ZOOM )
-        }
         UiUtils.RunOnGuiThread(object: Runnable {
             override fun run(){
                 generateArticleContent(false)
             }
         }, 500 )
+    }
+
+    override fun readDataFromDB() {
+        super.readDataFromDB()
+        mZoom = readFloat(ZOOM, mZoom)
+        mXOffset = readFloat(X_OFFSET, mXOffset)
+        mIsScrollZoomEnabled = readBooleanWithNullTrue(EntryColumns.IS_SCROLL_ZOOM)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu ) {

@@ -124,6 +124,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mWasAutoUnStar = false;
     boolean mLoadTitleOnly = false;
 
+    private int mIsWithTablePos = -1, mEnclosurePos, mRetrieveFullTextPos;
+
     private EntryTextSearch mSearch = null;
     HashSet<String> mNotLoadedUrlSet = new HashSet<>();
     public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId, int position) {
@@ -549,7 +551,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 mEntryFragment.mFilters,
                 mIsFullTextShown,
                 forceUpdate);
-        mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
         update(false);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
@@ -885,15 +886,24 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void loadingDataFinished() {
         super.loadingDataFinished();
-        if (mCursor != null) {
-            FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
-            generateArticleContent(false);
-            mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
-            if (mLoadTitleOnly && mEntryFragment.isCurrentPage( mPosition ) ) {
-                mLoadTitleOnly = false;
-                mEntryFragment.restartCurrentEntryLoader( this );
-            }
+        if (mLoadTitleOnly && mEntryFragment.isCurrentPage( mPosition ) ) {
+            mLoadTitleOnly = false;
+            mEntryFragment.restartCurrentEntryLoader();
+            InvalidateContentCache();
         }
+    }
+    @Override
+    protected void readDataFromDB() {
+        super.readDataFromDB();
+        FetcherService.mMaxImageDownloadCount = PrefUtils.getImageDownloadCount();
+        if ( mIsWithTablePos == -1 ) {
+            mIsWithTablePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_WITH_TABLES);
+            mEnclosurePos = mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE);
+            mRetrieveFullTextPos = mCursor.getColumnIndex(FeedData.FeedColumns.RETRIEVE_FULLTEXT);
+        }
+        mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
+        mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
+        generateArticleContent(false);
     }
 
     @Override
