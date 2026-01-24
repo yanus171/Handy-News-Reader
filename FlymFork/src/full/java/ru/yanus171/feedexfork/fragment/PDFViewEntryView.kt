@@ -329,8 +329,6 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
             return
         }
         super.generateArticleContent(forceUpdate)
-        //setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
-        //Dog.v( TAG, "file =" + mEntryLink )
         load(mTitle)
     }
 

@@ -128,6 +128,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     private EntryTextSearch mSearch = null;
     HashSet<String> mNotLoadedUrlSet = new HashSet<>();
+
     public WebEntryView(EntryFragment fragment, ViewGroup container, long entryId, int position) {
         super(fragment, entryId, position);
         mLoadTitleOnly = true;
@@ -332,6 +333,13 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void onPause() {
         mWebView.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if ( mContentWasLoaded )
+            LoadData( true );
     }
 
     @NotNull
@@ -891,6 +899,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             mEntryFragment.restartCurrentEntryLoader();
             InvalidateContentCache();
         }
+        generateArticleContent(false);
     }
     @Override
     protected void readDataFromDB() {
@@ -903,7 +912,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
         mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
         mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
-        generateArticleContent(false);
     }
 
     @Override
