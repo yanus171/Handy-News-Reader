@@ -1,7 +1,5 @@
 package ru.yanus171.feedexfork.fragment;
 
-import static ru.yanus171.feedexfork.fragment.GeneralPrefsFragment.mSetupChanged;
-
 import android.database.Cursor;
 import android.util.SparseArray;
 import android.view.View;
@@ -42,7 +40,7 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         if (view != null ) {
             view.StatusStartPageLoading();
             view.InvalidateContentCache();
-            view.generateArticleContent( true );
+            view.generateArticleContent();
         }
         if ( mEntryFragment.mTapZones != null )
             mEntryFragment.mTapZones.Update();

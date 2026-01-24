@@ -226,7 +226,7 @@ public abstract class EntryView {
             readDataFromDB();
     }
     @SuppressLint("Range")
-    public void generateArticleContent( boolean forceUpdate ) {
+    public void generateArticleContent( ) {
         Dog.v(String.format("displayEntry view.mScrollY  (entry %s) view.mScrollY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
     }
@@ -366,7 +366,7 @@ public abstract class EntryView {
     protected void toggleImageWhiteBackground() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
         update(true);
-        generateArticleContent(true);
+        generateArticleContent();
     }
 
     @NotNull

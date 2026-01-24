@@ -553,12 +553,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void generateArticleContent( boolean forceUpdate) {
-        super.generateArticleContent(forceUpdate);
-        mIsFullTextShown = setHtml(mEntryFragment.mBaseUri,
-                mEntryFragment.mFilters,
-                mIsFullTextShown,
-                forceUpdate);
+    public void generateArticleContent() {
+        super.generateArticleContent();
+        mIsFullTextShown = setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters, mIsFullTextShown, true);
         update(false);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
@@ -570,7 +567,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             @Override
             public void run() {
                 mIsFullTextShown = false;
-                generateArticleContent(true);
+                generateArticleContent();
             }
         });
     }
@@ -587,7 +584,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 @Override
                 public void run() {
                     mIsFullTextShown = true;
-                    generateArticleContent(true);
+                    generateArticleContent();
                 }
             });
         } else /*--if (!isRefreshing())*/ {
@@ -899,7 +896,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             mEntryFragment.restartCurrentEntryLoader();
             InvalidateContentCache();
         }
-        generateArticleContent(false);
+        generateArticleContent();
     }
     @Override
     protected void readDataFromDB() {
@@ -1055,7 +1052,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             case R.id.menu_font_bold: {
                 PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                 item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                generateArticleContent(true);
+                generateArticleContent();
                 break;
             }
             case R.id.menu_show_html: {

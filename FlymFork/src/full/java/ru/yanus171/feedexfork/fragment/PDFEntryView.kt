@@ -31,8 +31,8 @@ class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long
         mContainer.addView(mListView)
     }
 
-    override fun generateArticleContent(forceUpdate: Boolean) {
-        super.generateArticleContent(forceUpdate)
+    override fun generateArticleContent() {
+        super.generateArticleContent()
         //super.setHtml(entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity)
         openRenderer( mEntryLink )
         mListView.adapter = ListAdapter(mRenderer)

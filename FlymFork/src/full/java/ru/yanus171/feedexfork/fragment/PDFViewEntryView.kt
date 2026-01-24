@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import com.github.barteksc.pdfviewer.listener.OnPageScrollListener
 import com.github.barteksc.pdfviewer.listener.OnTapListener
 import com.github.barteksc.pdfviewer.model.LinkTapEvent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import ru.yanus171.feedexfork.Constants
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.activity.BaseActivity
@@ -37,7 +35,6 @@ import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ZOOM
 import ru.yanus171.feedexfork.service.FetcherService.Status
 import ru.yanus171.feedexfork.utils.PrefUtils
 import ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND
-import ru.yanus171.feedexfork.utils.PrefUtils.getBoolean
 import ru.yanus171.feedexfork.utils.UiUtils
 import ru.yanus171.feedexfork.view.EntryView
 import ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu
@@ -247,7 +244,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     override fun LongClickOnBottom() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false);
         update(true);
-        generateArticleContent(true);
+        generateArticleContent();
     }
 
 
@@ -270,11 +267,11 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
     }
     override fun onResume() {
         super.onResume()
-        generateArticleContent( false )
+        generateArticleContent()
     }
     override fun onStart() {
         super.onStart()
-        generateArticleContent( false )
+        generateArticleContent()
     }
     fun saveState(){
         if ( mIsBlockScroll )
@@ -317,18 +314,18 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
 
     override fun update(invalidateContent: Boolean){
         super.update(invalidateContent)
-        if ( !mIsLoaded )
-            return
-        generateArticleContent(false)
+        generateArticleContent()
     }
 
     @SuppressLint("Range")
-    override fun generateArticleContent(forceUpdate: Boolean) {
+    override fun generateArticleContent() {
         if ( mContentWasLoaded ) {
             EndStatus()
             return
         }
-        super.generateArticleContent(forceUpdate)
+        if ( !mIsLoaded )
+            return
+        super.generateArticleContent()
         load(mTitle)
     }
 
@@ -338,7 +335,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         mEntryFragment.update(false)
         UiUtils.RunOnGuiThread(object: Runnable {
             override fun run(){
-                generateArticleContent(false)
+                generateArticleContent()
             }
         }, 500 )
     }
