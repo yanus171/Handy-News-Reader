@@ -556,19 +556,15 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void generateArticleContent() {
         super.generateArticleContent();
         mIsFullTextShown = setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters, mIsFullTextShown, true);
-        update(false);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
         mEntryFragment.UpdateHeader();
     }
 
     @Override
     public void onClickOriginalText() {
-        mEntryFragment.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mIsFullTextShown = false;
-                generateArticleContent();
-            }
+        mEntryFragment.getActivity().runOnUiThread(() -> {
+            mIsFullTextShown = false;
+            update( true, true );
         });
     }
 
@@ -580,12 +576,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
 
         if (alreadyMobilized) {
-            mEntryFragment.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mIsFullTextShown = true;
-                    generateArticleContent();
-                }
+            mEntryFragment.getActivity().runOnUiThread(() -> {
+                mIsFullTextShown = true;
+                update( true, true );
             });
         } else /*--if (!isRefreshing())*/ {
             LoadFullText(ArticleTextExtractor.MobilizeType.Yes, false, false);
@@ -1052,7 +1045,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             case R.id.menu_font_bold: {
                 PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                 item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                generateArticleContent();
+                update( true, true );
                 break;
             }
             case R.id.menu_show_html: {
@@ -1179,8 +1172,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void update(boolean invalidateContent) {
-        super.update( invalidateContent );
+    public void update(boolean invalidateContent, boolean isGenerateArticleContent) {
+        super.update( invalidateContent, isGenerateArticleContent );
         mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
     }
     public void onCreateOptionsMenu(Menu menu) {

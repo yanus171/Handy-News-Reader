@@ -102,7 +102,7 @@ public class EntryTapZones {
             if ( PrefUtils.isArticleTapEnabledTemp() ) {
                 PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 Update();
-                mFragment.GetSelectedEntryView().update( true );
+                mFragment.GetSelectedEntryView().update( true, false );
                 UiUtils.toast( R.string.tap_actions_were_disabled );
             } else
                 Enable();
@@ -117,7 +117,7 @@ public class EntryTapZones {
     private void Enable() {
         PrefUtils.putBoolean(PREF_ARTICLE_TAP_ENABLED_TEMP, true );
         Update();
-        mFragment.GetSelectedEntryView().update( true );
+        mFragment.GetSelectedEntryView().update( true, false );
         UiUtils.toast( R.string.tap_actions_were_enabled );
     }
 }

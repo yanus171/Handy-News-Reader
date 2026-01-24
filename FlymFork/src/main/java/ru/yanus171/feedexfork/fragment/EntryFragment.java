@@ -635,7 +635,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
             getEntryActivity().invalidateOptionsMenu();
-            view.update( invalidateContent );
+            view.update( invalidateContent, false );
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
             startMobilizationTask(view.mEntryId);
         }
