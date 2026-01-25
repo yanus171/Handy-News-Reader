@@ -150,9 +150,8 @@ public abstract class EntryView {
 
     }
 
-    public void update(boolean invalidateContent, boolean isGenerateArticleContent ) {
-        if ( invalidateContent )
-            InvalidateContentCache();
+    public void update(boolean isGenerateArticleContent ) {
+        InvalidateContentCache();
         if ( mEntryFragment.mTapZones != null )
             mEntryFragment.mTapZones.Hide();
         mEntryFragment.mControlPanel.hide();
@@ -343,7 +342,7 @@ public abstract class EntryView {
                 PrefUtils.putBoolean( PREF_ARTICLE_TAP_ENABLED_TEMP, false);
                 mEntryFragment.mTapZones.Update();
                 UiUtils.toast( R.string.tap_actions_were_disabled );
-                update(true, false);
+                update(false);
                 break;
             }
 
@@ -367,7 +366,7 @@ public abstract class EntryView {
 
     protected void toggleImageWhiteBackground() {
         PrefUtils.toggleBoolean(STATE_IMAGE_WHITE_BACKGROUND, false) ;
-        update(true, true);
+        update(true);
     }
 
     @NotNull

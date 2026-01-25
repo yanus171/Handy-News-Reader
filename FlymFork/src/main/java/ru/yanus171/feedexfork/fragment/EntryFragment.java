@@ -344,7 +344,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         mOrientation.onResume();
         if ( mTapZones != null )
             mTapZones.onResune();
-        update(false);
+        update();
         markPrevArticleAsRead();
     }
 
@@ -628,14 +628,13 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         return ((WebEntryView)entryView).mWebView;
     }
 
-    public void update(boolean invalidateContent ) {
+    private void update() {
         mBtnEndEditing.setVisibility( View.GONE );
         mBtnEndEditing.setBackgroundColor( Theme.GetToolBarColorInt() );
         EntryView view = GetSelectedEntryView();
         if (view != null && view.mCursor != null ) {
             getEntryActivity().SetTaskTitle( view.mTitle );
             getEntryActivity().invalidateOptionsMenu();
-            view.update( invalidateContent, false );
             mStatusText.SetEntryID(String.valueOf(view.mEntryId));
             startMobilizationTask(view.mEntryId);
         }
@@ -723,7 +722,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
                 CancelStarNotification( getCurrentEntryID() );
 
-                update(false);
+                update();
                 markPrevArticleAsRead();
 
                 if ( GetSelectedEntryView() != null )

@@ -338,7 +338,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void onStart() {
         super.onStart();
-        if ( mContentWasLoaded )
+        if ( !mContentWasLoaded )
             LoadData( true );
     }
 
@@ -564,7 +564,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void onClickOriginalText() {
         mEntryFragment.getActivity().runOnUiThread(() -> {
             mIsFullTextShown = false;
-            update( true, true );
+            update(true);
         });
     }
 
@@ -578,7 +578,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if (alreadyMobilized) {
             mEntryFragment.getActivity().runOnUiThread(() -> {
                 mIsFullTextShown = true;
-                update( true, true );
+                update(true);
             });
         } else /*--if (!isRefreshing())*/ {
             LoadFullText(ArticleTextExtractor.MobilizeType.Yes, false, false);
@@ -1045,7 +1045,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             case R.id.menu_font_bold: {
                 PrefUtils.toggleBoolean(PrefUtils.ENTRY_FONT_BOLD, false);
                 item.setChecked( PrefUtils.getBoolean( PrefUtils.ENTRY_FONT_BOLD, false ) );
-                update( true, true );
+                update(true);
                 break;
             }
             case R.id.menu_show_html: {
@@ -1172,8 +1172,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void update(boolean invalidateContent, boolean isGenerateArticleContent) {
-        super.update( invalidateContent, isGenerateArticleContent );
+    public void update(boolean isGenerateArticleContent) {
+        super.update(isGenerateArticleContent);
         mEntryFragment.mBtnEndEditing.setVisibility(mIsEditingMode ? View.VISIBLE : View.GONE);
     }
     public void onCreateOptionsMenu(Menu menu) {
