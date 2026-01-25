@@ -327,6 +327,11 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
         load(mTitle)
     }
 
+    override fun InvalidateContentCache() {
+        super.InvalidateContentCache()
+        mIsLoaded = false
+    }
+
     @SuppressLint("Range")
     override fun loadingDataFinished() {
         super.loadingDataFinished()

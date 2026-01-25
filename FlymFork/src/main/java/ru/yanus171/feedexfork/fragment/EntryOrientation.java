@@ -144,7 +144,6 @@ class EntryOrientation {
         } finally {
             FeedDataContentProvider.SetNotifyEnabled( true );
         }
-        mEntryFragment.GetSelectedEntryView().InvalidateContentCache();
         mActivity.invalidateOptionsMenu();
     }
 

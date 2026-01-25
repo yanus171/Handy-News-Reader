@@ -65,7 +65,7 @@ public class EntryTapZones {
         }
     }
 
-    public void onResune() {
+    public void onResume() {
         UpdateTextAndVisibility(mRootView, mVisible);
     }
     public void toggleVisibility() {

@@ -393,7 +393,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     view.postDelayed(() -> {
                         mIsScrollScheduled = false;
                         ScheduleScrollTo(view, startTime);
-                    }, 350);
+                    }, 550);
                 }
             }
         });

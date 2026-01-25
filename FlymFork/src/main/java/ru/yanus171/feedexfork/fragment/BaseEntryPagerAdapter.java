@@ -34,17 +34,6 @@ public abstract class BaseEntryPagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    void generateArticleContent(int pagerPos ) {
-        Dog.d( "EntryPagerAdapter.articleDataWasLoaded" + pagerPos +  ", mAnchor = " + mEntryFragment.mAnchor);
-        EntryView view = GetEntryView( pagerPos );
-        if (view != null ) {
-            view.StatusStartPageLoading();
-            view.InvalidateContentCache();
-            view.generateArticleContent();
-        }
-        if ( mEntryFragment.mTapZones != null )
-            mEntryFragment.mTapZones.Update();
-    }
 
     void onResume() {
         for (int i = 0; i < mEntryViews.size(); i++)

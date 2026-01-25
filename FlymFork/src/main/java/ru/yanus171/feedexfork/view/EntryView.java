@@ -325,8 +325,6 @@ public abstract class EntryView {
                                     cr.update(uri, values, null, null);
                                     InvalidateContentCache();
                                 }
-
-
                             }.start();
                         }).create();
                 d.show();
@@ -404,10 +402,8 @@ public abstract class EntryView {
                 PutFavorite( values, mFavorite );
                 ContentResolver cr = MainApplication.getContext().getContentResolver();
                 cr.update(uri, values, null, null);
-                if ( !mFavorite ) {
+                if ( !mFavorite )
                     LabelVoc.INSTANCE.removeLabels(mEntryId);
-                    InvalidateContentCache();
-                }
             }
         }.start();
         mEntryFragment.getActivity().invalidateOptionsMenu();

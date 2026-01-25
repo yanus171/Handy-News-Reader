@@ -229,6 +229,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void InvalidateContentCache() {
+        super.InvalidateContentCache();
         mLastContentLength = 0;
     }
 
@@ -557,7 +558,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         super.generateArticleContent();
         mIsFullTextShown = setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters, mIsFullTextShown, true);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
-        mEntryFragment.UpdateHeader();
     }
 
     @Override
@@ -570,19 +570,17 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void onClickFullText() {
-        //final BaseActivity activity = (BaseActivity) getActivity();
+        UiUtils.RunOnGuiThread( () -> {
+            final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
 
-        //Cursor cursor = mEntryPagerAdapter.getCursor(mCurrentPagerPos);
-        final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
-
-        if (alreadyMobilized) {
-            mEntryFragment.getActivity().runOnUiThread(() -> {
-                mIsFullTextShown = true;
-                update(true);
-            });
-        } else /*--if (!isRefreshing())*/ {
-            LoadFullText(ArticleTextExtractor.MobilizeType.Yes, false, false);
-        }
+            if (alreadyMobilized) {
+                mEntryFragment.getActivity().runOnUiThread(() -> {
+                    mIsFullTextShown = true;
+                    update(true);
+                });
+            } else
+                LoadFullText(ArticleTextExtractor.MobilizeType.Yes, false, false);
+        } );
     }
 
     public void LoadFullText(final ArticleTextExtractor.MobilizeType mobilize, final boolean isForceReload, final boolean withScripts) {
@@ -617,7 +615,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public void onReloadFullText() {
-        ReloadFullText();
+        UiUtils.RunOnGuiThread(this::ReloadFullText);
     }
 
     public void ReloadFullText() {
@@ -887,7 +885,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if (mLoadTitleOnly && mEntryFragment.isCurrentPage( mPosition ) ) {
             mLoadTitleOnly = false;
             mEntryFragment.restartCurrentEntryLoader();
-            InvalidateContentCache();
         }
         generateArticleContent();
     }
@@ -1185,10 +1182,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void update(Observable observable, Object o) {
         if ( observable == EntryUrlVoc.INSTANCE.getMObservable() ) {
             String url = (String)o;
-            if ( mNotLoadedUrlSet.contains( url ) ) {
-                InvalidateContentCache();
+            if ( mNotLoadedUrlSet.contains( url ) )
                 UpdateImagesAndLinks(false);
-            }
         }
     }
 
