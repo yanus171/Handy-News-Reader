@@ -151,12 +151,13 @@ public abstract class EntryView {
     }
 
     public void update(boolean isGenerateArticleContent ) {
-        InvalidateContentCache();
         if ( mEntryFragment.mTapZones != null )
             mEntryFragment.mTapZones.Hide();
         mEntryFragment.mControlPanel.hide();
-        if ( isGenerateArticleContent )
+        if ( isGenerateArticleContent ) {
+            InvalidateContentCache();
             generateArticleContent();
+        }
     }
 
     public void onStart() {
@@ -209,7 +210,7 @@ public abstract class EntryView {
                     mStatus = Status().Start(R.string.web_page_loading, true);
             }
     }
-    public void InvalidateContentCache() {
+    protected void InvalidateContentCache() {
         if ( mContentWasLoaded )
             SaveScrollPos();
         mContentWasLoaded = false;

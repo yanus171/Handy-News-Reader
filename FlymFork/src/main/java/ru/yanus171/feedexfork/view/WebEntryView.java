@@ -110,7 +110,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class WebEntryView extends EntryView implements WebViewExtended.EntryViewManager, Observer {
     public WebViewExtended mWebView = null;
-    public int mLastContentLength = 0;
     boolean mIsAutoMarkVisibleAsRead = false;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
     String mData = "";
@@ -123,6 +122,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mIsWithTables;
     private boolean mWasAutoUnStar = false;
     boolean mLoadTitleOnly = false;
+    private int mLastContentHash = 0;
 
     private int mIsWithTablePos = -1, mEnclosurePos, mRetrieveFullTextPos;
 
@@ -228,16 +228,13 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void InvalidateContentCache() {
+    protected void InvalidateContentCache() {
         super.InvalidateContentCache();
-        mLastContentLength = 0;
+        mLastContentHash = 0;
     }
 
     @SuppressLint("Range")
-    public boolean setHtml(Uri articleListUri,
-                           FeedFilters filters,
-                           boolean isFullTextShown,
-                           boolean forceUpdate) {
+    public void setHtml(Uri articleListUri, FeedFilters filters ) {
         //super.setHtml( entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity );
         Timer timer = new Timer("EntryView.setHtml");
         mLastSetHTMLTime = new Date().getTime();
@@ -266,14 +263,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             contentText = getContext().getString(R.string.loading);
         else {
             try {
-                if (!feedID.equals(GetExtrenalLinkFeedID()) &&
-                        (!FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor) || (forceUpdate && !isFullTextShown))) {
-                    isFullTextShown = false;
+
+                if ( !feedID.equals(GetExtrenalLinkFeedID()) && ( !mIsFullTextShown || !FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor) ) ) {
                     contentText = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
                     if (filters != null)
                         contentText = filters.removeText(contentText, DB_APPLIED_TO_CONTENT);
                 } else {
-                    isFullTextShown = true;
                     contentText = FileUtils.INSTANCE.loadMobilizedHTML(mEntryLink, mCursor);
                 }
                 if (contentText == null)
@@ -283,12 +278,15 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 contentText = "Context too large";
             }
         }
+        {
+            final int contentHash = contentText.hashCode();
+            if ( mLastContentHash != 0 && mLastContentHash == contentHash ) {
+                EndStatus();
+                return;
+            }
+            mLastContentHash = contentHash;
 
-        if (!mLoadTitleOnly && contentText.length() == mLastContentLength) {
-            EndStatus();
-            return isFullTextShown;
         }
-        mLastContentLength = contentText.length();
         //getSettings().setBlockNetworkLoads(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setSupportZoom(false);
@@ -301,7 +299,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         //}
 
         final String finalContentText = contentText;
-        final boolean finalIsFullTextShown = isFullTextShown;
+        final boolean finalIsFullTextShown = mIsFullTextShown;
         final boolean finalHasOriginal = hasOriginal;
         final String finalTitle = title;
         final HashSet<String> notLoadedUrlSet = (HashSet<String>) mNotLoadedUrlSet.clone();
@@ -323,7 +321,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }.start();
         mTitle = title;
         timer.End();
-        return isFullTextShown;
     }
 
     @Override
@@ -556,7 +553,9 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void generateArticleContent() {
         super.generateArticleContent();
-        mIsFullTextShown = setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters, mIsFullTextShown, true);
+        if ( mContentWasLoaded )
+            return;
+        setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
     }
 
@@ -571,13 +570,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void onClickFullText() {
         UiUtils.RunOnGuiThread( () -> {
+            mIsFullTextShown = true;
             final boolean alreadyMobilized = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
 
             if (alreadyMobilized) {
-                mEntryFragment.getActivity().runOnUiThread(() -> {
-                    mIsFullTextShown = true;
-                    update(true);
-                });
+                mEntryFragment.getActivity().runOnUiThread(() -> update(true));
             } else
                 LoadFullText(ArticleTextExtractor.MobilizeType.Yes, false, false);
         } );
@@ -590,7 +587,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
         // since we have acquired the networkInfo, we use it for basic checks
         if (networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
-            InvalidateContentCache();
             new Thread() {
                 @Override
                 public void run() {
@@ -604,6 +600,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                                 true,
                                 isForceReload,
                                 withScripts);
+                        UiUtils.RunOnGuiThread(() -> update( true ) );
                     } finally {
                         FetcherService.Status().End(status);
                     }
@@ -621,6 +618,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     public void ReloadFullText() {
         int status = FetcherService.Status().Start("Reload fulltext", true);
         mIsEditingMode = false;
+        update( false );
         try {
             LoadFullText(ArticleTextExtractor.MobilizeType.Yes, true, false);
         } finally {
@@ -899,6 +897,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         }
         mRetrieveFullText = mCursor.getInt(mRetrieveFullTextPos) == 1;
         mIsWithTables = mCursor.getInt(mIsWithTablePos) == 1;
+        mIsFullTextShown = FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor);
     }
 
     @Override
@@ -978,6 +977,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 } finally {
                     FetcherService.Status().End(status);
                 }
+                update( true );
                 break;
             }
 
