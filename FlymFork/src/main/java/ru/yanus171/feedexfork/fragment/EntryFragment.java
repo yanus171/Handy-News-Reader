@@ -896,4 +896,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             }
         }.SetID(currentEntryID).start();
     }
+    public void RestartSingleEntryViewLoader() {
+        UiUtils.RunOnGuiThread(() -> {
+            if ( GetSelectedEntryView() != null )
+                GetSelectedEntryView().update( true );
+            getLoaderManager().restartLoader(0, null, this);
+        });
+    }
 }

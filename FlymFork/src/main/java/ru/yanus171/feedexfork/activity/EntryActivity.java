@@ -22,7 +22,6 @@ package ru.yanus171.feedexfork.activity;
 import static ru.yanus171.feedexfork.adapter.DrawerAdapter.newNumber;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.IsExternalLink;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.IsEntryUri;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyEnabled;
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
@@ -65,7 +64,6 @@ import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Timer;
-import ru.yanus171.feedexfork.utils.UiUtils;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.WebEntryView;
@@ -199,12 +197,12 @@ public class EntryActivity extends BaseActivity implements Observer {
             new Thread() {
                 @Override
                 public void run() {
-                    FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.No, true, false);
-                    RestartLoadersOnGUI();
+                    FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.Yes, true, false);
+                    mEntryFragment.RestartSingleEntryViewLoader();
                 }
             }.start();
         } else
-            RestartLoadersOnGUI();
+            mEntryFragment.RestartSingleEntryViewLoader();
     }
 
 
@@ -216,12 +214,6 @@ public class EntryActivity extends BaseActivity implements Observer {
         FetcherService.addActiveEntryID(entryID);
     }
 
-    private void RestartLoadersOnGUI() {
-        UiUtils.RunOnGuiThread(() -> {
-            if ( mEntryFragment != null )
-                mEntryFragment.getLoaderManager().restartLoader(0, null, mEntryFragment);
-        });
-    }
     
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

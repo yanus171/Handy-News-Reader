@@ -227,12 +227,6 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         return result;
     }
 
-    @Override
-    protected void InvalidateContentCache() {
-        super.InvalidateContentCache();
-        mLastContentHash = 0;
-    }
-
     @SuppressLint("Range")
     public void setHtml(Uri articleListUri, FeedFilters filters ) {
         //super.setHtml( entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity );
