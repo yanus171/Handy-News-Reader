@@ -439,7 +439,7 @@ public class FeedDataContentProvider extends ContentProvider {
         if ( matchCode == URI_LAST_READ ) {
             queryBuilder.setTables("(SELECT * FROM ( " + FeedData.ENTRIES_TABLE_WITH_FEED_INFO + ") ORDER BY " + READ_DATE + DB_DESC + " LIMIT " + PrefUtils.getIntFromText("last_read_count",  20) + ")" );
             queryBuilder.appendWhere( WHERE_LAST_READ + DB_AND + EntryColumns._ID + " NOT IN ( SELECT " + EntryLabelColumns.ENTRY_ID + " FROM " + EntryLabelColumns.TABLE_NAME +
-                                       " WHERE " + EntryLabelColumns.LABEL_ID + " IN ( " + LabelSelectPreference.GetIDList( "lastReadHideLabelList", DefaultSeparator) + "))" );
+                                       " WHERE " + EntryLabelColumns.LABEL_ID + " IN ( " + LabelSelectPreference.GetIDList( "adHideLabelList", DefaultSeparator) + "))" );
         }
         Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, null, null, sortOrder);
 
@@ -970,7 +970,10 @@ public class FeedDataContentProvider extends ContentProvider {
         int match = FeedDataContentProvider.URI_MATCHER.match( uri );
         return ( match == URI_ENTRY_FOR_FEED ||
                  match == URI_ENTRY_FOR_GROUP ||
+                 match == URI_LAST_READ_ENTRY ||
                  match == URI_UNREAD_ENTRY );
 
     }
+
+
 }

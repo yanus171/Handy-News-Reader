@@ -44,9 +44,14 @@
 
 package ru.yanus171.feedexfork.view;
 
+import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
 import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
+import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
+import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
@@ -75,6 +80,7 @@ import static ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -97,7 +103,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import java.net.URLDecoder;
@@ -105,7 +115,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -113,11 +122,11 @@ import java.util.regex.PatternSyntaxException;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
+import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.EntryUrlVoc;
+import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
@@ -670,43 +679,32 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         mEntryViewMgr = manager;
     }
 
-    public String generateHtmlContent(String feedID, Uri articleListUri, String title, String link, String contentText, String categories,
-                                       String enclosure, String author,
-                                       long timestamp, boolean canSwitchToFullText, boolean hasOriginalText) {
+    public String generateHtmlContent( EntryInfo entry, String contentText ) {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS(title, link, mEntryView.mIsEditingMode))
-            .append(String.format(BODY_START, isTextRTL(title) ? "rtl" : "inherit"));
-
-        if (link == null)
-            link = "";
+        StringBuilder content = new StringBuilder(GetCSS(entry.mTitle, entry.mLink, mEntryView.mIsEditingMode))
+            .append(String.format(BODY_START, isTextRTL(entry.mTitle) ? "rtl" : "inherit"));
 
         if (getBoolean("entry_text_title_link", true))
-            content.append(String.format(TITLE_START_WITH_LINK, link + NO_MENU)).append(title).append(TITLE_END_WITH_LINK);
+            content.append(String.format(TITLE_START_WITH_LINK, entry.mLink + NO_MENU)).append(entry.mTitle).append(TITLE_END_WITH_LINK);
         else
-            content.append(TITLE_START).append(title).append(TITLE_END);
+            content.append(TITLE_START).append(entry.mTitle).append(TITLE_END);
 
         content.append(SUBTITLE_START);
-        Date date = new Date(timestamp);
+        Date date = new Date(entry.mDate);
         Context context = getContext();
         StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
                 DateFormat.getTimeFormat(context).format(date));
-        if (author != null && !author.isEmpty()) {
-            dateStringBuilder.append(" &mdash; ").append(author);
+        if (entry.mAuthor != null && !entry.mAuthor.isEmpty()) {
+            dateStringBuilder.append(" &mdash; ").append(entry.mAuthor);
         }
         content.append(dateStringBuilder);
         content.append(SUBTITLE_END);
-        if ( !feedID.equals( -1 ) && articleListUri != Uri.EMPTY && !IsFeedUri(articleListUri) ) {
-            content.append(SUBTITLE_START);
-            Cursor cursor = getContext().getContentResolver().query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null );
-            cursor.moveToFirst();
-            content.append( cursor.getString( 0 ) );
-            cursor.close();
-            content.append(SUBTITLE_END);
-        }
+        if ( entry.mArticleListUri != Uri.EMPTY && !IsFeedUri(entry.mArticleListUri) )
+            content.append(SUBTITLE_START).append( getFeedTitle( entry.mFeedID) ).append(SUBTITLE_END);
 
-        if (categories != null && !categories.isEmpty())
-            content.append( CATEGORIES_START ).append( CategoriesToOutput( categories ) ).append( CATEGORIES_END );
+        if (entry.mCategories != null && !entry.mCategories.isEmpty())
+            content.append( CATEGORIES_START ).append( CategoriesToOutput( entry.mCategories) ).append( CATEGORIES_END );
 
         content.append(contentText);
 
@@ -714,32 +712,13 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
         if ( !layout.equals( "Hidden" ) ) {
             content.append(BUTTON_SECTION_START);
-            if (!feedID.equals(FetcherService.GetExtrenalLinkFeedID())) {
-
-                if (!canSwitchToFullText) {
-                    content.append(BUTTON_START(layout));
-                    content.append(context.getString(R.string.get_full_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickFullText();");
-                    content.append(BUTTON_END(layout));
-                } else if (hasOriginalText) {
-                    content.append(BUTTON_START(layout));
-                    content.append(context.getString(R.string.original_text)).append(BUTTON_MIDDLE).append("injectedJSObject.onClickOriginalText();");
-                    content.append(BUTTON_END(layout));
-                }
-
-            }
-
-            if (canSwitchToFullText)
-                content.append(BUTTON_START(layout)).append(context.getString(R.string.btn_reload_full_text)).append(BUTTON_MIDDLE)
-                    .append("injectedJSObject.onReloadFullText();").append(BUTTON_END(layout));
-            if (enclosure != null && enclosure.length() > 6 && !enclosure.contains(IMAGE_ENCLOSURE)) {
-                content.append(BUTTON_START(layout)).append(context.getString(R.string.see_enclosure)).append(BUTTON_MIDDLE)
-                    .append("injectedJSObject.onClickEnclosure();").append(BUTTON_END(layout));
-            }
-            content.append(BUTTON_START(layout)).append(context.getString(R.string.menu_go_back)).append(BUTTON_MIDDLE)
-                .append("injectedJSObject.onClose();").append(BUTTON_END(layout));
-            /*if (link.length() > 0) {
-                content.append(LINK_BUTTON_START).append(link).append(LINK_BUTTON_MIDDLE).append(context.getString(R.string.see_link)).append(LINK_BUTTON_END);
-            }*/
+            if (entry.canShowSwitchToFullText())
+                addButtonHtml(content, R.string.get_full_text, "onClickFullText");
+            if (entry.canShowSwitchToOriginal())
+                addButtonHtml(content, R.string.original_text, "onClickOriginalText");
+            if (entry.canShowReloadFullText())
+                addButtonHtml(content, R.string.btn_reload_full_text, "onReloadFullText");
+            addButtonHtml(content, R.string.menu_go_back, "onClose");
 
             content.append(BUTTON_SECTION_END).append(BOTTOM_PAGE).append(BODY_END);
         }
@@ -748,6 +727,23 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         return content.toString();
     }
 
+
+    private static String getFeedTitle( String feedID ) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        try ( Cursor cursor = cr.query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null ) ) {
+            if (cursor.moveToFirst())
+                return cursor.getString(0);
+        }
+        return "";
+    }
+
+    private static void addButtonHtml(StringBuilder content, int captionID, String methodName) {
+        final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
+        content.append(BUTTON_START(layout));
+        content.append(MainApplication.getContext().getString(captionID))
+                .append(BUTTON_MIDDLE).append(String.format("injectedJSObject.%s();", methodName) );
+        content.append(BUTTON_END(layout));
+    }
 
 
     @Override
@@ -858,7 +854,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
         @JavascriptInterface
         public void onClose() {
-            DoNotShowMenu(false);
+            DoNotShowMenu(true);
             mEntryViewMgr.onClose();
         }
     }
@@ -961,4 +957,90 @@ class ScheduledEntryNotifyObservers implements Runnable {
     }
 
 }
+
+class EntryInfo {
+    private final boolean mIsFullTextShown;
+    String mFeedID;
+    Uri mArticleListUri = Uri.EMPTY;
+    String mTitle;
+    String mLink;
+    String mCategories;
+    String mAuthor;
+    JSONObject mOptions = null;
+    long mDate = 0;
+    String contentText;
+
+    @SuppressLint("Range")
+    EntryInfo(Cursor cursor, Uri articleLiastUri, FeedFilters filters, boolean loadTitleOnly, boolean isFullTextShown ) {
+        mFeedID = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
+        mAuthor = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
+        mCategories = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
+        mDate = cursor.getLong(cursor.getColumnIndex(FeedData.EntryColumns.DATE));
+        mTitle = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.TITLE));
+        mLink = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.LINK));
+        if (mLink == null)
+            mLink = "";
+
+        if (filters != null)
+            mTitle = filters.removeText(mTitle, DB_APPLIED_TO_TITLE);
+        mArticleListUri = articleLiastUri;
+        try {
+            mOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)));
+        } catch (Exception e) {
+
+        }
+        mIsFullTextShown = isFullTextShown;
+        setContent( cursor, filters, loadTitleOnly );
+    }
+
+    public EntryInfo() {
+        this.mIsFullTextShown = true;
+        mFeedID = "-1";
+    }
+
+    boolean isRSS() {
+        try {
+            return !mFeedID.equals(GetExtrenalLinkFeedID()) && (mOptions == null || mOptions.has(IS_RSS) && mOptions.getBoolean(IS_RSS) );
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean canShowSwitchToFullText() {
+        return !mIsFullTextShown && isRSS();
+    }
+
+    public boolean canShowSwitchToOriginal() {
+        return mIsFullTextShown && isRSS();
+    }
+
+    public boolean canShowReloadFullText() {
+        return mIsFullTextShown;
+    }
+
+    @SuppressLint("Range")
+    @NonNull
+    private void setContent( Cursor cursor, FeedFilters filters, boolean loadTitleOnly) {
+        if (loadTitleOnly)
+            contentText = getContext().getString(R.string.loading);
+        else {
+            try {
+                if ( isRSS() && ( !mIsFullTextShown || !FileUtils.INSTANCE.isMobilized(mLink, cursor) ) ) {
+                    contentText = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
+                    if (filters != null)
+                        contentText = filters.removeText(contentText, DB_APPLIED_TO_CONTENT);
+                } else {
+                    contentText = FileUtils.INSTANCE.loadMobilizedHTML(mLink, cursor);
+                }
+                if (contentText == null)
+                    contentText = "";
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                contentText = "Context too large";
+            }
+        }
+    }
+
+}
+
 

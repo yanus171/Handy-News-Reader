@@ -497,8 +497,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 Dog.v( String.format( "EntryFragment.setData( %s )", uri == null ? "" : uri.toString() ) );
 
                 //PrefUtils.putString( PrefUtils.LAST_URI, uri.toString() );
+                SetEntryReadTime( uri );
                 if ( mEntryPagerAdapter instanceof EntryPagerAdapter ) {
-                    SetEntryReadTime( uri );
                     mBaseUri = FeedData.EntryColumns.PARENT_URI(uri.getPath());
                     if ( mBaseUri.toString().endsWith( "-1" ) )
                         mBaseUri = Uri.parse(mBaseUri.toString().replace("-1", "" ));

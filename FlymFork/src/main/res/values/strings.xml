@@ -173,7 +173,7 @@
     <string name="menu_reload_full_text_without_mobilizer">Without Mobilizer</string>
     <string name="share_favorites_title">Handy Reading: starred entries</string>
     <string name="link_was_copied_to_clipboard">Link copied</string>
-    <string name="get_full_text">Load full article</string>
+    <string name="get_full_text">Show full article</string>
     <string name="show_text_in_entry_list">Show original text on article list</string>
     <string name="original_text">Show original text</string>
     <string name="see_enclosure">Load the attachment</string>

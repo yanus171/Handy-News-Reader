@@ -10,8 +10,6 @@ import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
@@ -64,10 +62,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.net.URL;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
+import org.json.JSONException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -232,54 +232,21 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         //super.setHtml( entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity );
         Timer timer = new Timer("EntryView.setHtml");
         mLastSetHTMLTime = new Date().getTime();
-
-        final String feedID = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
-        final String author = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
-        final String categories = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
-        final long timestamp = mCursor.getLong(mCursor.getColumnIndex(FeedData.EntryColumns.DATE));
-        //final String feedTitle = filters.removeTextFromTitle( mCursor.getString(mCursor.getColumnIndex(FeedData.FeedColumns.NAME)) );
-        String title = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.TITLE));
-        if (filters != null)
-            title = filters.removeText(title, DB_APPLIED_TO_TITLE);
-        final String enclosure = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.ENCLOSURE));
+        EntryInfo entry = new EntryInfo( mCursor, articleListUri, filters, mLoadTitleOnly, mIsFullTextShown );
         mWasAutoUnStar = mCursor.getInt(mCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
-        boolean hasOriginal = !feedID.equals(GetExtrenalLinkFeedID());
-        mIsAutoMarkVisibleAsRead = false;
         try {
-            JSONObject options = new JSONObject(mCursor.getString(mCursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)));
-            hasOriginal = hasOriginal && options.has(IS_RSS) && options.getBoolean(IS_RSS);
-            mIsAutoMarkVisibleAsRead = options.has(AUTO_SET_AS_READ) && options.getBoolean(AUTO_SET_AS_READ);
+            mIsAutoMarkVisibleAsRead = entry.mOptions.has(AUTO_SET_AS_READ) && entry.mOptions.getBoolean(AUTO_SET_AS_READ);
         } catch (Exception ignored) {
-
+            mIsAutoMarkVisibleAsRead = false;
         }
-        String contentText;
-        if (mLoadTitleOnly)
-            contentText = getContext().getString(R.string.loading);
-        else {
-            try {
 
-                if ( !feedID.equals(GetExtrenalLinkFeedID()) && ( !mIsFullTextShown || !FileUtils.INSTANCE.isMobilized(mEntryLink, mCursor) ) ) {
-                    contentText = mCursor.getString(mCursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
-                    if (filters != null)
-                        contentText = filters.removeText(contentText, DB_APPLIED_TO_CONTENT);
-                } else {
-                    contentText = FileUtils.INSTANCE.loadMobilizedHTML(mEntryLink, mCursor);
-                }
-                if (contentText == null)
-                    contentText = "";
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                contentText = "Context too large";
-            }
-        }
         {
-            final int contentHash = contentText.hashCode();
+            final int contentHash = entry.contentText.hashCode();
             if ( mLastContentHash != 0 && mLastContentHash == contentHash ) {
                 EndStatus();
                 return;
             }
             mLastContentHash = contentHash;
-
         }
         //getSettings().setBlockNetworkLoads(true);
         mWebView.getSettings().setUseWideViewPort(true);
@@ -290,17 +257,13 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         //int fontSize = PrefUtils.getFontSize();
         //if (fontSize != 0) {
         mWebView.getSettings().setTextZoom(100);
-        //}
-
-        final String finalContentText = contentText;
-        final boolean finalIsFullTextShown = mIsFullTextShown;
-        final boolean finalHasOriginal = hasOriginal;
-        final String finalTitle = title;
         final HashSet<String> notLoadedUrlSet = (HashSet<String>) mNotLoadedUrlSet.clone();
+        String finalContentText = entry.contentText;
         new Thread() {
             @Override
             public void run() {
-                final String dataWithLinks = mWebView.generateHtmlContent(feedID, articleListUri, finalTitle, mEntryLink, finalContentText, categories, enclosure, author, timestamp, finalIsFullTextShown, finalHasOriginal);
+                final String dataWithLinks =
+                    mWebView.generateHtmlContent( entry, finalContentText);
                 final ArrayList<String> imagesToDl = new ArrayList<>();
                 String data = HtmlUtils.replaceImageURLs(dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount, notLoadedUrlSet);
                 synchronized (mWebView) {
@@ -313,9 +276,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 UiUtils.RunOnGuiThread(() -> LoadData( false ));
             }
         }.start();
-        mTitle = title;
+        mTitle = entry.mTitle;
         timer.End();
     }
+
 
     @Override
     public void onResume() {
@@ -417,7 +381,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         final int status = Status().Start(getContext().getString(R.string.last_update), true);
         Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
         AddTagButtons(doc, mEntryLink);
-        final String data = mWebView.generateHtmlContent("-1", Uri.EMPTY, "", mEntryLink, doc.toString(), "", "", "", 0, true, false);
+        EntryInfo entry = new EntryInfo();
+        entry.mLink = mEntryLink;
+        final String contentText = doc.toString();
+        final String data = mWebView.generateHtmlContent( entry, contentText );
         synchronized (mWebView) {
             mData = data;
         }
