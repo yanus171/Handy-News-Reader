@@ -125,7 +125,9 @@ public class EntryActivity extends BaseActivity implements Observer {
             final Matcher m = HtmlUtils.HTTP_PATTERN.matcher(text);
             if (m.find()) {
                 final String url = text.substring(m.start(), m.end());
-                final String title = text.substring(0, m.start());
+                String title = text.substring(0, m.start());
+                if ( title.isEmpty() )
+                    title = url;
                 LoadAndOpenLink(url, title, TEXT);
             }
         } else if (intent.getScheme() != null && IsExternalLink( intent.getData() ) ){
@@ -189,9 +191,8 @@ public class EntryActivity extends BaseActivity implements Observer {
                 PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, entryUri.toString());//FetcherService.OpenLink(entryUri);
             timer.End();
             needToLoadLink = true;
-        } else {
+        } else
             SetEntryID(entryUri, finalUrl);
-        }
         mEntryFragment.SetEntryReadTime( entryUri );
         if ( needToLoadLink ) {
             new Thread() {

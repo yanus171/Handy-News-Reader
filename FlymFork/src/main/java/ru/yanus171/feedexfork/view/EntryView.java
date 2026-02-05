@@ -127,7 +127,7 @@ public abstract class EntryView {
             return;
         mScrollPartY = GetViewScrollPartY();
         if ( mScrollPartY > 0.0001 ) {
-            //Dog.v(TAG, String.format("EnrtyView.SaveScrollPos (entry %d) mScrollPartY = %f getScrollY() = %d, view.getContentHeight() = %f", mEntryId, mScrollPartY, getScrollY(), GetContentHeight()));
+            //Dog.v(TAG, String.format("EntryView.SaveScrollPos (entry %d) mScrollPartY = %f", mEntryId, mScrollPartY));
             ContentValues values = new ContentValues();
             values.put(SCROLL_POS, mScrollPartY);
             SaveStateToDB( values );
@@ -210,7 +210,7 @@ public abstract class EntryView {
                     mStatus = Status().Start(R.string.web_page_loading, true);
             }
     }
-    protected void InvalidateContentCache() {
+    public void InvalidateContentCache() {
         if ( mContentWasLoaded )
             SaveScrollPos();
         mContentWasLoaded = false;

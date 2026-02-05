@@ -899,7 +899,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     public void RestartSingleEntryViewLoader() {
         UiUtils.RunOnGuiThread(() -> {
             if ( GetSelectedEntryView() != null )
-                GetSelectedEntryView().update( true );
+                GetSelectedEntryView().InvalidateContentCache();
             getLoaderManager().restartLoader(0, null, this);
         });
     }
