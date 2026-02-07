@@ -187,6 +187,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             mWebView.ScrollSmoothTo(y);
         else
             mWebView.scrollTo(0, y);
+        SaveScrollPos();
     }
 
     @Override

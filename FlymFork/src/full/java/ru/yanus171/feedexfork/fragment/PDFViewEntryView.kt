@@ -91,6 +91,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
                     mEntryFragment.mTapZones.onPageScrolled();
                     if ( !mIsLoaded )
                         return
+                    mEntryFragment.mControlPanel.hide()
                     mScrollPartY = GetViewScrollPartY()
                     if ( !mIsScrollZoomEnabled ) {
                         if ( !mIsBlockScroll ) {
@@ -239,6 +240,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
             anim.start();
         } else
             mPDFView.positionOffset = scrollPart
+        SaveScrollPos()
     }
 
     override fun LongClickOnBottom() {

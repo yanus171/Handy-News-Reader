@@ -13,10 +13,12 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.fragment.EntryFragment
 import ru.yanus171.feedexfork.utils.Theme
 import ru.yanus171.feedexfork.utils.UiUtils.SetFont
+import java.util.Date
 
 class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     private var mView: View? = null
     private var mEntryView: EntryView? = null
+    private var mSeekBarLastOperationTime: Long = 0
 
     init {
         hide()
@@ -27,12 +29,17 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     }
 
     fun hide() {
+        if ( isHideDisabled() )
+            return
         mView?.visibility = View.GONE
         val titleTextView: TextView = mRootView.findViewById(R.id.title)
         titleTextView.visibility = View.GONE
     }
 
-    @SuppressLint("InflateParams")
+    private fun isHideDisabled(): Boolean {
+        return mSeekBarLastOperationTime > 0 && Date().time - mSeekBarLastOperationTime < 1000
+    }
+        @SuppressLint("InflateParams")
     fun show(entryView: EntryView ) {
         val inflater = MainApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mView = inflater.inflate(R.layout.control_panel, null)
@@ -107,6 +114,7 @@ class ControlPanel( val mRootView: View, val mEntryFragment: EntryFragment ) {
     private fun setupPageSeekbarOnChangeListener(seekBar: SeekBar) {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                mSeekBarLastOperationTime = Date().time;
                 mEntryView!!.ScrollToPage(i)
                 updatePageSeekbarLabel(seekBar)
             }
