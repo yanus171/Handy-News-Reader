@@ -154,7 +154,7 @@ public class EntryActivity extends BaseActivity implements Observer {
     }
 
 
-    private void LoadAndOpenLink(final String urlParam, final String title, final String text) {
+    private void LoadAndOpenLink(final String urlParam, String title, final String text) {
         final ContentResolver cr = MainApplication.getContext().getContentResolver();
 
         String url = urlParam;
@@ -165,8 +165,10 @@ public class EntryActivity extends BaseActivity implements Observer {
         }
         ContentValues values = new ContentValues();
 
-        if (LocalFile.Is(Uri.parse(url)))
-            url = LocalFile.processOnFirstLoad( Uri.parse(url), values ).toString();
+        if (LocalFile.Is(url)) {
+            url = LocalFile.processOnFirstLoad(Uri.parse(url)).toString();
+            title = FileUtils.INSTANCE.getFileName( Uri.parse(url) );
+        }
 
         String finalUrl = url;
         Uri entryUri = GetEntryUri(finalUrl);
@@ -174,8 +176,7 @@ public class EntryActivity extends BaseActivity implements Observer {
         final String feedID = GetExtrenalLinkFeedID();
         if (entryUri == null) {
             Timer timer = new Timer("LoadAndOpenLink insert");
-            if ( !values.containsKey(EntryColumns.TITLE) )
-                values.put(EntryColumns.TITLE, title);
+            values.put(EntryColumns.TITLE, title);
             values.put(EntryColumns.SCROLL_POS, 0);
             values.put(EntryColumns.DATE, (new Date()).getTime());
             values.put(EntryColumns.ABSTRACT, text);
@@ -195,10 +196,11 @@ public class EntryActivity extends BaseActivity implements Observer {
             SetEntryID(entryUri, finalUrl);
         mEntryFragment.SetEntryReadTime( entryUri );
         if ( needToLoadLink ) {
+            final String finalTitle = title;
             new Thread() {
                 @Override
                 public void run() {
-                    FetcherService.LoadLink(feedID, finalUrl, title, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.Yes, true, false);
+                    FetcherService.LoadLink(feedID, finalUrl, finalTitle, null, FetcherService.ForceReload.Yes, true, false, FetcherService.AutoDownloadEntryImages.Yes, true, false);
                     mEntryFragment.RestartSingleEntryViewLoader();
                 }
             }.start();

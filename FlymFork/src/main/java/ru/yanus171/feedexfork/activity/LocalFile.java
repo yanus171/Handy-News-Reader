@@ -2,12 +2,9 @@ package ru.yanus171.feedexfork.activity;
 
 import static ru.yanus171.feedexfork.Constants.CONTENT_SCHEME;
 import static ru.yanus171.feedexfork.Constants.FILE_SCHEME;
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.IsEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -20,12 +17,11 @@ import java.io.IOException;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.parser.FileSelectDialog;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.FileUtils;
 
 public class LocalFile {
     @NonNull
-    static public Uri processOnFirstLoad(Uri uri, ContentValues values) {
+    static public Uri processOnFirstLoad(Uri uri) {
         final String cacheDir = MainApplication.getContext().getCacheDir().getAbsolutePath();
         final File fileInCache = new File( cacheDir, FileSelectDialog.Companion.getFileName(uri));
         if ( !fileInCache.exists() || fileInCache.length() == 0 )
