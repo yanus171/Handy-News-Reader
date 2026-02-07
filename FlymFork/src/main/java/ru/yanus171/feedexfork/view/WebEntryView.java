@@ -324,6 +324,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         if (!downloadImages)
             StatusStartPageLoading();
         Dog.v(EntryView.TAG, "UpdateImages");
+        InvalidateContentCache();
         new Thread() {
             @Override
             public void run() {
