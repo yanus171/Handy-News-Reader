@@ -247,9 +247,10 @@ public abstract class EntryView {
             mIsLandscapePos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_LANDSCAPE);
             mIsReadPos = mCursor.getColumnIndex(FeedData.EntryColumns.IS_READ);
             mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
+
+            mScrollPartY = readDouble( SCROLL_POS, 0);
         }
         mEntryLink = mCursor.getString(mLinkPos);
-        mScrollPartY = readDouble( SCROLL_POS, 0);
         mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
         mTitle = mCursor.getString(mTitlePos);
     }
