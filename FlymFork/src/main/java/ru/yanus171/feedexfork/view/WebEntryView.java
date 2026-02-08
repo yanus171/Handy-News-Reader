@@ -1,19 +1,15 @@
 package ru.yanus171.feedexfork.view;
 
 import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
-import static ru.yanus171.feedexfork.activity.EditFeedActivity.AUTO_SET_AS_READ;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_IMG_WITH_A_LINK;
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setVisible;
 import static ru.yanus171.feedexfork.fragment.EntryMenu.setItemChecked;
 import static ru.yanus171.feedexfork.parser.OPML.FILENAME_DATETIME_FORMAT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
 import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.AddTagButtons;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
@@ -62,14 +58,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import java.net.URL;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,7 +101,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class WebEntryView extends EntryView implements WebViewExtended.EntryViewManager, Observer {
     public WebViewExtended mWebView = null;
-    boolean mIsAutoMarkVisibleAsRead = false;
     private ArrayList<String> mImagesToDl = new ArrayList<>();
     String mData = "";
     public String mDataWithWebLinks = "";
@@ -233,16 +223,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         //super.setHtml( entryId, articleListUri, newCursor, filters, isFullTextShown, forceUpdate, activity );
         Timer timer = new Timer("EntryView.setHtml");
         mLastSetHTMLTime = new Date().getTime();
-        EntryInfo entry = new EntryInfo( mCursor, articleListUri, filters, mLoadTitleOnly, mIsFullTextShown );
+        WebEntryContent content = new WebEntryContent( mCursor, articleListUri, filters, mLoadTitleOnly, mIsFullTextShown );
         mWasAutoUnStar = mCursor.getInt(mCursor.getColumnIndex(FeedData.EntryColumns.IS_WAS_AUTO_UNSTAR)) == 1;
-        try {
-            mIsAutoMarkVisibleAsRead = entry.mOptions.has(AUTO_SET_AS_READ) && entry.mOptions.getBoolean(AUTO_SET_AS_READ);
-        } catch (Exception ignored) {
-            mIsAutoMarkVisibleAsRead = false;
-        }
 
         {
-            final int contentHash = entry.contentText.hashCode();
+            final int contentHash = content.getContentHash();
             if ( mLastContentHash != 0 && mLastContentHash == contentHash ) {
                 EndStatus();
                 return;
@@ -259,12 +244,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         //if (fontSize != 0) {
         mWebView.getSettings().setTextZoom(100);
         final HashSet<String> notLoadedUrlSet = (HashSet<String>) mNotLoadedUrlSet.clone();
-        String finalContentText = entry.contentText;
         new Thread() {
             @Override
             public void run() {
-                final String dataWithLinks =
-                    mWebView.generateHtmlContent( entry, finalContentText);
+                final String dataWithLinks = content.generateHtml();
                 final ArrayList<String> imagesToDl = new ArrayList<>();
                 String data = HtmlUtils.replaceImageURLs(dataWithLinks, "", mEntryId, mEntryLink, false, imagesToDl, null, mMaxImageDownloadCount, notLoadedUrlSet);
                 synchronized (mWebView) {
@@ -277,7 +260,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 UiUtils.RunOnGuiThread(() -> LoadData( false ));
             }
         }.start();
-        mTitle = entry.mTitle;
+        mTitle = content.mTitle;
         timer.End();
     }
 
@@ -381,12 +364,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public void UpdateTags() {
         final int status = Status().Start(getContext().getString(R.string.last_update), true);
-        Document doc = Jsoup.parse(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink));
-        AddTagButtons(doc, mEntryLink);
-        EntryInfo entry = new EntryInfo();
-        entry.mLink = mEntryLink;
-        final String contentText = doc.toString();
-        final String data = mWebView.generateHtmlContent( entry, contentText );
+        WebEntryContent content = new WebEntryContent(ArticleTextExtractor.mLastLoadedAllDoc, NetworkUtils.getUrlDomain(mEntryLink), mEntryLink);
+        final String data = content.generateHtml();
         synchronized (mWebView) {
             mData = data;
         }

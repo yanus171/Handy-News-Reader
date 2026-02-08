@@ -44,35 +44,11 @@
 
 package ru.yanus171.feedexfork.view;
 
-import static ru.yanus171.feedexfork.MainApplication.getContext;
 import static ru.yanus171.feedexfork.activity.BaseActivity.PAGE_SCROLL_DURATION_MSEC;
-import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOutput;
-import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
-import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
-import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_CATEGORY;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_DATE;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_CLASS_HIDDEN;
-import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.TAG_BUTTON_FULL_TEXT_ROOT_CLASS;
-import static ru.yanus171.feedexfork.utils.PrefUtils.ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL;
-import static ru.yanus171.feedexfork.utils.PrefUtils.getBoolean;
 import static ru.yanus171.feedexfork.utils.PrefUtils.isArticleTapEnabledTemp;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.LINK_COLOR_BACKGROUND;
-import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.LOADED_LINK_COLOR_BACKGROUND;
-import static ru.yanus171.feedexfork.utils.Theme.QUOTE_BACKGROUND_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.QUOTE_LEFT_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_BORDER_COLOR;
-import static ru.yanus171.feedexfork.utils.Theme.SUBTITLE_COLOR;
 import static ru.yanus171.feedexfork.view.AppSelectPreference.GetShowInBrowserIntent;
 import static ru.yanus171.feedexfork.view.EntryView.TAP_TIMEOUT;
-import static ru.yanus171.feedexfork.view.FontSelectPreference.DefaultFontFamily;
-import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalUrl;
 import static ru.yanus171.feedexfork.view.WebEntryView.OpenImage;
 import static ru.yanus171.feedexfork.view.WebEntryView.ShowImageMenu;
 import static ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu;
@@ -80,18 +56,13 @@ import static ru.yanus171.feedexfork.view.WebEntryView.ShowLinkMenu;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,17 +74,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Observable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,12 +87,8 @@ import java.util.regex.PatternSyntaxException;
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.parser.FeedFilters;
-import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
-import ru.yanus171.feedexfork.utils.FileUtils;
-import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -135,7 +96,6 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 public class WebViewExtended extends WebView implements Handler.Callback {
 
     static final String TEXT_HTML = "text/html";
-    private static final String HTML_IMG_REGEX = "(?i)<[/]?[ ]?img(.|\n)*?>";
     public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
     private static final int CLICK_ON_WEBVIEW = 1;
@@ -480,192 +440,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         });
     }
 
-    private static String GetCSS(final String text, final String url, boolean isEditingMode) {
-        String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
-        final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
-        if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
-            mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
-        String mainFontSize = PrefUtils.getFontSizeText(0 );
-        String textAlign = getAlign(text);
-        return "<head><style type='text/css'> "
-            + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} \n"
-            + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}\n"
-            + "body { font-family: \"MainFont\"; font-size: " + mainFontSize + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
-            + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
-            + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
-            + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
-            + "title, h1, h2 {font-weight: normal; text-align:center; line-height: 120%}\n "
-            + "title, h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
-            + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
-            + "}body{color: #000; text-align: justify; background-color: #fff;}\n"
-            + "a.loaded_link {color: " + Theme.GetColor(LOADED_LINK_COLOR, R.string.default_loaded_link_color) + "; background: " + Theme.GetColor(LOADED_LINK_COLOR_BACKGROUND, R.string.default_text_color_background) + "}\n"
-            + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
-            + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
-            (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
-            + "h1 {color: inherit; text-decoration: none}\n"
-            + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
-            //+ ".inverted .math {color: white; background-color: black; } "
-            + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
-            + "pre {white-space: pre-wrap;}\n "
-            + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
-            + "td {font-weight: " + getFontBold() + "; text-align:" + textAlign + "}\n "
-            + "hr {width: 100%; color: #777777; align: center; size: 1}\n "
-            + "p.button {text-align: center}\n "
-            + "math {color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "}\n "
-            + "p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.8em 0 0.8em 0; text-align:" + textAlign + "}\n "
-            + getCustomFontClassStyle("p", url, customFontInfo)
-            + getCustomFontClassStyle("span", url, customFontInfo)
-            + getCustomFontClassStyle("div", url, customFontInfo)
-            + "p.subtitle { text-align: center; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; border-top:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; border-bottom:1px " + Theme.GetColor(SUBTITLE_BORDER_COLOR, android.R.color.black) + "; padding-top:2px; padding-bottom:2px; font-weight:800 }\n "
-            + "ul, ol {margin: 0 0 0.8em 0.6em; padding: 0 0 0 1em}\n "
-            + "ul li, ol li {margin: 0 0 0.8em 0; padding: 0}\n "
-            + "div.bottom-page {display: block; min-height: 80vh}\n "
-            + "div.button-section {padding: 0.8cm 0; margin: 0; text-align: center}\n "
-            + "div {text-align:" + textAlign + "}\n "
-            + "div.toc {text-align: center}\n "
-            + "p.toc {text-align: center}\n "
-            //+ "* { -webkit-tap-highlight-color: rgba(" + Theme.GetToolBarColorRGBA() + "); } "
-            + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "}\n "
-            + ".button-section p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.1cm 0 0.2cm 0}\n "
-            + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}\n"
-            + ".button-section input, .button-section a {font-family: \"MainFont\"; font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm; margin: 0.2cm}\n "
-            + "." + TAG_BUTTON_CLASS + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_CLASS_DATE + ", ." + TAG_BUTTON_CLASS_CATEGORY + ", ." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + ", ." + TAG_BUTTON_CLASS_HIDDEN
-            + " { font-size: " + mainFontSize + "; color: #FFFFFF; background-color: " + Theme.GetToolBarColor() + "; text-decoration: none; border: none; border-radius:0.2cm;  margin-right: 0.2cm; padding-top: 0.0cm; padding-bottom: 0.0cm; padding-left: 0.2cm; padding-right: 0.2cm}\n "
-            + "." + TAG_BUTTON_CLASS + " i { background-color: " + Theme.GetToolBarColor() + "}\n "
-            + "." + TAG_BUTTON_CLASS_CATEGORY + " i {background-color: #00AAAA}\n "
-            + "." + TAG_BUTTON_CLASS_DATE + " i {background-color: #0000AA}\n "
-            + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {background-color: #00AA00}\n "
-            + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
-            + PrefUtils.getString( "custom_css_text", "" )
-            + "</style><meta name='viewport' content='width=device-width'/></head>";
-    }
 
-    @NotNull
-    private static String getCustomFontClassStyle(String tag, String url, CustomClassFontInfo info) {
-        if ( info.mKeyword.isEmpty() )
-            return "";
-        else
-            return tag + ( info.mClassName.isEmpty() ? "" : "." + info.mClassName)
-                       +   "{font-family: \"CustomFont\"; " + info.mStyleText + "} ";
-    }
-
-    static class CustomClassFontInfo {
-        float mLetterSpacing = 0.01F;
-        String mClassName = "";
-        String mKeyword = "";
-        String mFontName = "";
-        String mStyleText = "";
-        CustomClassFontInfo( String line ) {
-            String[] list1 = line.split(":");
-            if ( list1.length >= 1 ) {
-                mKeyword = list1[0];
-                if (list1.length >= 2) {
-                    String[] list2 = list1[1].split("=");
-                    if (list2.length >= 2) {
-                        mClassName = list2[0].toLowerCase();
-                        mFontName = list2[1];
-                    }
-                    if (list2.length >= 3)
-                        mStyleText = list2[2];
-                }
-            }
-            for ( int i = 0; i < list1.length; i++ )
-                if (i >= 2)
-                    mStyleText += ":" + list1[i];
-        }
-
-    }
-    private static CustomClassFontInfo GetCustomClassAndFontName(final String key, final String url ) {
-        final String pref = PrefUtils.getString( key, "" );
-        for( String line: pref.split( "\\n" ) ) {
-            if ((line == null) || line.isEmpty())
-                continue;
-            try {
-                CustomClassFontInfo info = new CustomClassFontInfo( line );
-                if (url.contains(info.mKeyword)) {
-                    return info;
-                }
-            } catch (Exception e) {
-                Dog.e(e.getMessage());
-            }
-        }
-        return new CustomClassFontInfo("");
-    }
-
-
-    private static String getFontBold() {
-        if (getBoolean(PrefUtils.ENTRY_FONT_BOLD, false))
-            return "bold;";
-        else
-            return "normal;";
-    }
-
-    private static String getMargins() {
-        if (getBoolean(PrefUtils.ENTRY_MAGRINS, true))
-            return "4%";
-        else
-            return "0.1cm";
-    }
-
-    public static String getAlign(String text) {
-        if (isTextRTL(text))
-            return "right";
-        else if (getBoolean(PrefUtils.ENTRY_TEXT_ALIGN_JUSTIFY, false))
-            return "justify";
-        else
-            return "left";
-    }
-
-    private static boolean isWordRTL(String s) {
-        if (s.isEmpty()) {
-            return false;
-        }
-        char c = s.charAt(0);
-        return c >= 0x590 && c <= 0x6ff;
-    }
-
-    public static boolean isTextRTL(String text) {
-        if ( text == null )
-            return false;
-        String[] list = TextUtils.split(text, " ");
-        for (String item : list)
-            if (isWordRTL(item))
-                return true;
-        return false;
-    }
-
-    public static boolean isRTL(String text) {
-        final int directionality = Character.getDirectionality(Locale.getDefault().getDisplayName().charAt(0));
-        return (directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC) && isTextRTL(text);
-    }
-
-    private static final String BODY_START = "<body dir=\"%s\">";
-    private static final String BODY_END = "</body>";
-    private static final String TITLE_START_WITH_LINK = "<h1><a class='no_draw_link' href=\"%s\">";
-    private static final String TITLE_START = "<h1>";
-    //private static final String TITLE_MIDDLE = "'>";
-    private static final String TITLE_END = "</h1>";
-    private static final String TITLE_END_WITH_LINK = "</a></h1>";
-    private static final String SUBTITLE_START = "<p class='subtitle'>";
-    private static final String SUBTITLE_END = "</p>";
-    private static final String CATEGORIES_START = "<p class='categories'>";
-    private static final String CATEGORIES_END = "</p>";
-    private static final String BUTTON_SECTION_START = "<div class='button-section'>";
-    private static final String BOTTOM_PAGE = "<div class='bottom-page'/>";
-    private static final String BUTTON_SECTION_END = "</div>";
-    private static String BUTTON_START( String layout ) {
-        return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
-    }
-    private static final String BUTTON_MIDDLE = "' onclick='";
-    private static String BUTTON_END( String layout ) {
-        return "'/>" + (layout.equals(ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL) ? "" : "</p>");
-    }
-    // the separate 'marginfix' selector in the following is only needed because the CSS box model treats <input> and <a> elements differently
-    private static final String LINK_BUTTON_START = "<p class='marginfix'><a href='";
-    private static final String LINK_BUTTON_MIDDLE = "'>";
-    private static final String LINK_BUTTON_END = "</a></p>";
-    private static final String IMAGE_ENCLOSURE = "[@]image/";
     private static final long MOVE_TIMEOUT = 800;
 
     private final JavaScriptObject mInjectedJSObject = new JavaScriptObject();
@@ -677,72 +452,6 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
     public void setListener(EntryViewManager manager) {
         mEntryViewMgr = manager;
-    }
-
-    public String generateHtmlContent( EntryInfo entry, String contentText ) {
-        Timer timer = new Timer("EntryView.generateHtmlContent");
-
-        StringBuilder content = new StringBuilder(GetCSS(entry.mTitle, entry.mLink, mEntryView.mIsEditingMode))
-            .append(String.format(BODY_START, isTextRTL(entry.mTitle) ? "rtl" : "inherit"));
-
-        if (getBoolean("entry_text_title_link", true))
-            content.append(String.format(TITLE_START_WITH_LINK, entry.mLink + NO_MENU)).append(entry.mTitle).append(TITLE_END_WITH_LINK);
-        else
-            content.append(TITLE_START).append(entry.mTitle).append(TITLE_END);
-
-        content.append(SUBTITLE_START);
-        Date date = new Date(entry.mDate);
-        Context context = getContext();
-        StringBuilder dateStringBuilder = new StringBuilder(DateFormat.getLongDateFormat(context).format(date)).append(' ').append(
-                DateFormat.getTimeFormat(context).format(date));
-        if (entry.mAuthor != null && !entry.mAuthor.isEmpty()) {
-            dateStringBuilder.append(" &mdash; ").append(entry.mAuthor);
-        }
-        content.append(dateStringBuilder);
-        content.append(SUBTITLE_END);
-        if ( entry.mArticleListUri != Uri.EMPTY && !IsFeedUri(entry.mArticleListUri) )
-            content.append(SUBTITLE_START).append( getFeedTitle( entry.mFeedID) ).append(SUBTITLE_END);
-
-        if (entry.mCategories != null && !entry.mCategories.isEmpty())
-            content.append( CATEGORIES_START ).append( CategoriesToOutput( entry.mCategories) ).append( CATEGORIES_END );
-
-        content.append(contentText);
-
-
-        final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
-        if ( !layout.equals( "Hidden" ) ) {
-            content.append(BUTTON_SECTION_START);
-            if (entry.canShowSwitchToFullText())
-                addButtonHtml(content, R.string.get_full_text, "onClickFullText");
-            if (entry.canShowSwitchToOriginal())
-                addButtonHtml(content, R.string.original_text, "onClickOriginalText");
-            if (entry.canShowReloadFullText())
-                addButtonHtml(content, R.string.btn_reload_full_text, "onReloadFullText");
-            addButtonHtml(content, R.string.menu_go_back, "onClose");
-
-            content.append(BUTTON_SECTION_END).append(BOTTOM_PAGE).append(BODY_END);
-        }
-
-        timer.End();
-        return content.toString();
-    }
-
-
-    private static String getFeedTitle( String feedID ) {
-        final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        try ( Cursor cursor = cr.query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null ) ) {
-            if (cursor.moveToFirst())
-                return cursor.getString(0);
-        }
-        return "";
-    }
-
-    private static void addButtonHtml(StringBuilder content, int captionID, String methodName) {
-        final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
-        content.append(BUTTON_START(layout));
-        content.append(MainApplication.getContext().getString(captionID))
-                .append(BUTTON_MIDDLE).append(String.format("injectedJSObject.%s();", methodName) );
-        content.append(BUTTON_END(layout));
     }
 
 
@@ -954,91 +663,6 @@ class ScheduledEntryNotifyObservers implements Runnable {
             WebViewExtended.mImageDownloadObservable.notifyObservers(new Entry(mId, mLink, false) );
         else
             WebViewExtended.ScheduledNotifyObservers( mId, mLink );
-    }
-
-}
-
-class EntryInfo {
-    private final boolean mIsFullTextShown;
-    String mFeedID;
-    Uri mArticleListUri = Uri.EMPTY;
-    String mTitle;
-    String mLink;
-    String mCategories;
-    String mAuthor;
-    JSONObject mOptions = null;
-    long mDate = 0;
-    String contentText;
-
-    @SuppressLint("Range")
-    EntryInfo(Cursor cursor, Uri articleLiastUri, FeedFilters filters, boolean loadTitleOnly, boolean isFullTextShown ) {
-        mFeedID = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.FEED_ID));
-        mAuthor = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.AUTHOR));
-        mCategories = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.CATEGORIES));
-        mDate = cursor.getLong(cursor.getColumnIndex(FeedData.EntryColumns.DATE));
-        mTitle = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.TITLE));
-        mLink = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.LINK));
-        if (mLink == null)
-            mLink = "";
-
-        if (filters != null)
-            mTitle = filters.removeText(mTitle, DB_APPLIED_TO_TITLE);
-        mArticleListUri = articleLiastUri;
-        try {
-            mOptions = new JSONObject(cursor.getString(cursor.getColumnIndex(FeedData.FeedColumns.OPTIONS)));
-        } catch (Exception e) {
-
-        }
-        mIsFullTextShown = isFullTextShown;
-        setContent( cursor, filters, loadTitleOnly );
-    }
-
-    public EntryInfo() {
-        this.mIsFullTextShown = true;
-        mFeedID = "-1";
-    }
-
-    boolean isRSS() {
-        try {
-            return !mFeedID.equals(GetExtrenalLinkFeedID()) && (mOptions == null || mOptions.has(IS_RSS) && mOptions.getBoolean(IS_RSS) );
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean canShowSwitchToFullText() {
-        return !mIsFullTextShown && isRSS();
-    }
-
-    public boolean canShowSwitchToOriginal() {
-        return mIsFullTextShown && isRSS();
-    }
-
-    public boolean canShowReloadFullText() {
-        return mIsFullTextShown;
-    }
-
-    @SuppressLint("Range")
-    @NonNull
-    private void setContent( Cursor cursor, FeedFilters filters, boolean loadTitleOnly) {
-        if (loadTitleOnly)
-            contentText = getContext().getString(R.string.loading);
-        else {
-            try {
-                if ( isRSS() && ( !mIsFullTextShown || !FileUtils.INSTANCE.isMobilized(mLink, cursor) ) ) {
-                    contentText = cursor.getString(cursor.getColumnIndex(FeedData.EntryColumns.ABSTRACT));
-                    if (filters != null)
-                        contentText = filters.removeText(contentText, DB_APPLIED_TO_CONTENT);
-                } else {
-                    contentText = FileUtils.INSTANCE.loadMobilizedHTML(mLink, cursor);
-                }
-                if (contentText == null)
-                    contentText = "";
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-                contentText = "Context too large";
-            }
-        }
     }
 
 }
