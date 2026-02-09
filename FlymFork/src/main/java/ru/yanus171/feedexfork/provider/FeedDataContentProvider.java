@@ -970,7 +970,8 @@ public class FeedDataContentProvider extends ContentProvider {
         if ( uri == null )
             return false;
         int match = FeedDataContentProvider.URI_MATCHER.match( uri );
-        return ( match == URI_ENTRY_FOR_FEED ||
+        return ( match == URI_ENTRY ||
+                 match == URI_ENTRY_FOR_FEED ||
                  match == URI_ENTRY_FOR_GROUP ||
                  match == URI_LAST_READ_ENTRY ||
                  match == URI_UNREAD_ENTRY );
