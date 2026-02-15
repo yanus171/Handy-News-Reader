@@ -34,6 +34,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
 
 import static ru.yanus171.feedexfork.provider.FeedData.EntryColumns.ENTRIES_FOR_FEED_CONTENT_URI;
@@ -71,7 +72,6 @@ public class PrefUtils {
     public static final String THEME = "theme";
     public static final String DISPLAY_IMAGES = "display_images";
     //public static final String FULL_SCREEN_STATUSBAR_VISIBLE = "full_screen_statusbar_visible";
-    static final String PRELOAD_IMAGE_MODE = "preload_image_mode";
     public static final String DISPLAY_OLDEST_FIRST = "display_oldest_first";
     public static final String DISPLAY_ENTRIES_FULLSCREEN = "display_entries_fullscreen";
     public static final String ENTRY_FONT_BOLD = "entry_font_bold";
@@ -173,6 +173,10 @@ public class PrefUtils {
 
     static int getImageMaxDownloadSizeInKb() {
         return PrefUtils.getIntFromText(PrefUtils.MAX_IMAGE_DOWNLOAD_SIZE, 2048);
+    }
+
+    public static String getPreloadImagesMode() {
+        return getString("preload_image_mode", Constants.FETCH_PICTURE_MODE_ALWAYS_PRELOAD);
     }
 
     public static boolean IsShowReadCheckbox() {

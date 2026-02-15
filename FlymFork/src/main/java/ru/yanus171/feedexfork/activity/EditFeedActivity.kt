@@ -253,8 +253,8 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
             }
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        mGroupSpinner.setAdapter(adapter)
-        mIsAutoImageLoadCb.visibility = if (PrefUtils.getBoolean(PrefUtils.REFRESH_ENABLED, true)) View.VISIBLE else View.GONE
+        mGroupSpinner.adapter = adapter
+        mIsAutoImageLoadCb.visibility = if (PrefUtils.getPreloadImagesMode().equals(Constants.FETCH_PICTURE_MODE_NEVER )) View.GONE else View.VISIBLE
         PrefUtils.putBoolean(DIALOG_IS_SHOWN, false)
         mNextPageClassName = findViewById(R.id.next_page_classname)
         mNextPageMaxCount = findViewById(R.id.next_page_max_count)
