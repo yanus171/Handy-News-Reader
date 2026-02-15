@@ -93,6 +93,7 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
+import ru.yanus171.feedexfork.utils.Log;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -229,6 +230,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         {
             final int contentHash = content.getContentHash();
             if ( mLastContentHash != 0 && mLastContentHash == contentHash ) {
+                mContentWasLoaded = true;
                 EndStatus();
                 return;
             }
@@ -325,8 +327,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     public void LoadData( boolean updateScrollPart ) {
         Dog.v(EntryView.TAG, "LoadDate");
-        if ( updateScrollPart && mContentWasLoaded && GetViewScrollPartY() > 0)
+        if ( updateScrollPart && mContentWasLoaded && GetViewScrollPartY() > 0) {
             mScrollPartY = GetViewScrollPartY();
+            Log( "LoadData mScrollPartY = " + mScrollPartY );
+        }
         final String data;
         synchronized (mWebView) {
             data = mData;
@@ -1107,6 +1111,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void ScrollToPage(int page) {
         mScrollPartY = page / (double) mWebView.getPageCount();
+        Log( "ScrollToPage mScrollPartY = " + mScrollPartY );
         mWebView.ScrollToY();
     }
 

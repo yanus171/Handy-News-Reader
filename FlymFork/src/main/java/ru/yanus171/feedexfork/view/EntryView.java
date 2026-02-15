@@ -56,6 +56,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
+import ru.yanus171.feedexfork.utils.Log;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.UiUtils;
@@ -128,6 +129,7 @@ public abstract class EntryView {
         mScrollPartY = GetViewScrollPartY();
         if ( mScrollPartY > 0.0001 ) {
             //Dog.v(TAG, String.format("EntryView.SaveScrollPos (entry %d) mScrollPartY = %f", mEntryId, mScrollPartY));
+            Log( "SaveScrollPos mScrollPartY = " + mScrollPartY );
             ContentValues values = new ContentValues();
             values.put(SCROLL_POS, mScrollPartY);
             SaveStateToDB( values );
@@ -161,6 +163,7 @@ public abstract class EntryView {
     }
 
     public void onStart() {
+        Log( "onStart" );
     }
     public abstract void ScrollToPage(int page);
 
@@ -216,13 +219,14 @@ public abstract class EntryView {
         mContentWasLoaded = false;
     }
     public void onResume() {
-
+        Log( "onResume" );
     }
     public void onPause() {
-
+        Log( "onPause" );
     }
 
     public void setCursor( Cursor cursor ) {
+        Log( "setCursor" );
         mCursor = cursor;
         if ( mCursor != null && mCursor.moveToFirst() && !mContentWasLoaded )
             readDataFromDB();
@@ -237,9 +241,11 @@ public abstract class EntryView {
     public void loadingDataFinished(){
         //Timer.End( loader.getId() );
         //readDataFromDB();
+        Log( "loadingDataFinished" );
     }
 
     protected void readDataFromDB() {
+        Log( "readDataFromDB" );
         if (mTitlePos == -1) {
             mTitlePos = mCursor.getColumnIndex(TITLE);
             mLinkPos = mCursor.getColumnIndex(FeedData.EntryColumns.LINK);
@@ -249,6 +255,7 @@ public abstract class EntryView {
             mFeedIDPos = mCursor.getColumnIndex(FeedData.EntryColumns.FEED_ID);
 
             mScrollPartY = readDouble( SCROLL_POS, 0);
+            Log( "readDataFromDB mScrollPartY = " + mScrollPartY );
         }
         mEntryLink = mCursor.getString(mLinkPos);
         mFavorite = mCursor.getInt(mIsFavoritePos) == 1;
@@ -304,6 +311,10 @@ public abstract class EntryView {
                 OpenSettings();
                 break;
             }
+            //case R.id.menu_show_log: {
+            //    Log.Show( getContext() );
+            //    break;
+            //}
 
             case R.id.menu_edit_article_title: {
                 final EditText editText = new EditText(getContext());
@@ -450,6 +461,7 @@ public abstract class EntryView {
         //showItem( menu, R.id.menu_reload_group );
         setVisible( menu, R.id.menu_setting );
         setVisible( menu, R.id.menu_close );
+        setVisible( menu, R.id.menu_show_log );
         setVisible( menu, R.id.menu_toggle_theme );
         setVisible( menu, R.id.menu_copy_clipboard );
         setVisible( menu, R.id.menu_setting );
@@ -514,6 +526,13 @@ public abstract class EntryView {
 
         context.startActivity(
                 Intent.createChooser( intent, MainApplication.getContext().getString(R.string.menu_share) ) );
+    }
+
+    protected void Log( String text ) {
+        String title = mTitle;
+        if ( title.length() > 10 )
+            title = mTitle.substring( 0, 10 );
+        Log.Add( String.format( "%s: %s", title, text ) );
     }
 }
 

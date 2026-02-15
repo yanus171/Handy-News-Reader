@@ -98,5 +98,8 @@
         android:id="@+id/menu_close"
         android:icon="@drawable/ic_close"
         android:title="@string/menu_close" />
+    <item
+        android:id="@+id/menu_show_log"
+        android:title="@string/menu_show_log" />
 </menu>
 

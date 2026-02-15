@@ -292,6 +292,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                mEntryView.Log( "onPageStarted" );
                 Status().ChangeProgress( "started..." );
                 mIsPageFinished = false;
                 mEntryView.mContentWasLoaded = false;
@@ -302,6 +303,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished( view, url );
+                mEntryView.Log( "onPageFinished" );
                 mIsPageFinished = true;
                 //Dog.v( "EntryView.onPageFinished url = " + url );
                 if ( url.equals( "about:blank" ) ) {
@@ -474,6 +476,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
     void ScrollToY() {
         //Dog.v(EntryView.TAG, "EntryView.SaveScrollPos.ScrollToY() before mEntryID = " + mEntryView.mEntryId + ", mScrollPartY=" + mEntryView.mScrollPartY + ", GetScrollY() = " + mEntryView.GetScrollY());
+        mEntryView.Log( "ScrollToY" );
         if ( mEntryView.GetScrollY() > 0 )
             scrollTo( 0, mEntryView.GetScrollY() );
     }
