@@ -230,8 +230,10 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         {
             final int contentHash = content.getContentHash();
             if ( mLastContentHash != 0 && mLastContentHash == contentHash ) {
-                mContentWasLoaded = true;
-                EndStatus();
+                if ( !mLoadTitleOnly ) {
+                    mContentWasLoaded = true;
+                    EndStatus();
+                }
                 return;
             }
             mLastContentHash = contentHash;
