@@ -715,7 +715,6 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                 mCurrentPagerPos = i;
 
                 final boolean isForward = mLastPagerPos < mCurrentPagerPos;
-                mLastPagerPos = i;
 
                 if ( !getEntryActivity().mIsNewTask )
                     PrefUtils.putString(PrefUtils.LAST_ENTRY_URI, ContentUris.withAppendedId(mBaseUri, getCurrentEntryID()).toString());
@@ -737,6 +736,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                     textView.setBackgroundResource( R.drawable.toast_background );
                 toast.setView( textView );
                 toast.show();
+                mLastPagerPos = i;
             }
 
             @Override
