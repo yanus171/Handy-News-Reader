@@ -118,6 +118,8 @@ import android.util.Xml;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import org.jetbrains.annotations.NotNull;
@@ -817,32 +819,15 @@ public class FetcherService extends IntentService {
                         else if (EPUB.Is(link))
                             return EPUB.loadLocalFile( entryId, link);
                         String linkToLoad = HTMLParser.INSTANCE.replaceTomorrow(link).trim();
-                        String contentIndicator = null;
-                        {
-                            Pattern rx = Pattern.compile("\\{(.+)\\}");
-                            final Matcher matcher = rx.matcher(linkToLoad);
-
-                            if (matcher.find()) {
-                                Calendar date = Calendar.getInstance();
-                                linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
-                            }
-                        }
+                        linkToLoad = applyDateTemplate(linkToLoad);
 
                         if (isLinkToLoad(linkToLoad.toLowerCase()) && (isForceReload || !FileUtils.INSTANCE.isMobilized(link, entryCursor))) { // If we didn't already mobilized it
                             int abstractHtmlPos = entryCursor.getColumnIndex(EntryColumns.ABSTRACT);
 
                             Connection connection = null;
                             Document doc = null;
+                            final String contentIndicator = getContentIndicator(entryCursor, abstractHtmlPos);
                             try {
-                                // Try to find a text indicator for better content extraction
-                                String text = entryCursor.getString(abstractHtmlPos);
-                                if (!TextUtils.isEmpty(text)) {
-                                    text = Html.fromHtml(text).toString();
-                                    if (text.length() > 60) {
-                                        contentIndicator = text.substring(20, 40);
-                                    }
-                                }
-
                                 connection = new Connection(linkToLoad, OKHTTP);
                                 Status().ChangeProgress(R.string.extractContent);
 
@@ -958,6 +943,32 @@ public class FetcherService extends IntentService {
             }
         }
         return success;
+    }
+
+    @Nullable
+    private static String getContentIndicator(Cursor entryCursor, int abstractHtmlPos) {
+        String contentIndicator = null;
+        // Try to find a text indicator for better content extraction
+        String text = entryCursor.getString(abstractHtmlPos);
+        if (!TextUtils.isEmpty(text)) {
+            text = Html.fromHtml(text).toString();
+            if (text.length() > 60) {
+                contentIndicator = text.substring(20, 40);
+            }
+        }
+        return contentIndicator;
+    }
+
+    @NonNull
+    private static String applyDateTemplate(String linkToLoad) {
+        Pattern rx = Pattern.compile("\\{(.+)\\}");
+        final Matcher matcher = rx.matcher(linkToLoad);
+
+        if (matcher.find()) {
+            Calendar date = Calendar.getInstance();
+            linkToLoad = linkToLoad.replace(matcher.group(0), new SimpleDateFormat(matcher.group(1)).format(new Date(date.getTimeInMillis())));
+        }
+        return linkToLoad;
     }
 
     private static void setDate(long entryId, String feedId, Cursor entryCursor, String link, Document doc, ContentValues values) {

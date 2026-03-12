@@ -169,12 +169,8 @@ public class ArticleTextExtractor {
 
         // now remove the clutter
         prepareDocument(doc, mobilize, withScripts);
-        {
-            Elements elList = doc.getElementsByAttribute( "id" );
-            for (Element item : elList)
-                if ( !item.hasAttr( "class" ) )
-                    item.attr( "class", item.attr( "id") );
-        }
+        replaceIdToClass(doc);
+        //addTextToLinkTagIfEmpty(doc);
 
         {
             Elements elList = doc.getElementsByClass( "turbo-image" );
@@ -283,6 +279,22 @@ public class ArticleTextExtractor {
         }
 
         return ret.toString();
+    }
+
+    private static void replaceIdToClass(Document doc) {
+        for (Element item : doc.getElementsByAttribute( "id" ))
+            if ( !item.hasAttr( "class" ) )
+                item.attr( "class", item.attr( "id") );
+    }
+
+    private static void addTextToLinkTagIfEmpty(Document doc) {
+        for (Element item : doc.getElementsByTag( "a" )) {
+            if (!item.hasText()) {
+                Elements children = item.children().clone();
+                item.text("Link");
+                item.insertChildren( -1, children );
+            }
+        }
     }
 
     private static void AddColumnClassToTableCells(Element rootElement, String url) {

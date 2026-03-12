@@ -119,8 +119,10 @@ public class HtmlUtils {
 
         content = TEMPLATE_PATTERN.matcher(content).replaceAll( "" );
         SaveContentStepToFile( content, "improveHtmlContent 1" );
+
         content = ADS_PATTERN.matcher(content).replaceAll("");
         SaveContentStepToFile( content, "improveHtmlContent 2" );
+
         // remove some ads
         content = ADS_PATTERN.matcher(content).replaceAll("");
         SaveContentStepToFile( content, "improveHtmlContent 3" );
