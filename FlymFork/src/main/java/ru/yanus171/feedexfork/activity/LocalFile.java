@@ -33,7 +33,7 @@ public class LocalFile {
         return Is( uri.toString() );
     }
     public static boolean Is( String uri ) {
-        return uri.startsWith( CONTENT_SCHEME ) && ( uri.contains( "attachment" ) || uri.contains( "document" ) || uri.contains( "media" ) || uri.contains( "storage" ) ) ||
+        return uri.startsWith( CONTENT_SCHEME ) && ( uri.contains( "file" ) || uri.contains( "attachment" ) || uri.contains( "document" ) || uri.contains( "media" ) || uri.contains( "storage" ) ) ||
                uri.startsWith( FILE_SCHEME ) ||
                uri.contains( "cache_root" );
     }

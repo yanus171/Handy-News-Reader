@@ -1028,7 +1028,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         ShowDialog(context, confirmID, () -> {
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             ArrayList<Long> ids = new ArrayList<>();
-            for ( int pos: posList)
+            for ( int pos: posList )
                 ids.add(getItemId(pos));
             String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
             cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
