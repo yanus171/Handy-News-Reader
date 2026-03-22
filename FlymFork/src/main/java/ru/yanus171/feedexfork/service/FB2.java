@@ -113,7 +113,9 @@ public class FB2 {
         Elements list = doc.getElementsByTag("image");
         list.addAll( doc.getElementsByTag("img") );
         for (Element el : list ) {
-            final String id = el.attr( "l:href" ).replace( "#", "" );
+            String id = el.attr( "l:href" ).replace( "#", "" );
+            if ( id.isEmpty() )
+                id = el.attr( "xlink:href" ).replace( "#", "" );
             if ( id.isEmpty() )
                 continue;
             Elements images = doc.getElementsByAttributeValue( "id", id );
