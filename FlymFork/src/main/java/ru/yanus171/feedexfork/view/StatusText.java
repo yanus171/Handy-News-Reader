@@ -123,10 +123,11 @@ public class StatusText implements Observer {
         String text = list[0];
         final String errorFeedID = list[2];
         final String errorEntryID = list[3];
+        final boolean showProgressBar = Boolean.parseBoolean( list[4] );
         final String error =
             errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
             errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
-        final boolean showProgress = PrefUtils.getBoolean( "settings_show_circle_progress", true ) && Boolean.valueOf( list[4] );
+        final boolean showProgress = PrefUtils.getBoolean( "settings_show_circle_progress", true ) && showProgressBar;
         final String progressText = list[5];
         final long CLEAR_STATUS_PERIOD = 1000 * 60;
         if ( !PrefUtils.getBoolean( PrefUtils.SHOW_PROGRESS_INFO, false )
@@ -191,19 +192,23 @@ public class StatusText implements Observer {
                     }
                     if ( !mNotificationTitle.isEmpty() )
                         s.add( 0, mNotificationTitle );
-                    HashSet<Integer> temp = new HashSet<>( mList.keySet() );
-                    temp.retainAll( mProgressBarStatusList );
-                    final boolean showProgress = !temp.isEmpty();
-                    if ( !showProgress )
+                    final boolean showProgressBar = needShowProgressBar();
+                    if ( !showProgressBar )
                         mIsProgressTextVisible = false;
                     final String progressText = mIsProgressTextVisible && !mProgressBarStatusList.isEmpty() ?
                                     mList.get( mProgressBarStatusList.get(0) ) + " " + mProgressText  : "";
-                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgress, progressText );
+                    NotifyObservers( TextUtils.join( DELIMITER, s ), mErrorText, mErrorFeedID, mErrorEntryID, showProgressBar, progressText );
                     Dog.v("Status Update " + TextUtils.join( " ", s ).replace("\n", " "));
 
 
                 }
             });
+        }
+
+        private boolean needShowProgressBar() {
+            HashSet<Integer> temp = new HashSet<>( mList.keySet() );
+            temp.retainAll( mProgressBarStatusList );
+            return !temp.isEmpty();
         }
 
         void NotifyObservers(String text, String error, String errorFeedID, String errorEntryID, boolean showProgressBar, String progressText ) {
@@ -316,17 +321,14 @@ public class StatusText implements Observer {
         }
         public void HideByScroll() {
             if ( mIsHideByScrollEnabled )
-                UiUtils.RunOnGuiThread( new Runnable() {
-                        @Override
-                        public void run() {
+                UiUtils.RunOnGuiThread(() -> {
                     synchronized (mList) {
                         if ( mList.isEmpty() ) {
                             mBytesRecievedLast = 0;
                             NotifyObservers( "", mErrorText, mErrorFeedID, mErrorEntryID, false, "" );
                         }
                     }
-                    }
-                });
+            });
         }
 
         public void ClearProgress() {

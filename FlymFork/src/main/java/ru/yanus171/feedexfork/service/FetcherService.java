@@ -808,7 +808,7 @@ public class FetcherService extends IntentService {
                 final int titleCol = entryCursor.getColumnIndex(EntryColumns.TITLE);
                 String title = entryCursor.isNull(titleCol) ? "" : entryCursor.getString(titleCol);
                 feedId = entryCursor.getString(entryCursor.getColumnIndex(EntryColumns.FEED_ID));
-                int status = Status().Start( feedId.equals( GetExtrenalLinkFeedID() ) ? "" : title, false ); try {
+                int status = Status().Start( feedId.equals( GetExtrenalLinkFeedID() ) ? "" : title, isShowError ); try {
 
                     int linkPos = entryCursor.getColumnIndex(LINK);
                     String link = entryCursor.getString(linkPos);
