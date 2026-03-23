@@ -103,6 +103,9 @@ public class StatusText implements Observer {
     public void SetFeedID( Uri uri ) {
         SetFeedID( uri.getPathSegments().size() > 1 ? uri.getPathSegments().get(1) : "" );
     }
+    public void SetEntryID( long entryID ) {
+        SetEntryID( String.valueOf( entryID ) );
+    }
     public void SetEntryID( String entryID ) {
         mEntryID = entryID;
         FetcherService.Status().UpdateText();
@@ -121,12 +124,11 @@ public class StatusText implements Observer {
     public void update(Observable observable, Object data) {
         String[] list = TextUtils.split( (String)data, SEP );
         String text = list[0];
+        final String errorText = list[1];
         final String errorFeedID = list[2];
         final String errorEntryID = list[3];
         final boolean showProgressBar = Boolean.parseBoolean( list[4] );
-        final String error =
-            errorFeedID.equals( mFeedID ) && mEntryID.isEmpty() ||
-            errorEntryID.equals( mEntryID )  && !mEntryID.isEmpty() ? list[1] : "";
+        final String error = needShowError(errorFeedID, errorEntryID) ? errorText : "";
         final boolean showProgress = PrefUtils.getBoolean( "settings_show_circle_progress", true ) && showProgressBar;
         final String progressText = list[5];
         final long CLEAR_STATUS_PERIOD = 1000 * 60;
@@ -146,6 +148,11 @@ public class StatusText implements Observer {
             mProgressText.setVisibility(!progressText.isEmpty() ? View.VISIBLE : View.GONE);
             mProgressText.setText(progressText);
         }
+    }
+
+    private boolean needShowError(String errorFeedID, String errorEntryID) {
+        return errorFeedID.equals(mFeedID) && mEntryID.isEmpty() ||
+               errorEntryID.equals(mEntryID) && !mEntryID.isEmpty();
     }
 
 
