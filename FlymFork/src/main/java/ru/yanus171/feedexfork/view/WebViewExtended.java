@@ -343,9 +343,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                     } else
                         UiUtils.RunOnGuiThread(() ->
                         {
-                            if (mEntryView.mEntryFragment != null)
-                                mEntryView.mEntryFragment.UpdateHeader();
-                            if ( mEntryView.mEntryFragment != null && !mEntryView.mEntryFragment.mAnchor.isEmpty() )
+                            mEntryView.mEntryFragment.UpdateHeader();
+                            if ( !mEntryView.mEntryFragment.mAnchor.isEmpty() )
                                 mEntryView.moveToAnchor( view, mEntryView.mEntryFragment.mAnchor );
                             else
                                 ScrollToY();

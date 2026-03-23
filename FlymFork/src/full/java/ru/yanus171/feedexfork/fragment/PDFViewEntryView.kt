@@ -152,6 +152,7 @@ class PDFViewEntryView(private val fragment: EntryFragment, private val mContain
                         mIsLoaded = true
                         restoreState()
                         mPDFView.positionOffset = scrollPart
+                        mEntryFragment.UpdateHeader()
                     }
                 }, 0 )
                 EndStatus()
