@@ -612,6 +612,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="web_search_keyword">Ключевое слово или адрес сайта</string>
     <string name="web_search_title">Веб поиск статьи</string>
     <string name="settings_datetime_format">Формат даты и времени</string>
+    <string name="menu_show_log">Показать журнал</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d новая статья</item>
         <item quantity="few">%d новые статьи</item>
@@ -735,4 +736,5 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="scroll_to_top_disabled_for_pdf">Прокрутка вверх недоступна для PDF</string>
     <string name="page_number_from_count">%d из %d</string>
     <string name="page_jump_PDF_confirm">Перейти к странице %d?</string>
+    <string name="unknownLocalBookType">Неизвестный тип книги</string>
 </resources>

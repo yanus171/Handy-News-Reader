@@ -611,6 +611,7 @@
     <string name="web_search_keyword">Schlüsselwort</string>
     <string name="web_search_title">Artikel im Web suchen</string>
     <string name="settings_datetime_format">Datums- und Zeitformat</string>
+    <string name="menu_show_log">Protokoll zeigen</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
@@ -735,4 +736,5 @@
     <string name="zoom_is_disabled">Vergrößerungsmodus deaktiviert</string>
     <string name="page_number_from_count">%d von %d</string>
     <string name="page_jump_PDF_confirm">Zur Seite %d springen?</string>
+    <string name="unknownLocalBookType">Unbekannter Buchtyp</string>
 </resources>
