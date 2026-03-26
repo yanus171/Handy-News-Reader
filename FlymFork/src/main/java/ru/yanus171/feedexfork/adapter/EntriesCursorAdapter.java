@@ -212,6 +212,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean mNeedScrollToTopExpandedArticle = false;
     private static Cursor mCursor = null;
     HashMap<Long, Integer> mItemPositionVoc = new HashMap<>();
+    HashMap<Integer, Long> mItemIDVoc = new HashMap<>();
     public EntriesCursorAdapter(Context context, Uri uri, Cursor cursor, boolean showFeedInfo, boolean showEntryTextFromFeedSetup, boolean showUnread, EntriesListFragment entriesListFragment) {
         super(context, R.layout.item_entry_list, cursor, 0);
         //Dog.v( String.format( "new EntriesCursorAdapter( %s, showUnread = %b )", uri.toString() ,showUnread ) );
@@ -237,6 +238,9 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     }
     public int getItemPosition( long ID ) {
         return mItemPositionVoc.containsKey( ID ) ? mItemPositionVoc.get( ID ) : -1;
+    }
+    public long getItemIDByPosition( int position ) {
+        return mItemIDVoc.containsKey( position ) ? mItemIDVoc.get( position ) : -1;
     }
     public static Uri EntryUri( long id ) {
         return EntryColumns.CONTENT_URI( id ); //ContentUris.withAppendedId(mUri, id);
@@ -729,18 +733,8 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         holder.mobilizedImgView.setVisibility(getBoolean("show_full_text_indicator", false ) && holder.isMobilized? View.VISIBLE : View.GONE);
 
         UpdateReadView(holder, view);
-        holder.readImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleReadState(holder, feedId, view);
-            }
-        });
-        holder.starImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFavoriteState(view);
-            }
-        });
+        holder.readImgView.setOnClickListener(v -> toggleReadState(holder, feedId, view));
+        holder.starImgView.setOnClickListener(v -> toggleFavoriteState(view));
 
         holder.categoriesTextView.setVisibility(View.GONE);
         if ( getBoolean( SHOW_ARTICLE_CATEGORY, true ) ) {
@@ -1029,7 +1023,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             ContentResolver cr = MainApplication.getContext().getContentResolver();
             ArrayList<Long> ids = new ArrayList<>();
             for ( int pos: posList )
-                ids.add(getItemId(pos));
+                ids.add(getItemIDByPosition(pos));
             String where = BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ')';
             cr.update(EntryColumns.CONTENT_URI, FeedData.getReadContentValues(), where, null);
         });
@@ -1070,52 +1064,49 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
         final SpannableStringBuilder builder = new SpannableStringBuilder();
 
-        textView.post(new Runnable() {
-            @Override
-            public void run() {
+        textView.post(() -> {
 
-                if (!isJustify.get()) {
+            if (!isJustify.get()) {
 
-                    final int lineCount = textView.getLineCount();
-                    final int textViewWidth = textView.getWidth();
+                final int lineCount = textView.getLineCount();
+                final int textViewWidth = textView.getWidth();
 
-                    for (int i = 0; i < lineCount; i++) {
+                for (int i = 0; i < lineCount; i++) {
 
-                        int lineStart = textView.getLayout().getLineStart(i);
-                        int lineEnd = textView.getLayout().getLineEnd(i);
+                    int lineStart = textView.getLayout().getLineStart(i);
+                    int lineEnd = textView.getLayout().getLineEnd(i);
 
-                        String lineString = textString.substring(lineStart, lineEnd);
+                    String lineString = textString.substring(lineStart, lineEnd);
 
-                        if (i == lineCount - 1) {
-                            builder.append(new SpannableString(lineString));
-                            break;
-                        }
-
-                        String trimSpaceText = lineString.trim();
-                        String removeSpaceText = lineString.replaceAll(" ", "");
-
-                        float removeSpaceWidth = textPaint.measureText(removeSpaceText);
-                        float spaceCount = trimSpaceText.length() - removeSpaceText.length();
-
-                        float eachSpaceWidth = (textViewWidth - removeSpaceWidth) / spaceCount;
-
-                        SpannableString spannableString = new SpannableString(lineString);
-                        for (int j = 0; j < trimSpaceText.length(); j++) {
-                            char c = trimSpaceText.charAt(j);
-                            if (c == ' ') {
-                                Drawable drawable = new ColorDrawable(0x00ffffff);
-                                drawable.setBounds(0, 0, (int) eachSpaceWidth, 0);
-                                ImageSpan span = new ImageSpan(drawable);
-                                spannableString.setSpan(span, j, j + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            }
-                        }
-
-                        builder.append(spannableString);
+                    if (i == lineCount - 1) {
+                        builder.append(new SpannableString(lineString));
+                        break;
                     }
 
-                    textView.setText(builder);
-                    isJustify.set(true);
+                    String trimSpaceText = lineString.trim();
+                    String removeSpaceText = lineString.replaceAll(" ", "");
+
+                    float removeSpaceWidth = textPaint.measureText(removeSpaceText);
+                    float spaceCount = trimSpaceText.length() - removeSpaceText.length();
+
+                    float eachSpaceWidth = (textViewWidth - removeSpaceWidth) / spaceCount;
+
+                    SpannableString spannableString = new SpannableString(lineString);
+                    for (int j = 0; j < trimSpaceText.length(); j++) {
+                        char c = trimSpaceText.charAt(j);
+                        if (c == ' ') {
+                            Drawable drawable = new ColorDrawable(0x00ffffff);
+                            drawable.setBounds(0, 0, (int) eachSpaceWidth, 0);
+                            ImageSpan span = new ImageSpan(drawable);
+                            spannableString.setSpan(span, j, j + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                    }
+
+                    builder.append(spannableString);
                 }
+
+                textView.setText(builder);
+                isJustify.set(true);
             }
         });
     }
@@ -1378,6 +1369,11 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         mItemPositionVoc.clear();
         for( int i = 0; i < getCount(); i++ )
             mItemPositionVoc.put( getItemId( i ), i );
+
+        mItemIDVoc.clear();
+        for( int i = 0; i < getCount(); i++ )
+            mItemIDVoc.put( i, getItemId( i ) );
+
         mDBReadMap.clear();
         if (cursor == null )
             return;
