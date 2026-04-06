@@ -31,27 +31,32 @@
 
     <string name="about_us_content" translatable="true"><![CDATA[
     <h2>License and Information</h2>
-    <p>This program is Free/Libre Open-Source Software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
+    <p>This program is Free/Libre Open-Source Software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version <a href=\"https://www.gnu.org/licenses/gpl-3.0.html\">full text</a></p>
     <p>This app is based on \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Among features added to this fork are:</p>
     
 	• feed group expanding<br/>
-    • invisible fullscreen page up|down buttons<br/>
+    • tap actions<br/>
     • max image per feed download count<br/>
     • ability to cancel refresh process<br/>
-    • and much more
+    • arbitrary web page loading<br/>
+    • local PDF (unsupported in F-Droid app version), FB2 EPUB & book support<br/>
+    • and much more<br/>
 
-    <h2>You Can Find Us at:</h2>
+    The app was extended from RSS reader to read any web and local content in a single view & interaction style
 
-    • our <b><a href=\"https://handynewsreader.blogspot.com\">website</a></b> (news and info)<br/>
-    • <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play Store</a><br/>
-    • <a href="https://f-droid.org/de/packages/ru.yanus171.feedexfork/">F-Droid</a><br/>
-    • <a href="https://forum.xda-developers.com/android/apps-games/app-flym-fork-rss-reader-t3802126">XDA forum</a><br/>
-    • <a href="https://github.com/yanus171/Handy-News-Reader">GitHub</a>
+    <h2>Download ap app:</h2>
+    • <a href="https://www.rustore.ru/catalog/app/ru.yanus171.feedexfork/">RuStore</a><br/>
+    • <a href="https://f-droid.org/en/packages/ru.yanus171.feedexfork/">F-Droid</a> (app version without PDF support)<br/>
+    • The most recent release you can find on <a href="https://github.com/yanus171/Handy-News-Reader/releases/\">GitHib</a>.
+    You can also try <a href=\"https://github.com/yanus171/Handy-News-Reader/issues/683\">beta</a><br/>
 
-    <h2>Our Support</h2>
+    <h2>Web site:</h2>
+    • Discuss an app on <a href="https://github.com/yanus171/Handy-News-Reader\">GitHub</a><br/>
+    • old <b><a href=\"https://handynewsreader.blogspot.com\">website</a></b><br/>
+
+    <h2>Support</h2>
     <p>If you stumble upon a problem with the app, You can:</p>
-    • check if that problem has been addressed within our <a href="https://handynewsreader.blogspot.com/2020/07/frequently-asked-questions.html">FAQ</a><br/>
-    • open an issue on <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
+    • open an issue on <a href="https://github.com/yanus171/Handy-News-Reader/issues\">GitHub issues page</a><br/>
     • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20problem">email the developer</a><br/>
 	
     <h2>Your Support</h2>
@@ -59,19 +64,17 @@
     • open an issue on <a href="https://github.com/yanus171/Handy-News-Reader/issues">GitHub issues page</a><br/>
     • <a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20idea">email the developer</a>
 
-	<p>If you find this app useful please rate it at <a href="https://play.google.com/store/apps/details?id=ru.yanus171.feedexfork">Google Play</a></p>
+	<p>If you find this app useful please rate it at <a href="https://www.rustore.ru/catalog/app/ru.yanus171.feedexfork">RuStore</a></p>
     You can also <a href=\"https://github.com/yanus171/Handy-News-Reader\">make a donation</a> </b> (link at the end of the description)
  
     <h2>Translations</h2>
-	<p>You can help in translation to your own language at <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b></p>
+	You can help in translation to your own language at <b><a href="https://crowdin.com/project/handy-news-reader">Crowdin</a></b> If your language isn\'t available then please send an <b><a href="mailto:workyalex@mail.ru?subject=Handy%20News%20Reader%20translation">e-mail to the developer</a></b>
 
     <h2>Acknowledgments</h2>
     <h3>Developers:</h3>
     ***developerList***
-    <br/><br/>
 	<h3>Translators:</h3>
     ***translatorList***
-    <br/>
     ]]></string>
     <string name="app_name">Handy Reading</string>
     <string name="about_title_version">version</string>
