@@ -1,8 +1,8 @@
 package ru.yanus171.feedexfork.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
@@ -16,7 +16,6 @@ import ru.yanus171.feedexfork.view.WebViewExtended;
 
 public class EntryTextSearch {
     private final WebViewExtended mWebView;
-    private String mSearchText = "";
     private MenuItem mSearchNextItem = null;
     private MenuItem mSearchPreviousItem = null;
     private MenuItem mSearchItem = null;
@@ -30,9 +29,14 @@ public class EntryTextSearch {
                     return;
                 mSearchNextItem.setVisible(numberOfMatches > 1);
                 mSearchPreviousItem.setVisible(numberOfMatches > 1);
+                updateBackgroundColor(numberOfMatches > 0 );
             });
         }
 
+    }
+
+    private void updateBackgroundColor( boolean found ) {
+        mSearchView.setBackgroundColor( found ? Color.TRANSPARENT : Color.RED );
     }
 
     public void onCreateOptionsMenu(Menu menu) {
@@ -50,15 +54,17 @@ public class EntryTextSearch {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mSearchText = newText;
                 mSearchNextItem.setVisible( false );
                 mSearchPreviousItem.setVisible( false );
 
-                if (!TextUtils.isEmpty(newText)) {
+                if (!newText.trim().isEmpty()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                         mWebView.findAllAsync( newText );
                     else
                         mWebView.findAll( newText );
+                } else {
+                    updateBackgroundColor( true );
+                    mWebView.clearMatches();
                 }
                 return false;
             }
@@ -67,12 +73,12 @@ public class EntryTextSearch {
         int searchCloseButtonId = mSearchView.findViewById(androidx.appcompat.R.id.search_close_btn).getId();
         ImageView closeButton = mSearchView.findViewById(searchCloseButtonId);
         closeButton.setOnClickListener(view -> {
-            mSearchText = "";
             mSearchView.clearFocus();
             mSearchView.setQuery("", false);
             mSearchNextItem.setVisible( false );
             mSearchPreviousItem.setVisible( false );
             mWebView.clearMatches();
+            updateBackgroundColor( true );
             hideKeyboard( mSearchView );
         });
         // Use a custom search icon for the SearchView in AppBar
@@ -89,15 +95,6 @@ public class EntryTextSearch {
             return;
         mSearchNextItem.setVisible( false );
         mSearchPreviousItem.setVisible( false );
-        if (!mSearchText.isEmpty()) {
-            final SearchView searchView = (SearchView) mSearchItem.getActionView();
-            mSearchItem.expandActionView();
-            // Without that, it just does not work
-            searchView.post(() -> {
-                searchView.setQuery(mSearchText, false);
-                searchView.clearFocus();
-            });
-        }
     }
 
 }
