@@ -1,13 +1,16 @@
 package ru.yanus171.feedexfork.fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.SearchView;
 
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.view.WebViewExtended;
 
@@ -16,6 +19,8 @@ public class EntryTextSearch {
     private String mSearchText = "";
     private MenuItem mSearchNextItem = null;
     private MenuItem mSearchPreviousItem = null;
+    private MenuItem mSearchItem = null;
+    private SearchView mSearchView = null;
 
     public EntryTextSearch(WebViewExtended webView) {
         mWebView = webView;
@@ -31,22 +36,13 @@ public class EntryTextSearch {
     }
 
     public void onCreateOptionsMenu(Menu menu) {
-        final MenuItem searchItem = menu.findItem(R.id.menu_search);
-        if ( searchItem == null )
+        mSearchItem = menu.findItem(R.id.menu_search);
+        if ( mSearchItem == null )
             return;
         mSearchNextItem = menu.findItem(R.id.menu_search_next);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
         mSearchPreviousItem = menu.findItem(R.id.menu_search_previous);
-        mSearchNextItem.setVisible( false );
-        mSearchPreviousItem.setVisible( false );
-        if (!mSearchText.isEmpty()) {
-            searchItem.expandActionView();
-            // Without that, it just does not work
-            searchView.post(() -> {
-                searchView.setQuery(mSearchText, false);
-                searchView.clearFocus();
-            });
-        }searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView = (SearchView) mSearchItem.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -67,17 +63,41 @@ public class EntryTextSearch {
                 return false;
             }
         });
-        searchView.setOnCloseListener(() -> {
+
+        int searchCloseButtonId = mSearchView.findViewById(androidx.appcompat.R.id.search_close_btn).getId();
+        ImageView closeButton = mSearchView.findViewById(searchCloseButtonId);
+        closeButton.setOnClickListener(view -> {
             mSearchText = "";
+            mSearchView.clearFocus();
+            mSearchView.setQuery("", false);
             mSearchNextItem.setVisible( false );
             mSearchPreviousItem.setVisible( false );
             mWebView.clearMatches();
-            return false;
+            hideKeyboard( mSearchView );
         });
         // Use a custom search icon for the SearchView in AppBar
         int searchImgId = androidx.appcompat.R.id.search_button;
-        ImageView v = searchView.findViewById(searchImgId);
+        ImageView v = mSearchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search);
-
     }
+    private void hideKeyboard( SearchView searchView ) {
+        InputMethodManager imm = (InputMethodManager) MainApplication.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+    }
+    public void onPrepareOptionsMenu() {
+        if ( mSearchItem == null )
+            return;
+        mSearchNextItem.setVisible( false );
+        mSearchPreviousItem.setVisible( false );
+        if (!mSearchText.isEmpty()) {
+            final SearchView searchView = (SearchView) mSearchItem.getActionView();
+            mSearchItem.expandActionView();
+            // Without that, it just does not work
+            searchView.post(() -> {
+                searchView.setQuery(mSearchText, false);
+                searchView.clearFocus();
+            });
+        }
+    }
+
 }

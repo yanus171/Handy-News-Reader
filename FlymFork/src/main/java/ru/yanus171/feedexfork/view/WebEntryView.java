@@ -93,7 +93,6 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.LabelVoc;
-import ru.yanus171.feedexfork.utils.Log;
 import ru.yanus171.feedexfork.utils.NetworkUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
 import ru.yanus171.feedexfork.utils.Theme;
@@ -1097,6 +1096,8 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         setItemChecked( menu, R.id.menu_reload_with_tables_toggle, mIsWithTables );
         setItemChecked( menu, R.id.menu_reload_full_text_with_debug_toggle, PrefUtils.getBoolean( STATE_RELOAD_WITH_DEBUG, false ) );
         setItemChecked( menu, R.id.menu_replace_img_with_a_link_toggle, PrefUtils.getBoolean( STATE_RELOAD_IMG_WITH_A_LINK, false ) );
+
+        mSearch.onPrepareOptionsMenu();
     }
 
     @Override
