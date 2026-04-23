@@ -235,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ( PrefUtils.getBoolean("article_text_footer_show_progress", true ) ) {
             isLayoutVisible = true;
             mProgressBar.setVisibility( View.VISIBLE );
-            mProgressBar.setMax( max );
+            mProgressBar.setMax( max - 1 );
             mLastMax = max;
             mLastProgress = progress;
             mLastStep = step;

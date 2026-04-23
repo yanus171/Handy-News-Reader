@@ -208,14 +208,23 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
 
     @Override
     public ProgressInfo getProgressInfo() {
-        int webViewHeight = mWebView.getMeasuredHeight();
-        int contentHeight = (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale()) - webViewHeight;
         ProgressInfo result = new ProgressInfo();
-        final int screenCount = mWebView.getPageHeight() == 0 ? 1 : contentHeight / mWebView.getPageHeight();
-        result.max = screenCount;
-        result.progress = (int) (((long)screenCount * mWebView.getScrollY()) / (float)contentHeight);
+        result.max = getScreenCount();
+        result.progress = getCurrentScreenNum();
         result.step = 1;
         return result;
+    }
+
+    private int getCurrentScreenNum() {
+        return (int) ((getScreenCount() * (mWebView.getScrollY() + mWebView.getPageHeight() * 0.1) / getContentHeight()));
+    }
+
+    private int getContentHeight() {
+        return (int) Math.floor(mWebView.getContentHeight() * mWebView.getScale()) - mWebView.getMeasuredHeight();
+    }
+
+    private int getScreenCount() {
+        return Math.round(mWebView.getPageHeight() == 0 ? 1F : getContentHeight() / (float) mWebView.getPageHeight());
     }
 
     @SuppressLint("Range")
