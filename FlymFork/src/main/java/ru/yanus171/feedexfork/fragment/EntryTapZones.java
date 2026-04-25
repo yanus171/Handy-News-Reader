@@ -35,7 +35,6 @@ public class EntryTapZones {
         UiUtils.UpdateTapZoneButton( rootView, R.id.entryRightBottomBtn, false );
         UiUtils.UpdateTapZoneButton( rootView, R.id.leftTopBtn, false );
         UiUtils.UpdateTapZoneButton( rootView, R.id.rightTopBtn, false );
-        UiUtils.UpdateTapZoneButton( rootView, R.id.backBtn, false );
         UiUtils.UpdateTapZoneButton( rootView, R.id.leftTopBtnFS, false );
         UiUtils.UpdateTapZoneButton( rootView, R.id.rightTopBtnFS, false );
         UiUtils.UpdateTapZoneButton( rootView, R.id.entryCenterBtn, false );
@@ -50,14 +49,12 @@ public class EntryTapZones {
         UpdateButton( R.id.entryRightBottomBtn, visible );
         UpdateButton( R.id.leftTopBtn, visible );
         UpdateButton( R.id.rightTopBtn, visible );
-        UpdateButton( R.id.backBtn, visible );
         UpdateButton( R.id.leftTopBtnFS, visible );
         UpdateButton( R.id.rightTopBtnFS, visible );
         UpdateButton( R.id.entryCenterBtn, visible && !mFragment.mControlPanel.isVisible() );
 
         final EntryView view = mFragment.GetSelectedEntryView();
         final boolean isBackBtnVisible = view != null && view.CanGoBack() && visible;
-        mRootView.findViewById( R.id.backBtn ).setVisibility(isBackBtnVisible ? View.VISIBLE : View.GONE );
 
         if ( !isArticleTapEnabledTemp() ) {
             UpdateButton(R.id.rightTopBtn, true);
@@ -85,12 +82,6 @@ public class EntryTapZones {
     }
 
     private void setupButtonActions() {
-        mRootView.findViewById(R.id.backBtn).setOnClickListener(v -> mFragment.GetSelectedEntryView().GoBack() );
-        mRootView.findViewById(R.id.backBtn).setOnLongClickListener(v -> {
-            mFragment.GetSelectedEntryView().ClearHistoryAnchor();
-            return true;
-        });
-
         mRootView.findViewById(R.id.rightTopBtn).setOnClickListener(v -> {
             if ( PrefUtils.isArticleTapEnabledTemp() )
                 mFragment.getEntryActivity().setFullScreen( GetIsStatusBarHidden(), !GetIsActionBarHidden() );

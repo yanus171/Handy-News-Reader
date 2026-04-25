@@ -54,7 +54,6 @@ public final class TapZonePreviewPreference extends DialogPreference {
         SetupZone(parentView, R.id.entryRightBottomBtn, size, size, showText);
         SetupZone(parentView, R.id.leftTopBtn, size, size, showText);
         SetupZone(parentView, R.id.rightTopBtn, size, size, showText);
-        SetupZone(parentView, R.id.backBtn, size, size, showText);
         SetupZone(parentView, R.id.leftTopBtnFS, size, size, showText);
         SetupZone(parentView, R.id.rightTopBtnFS, size, size, showText);
         SetupZone(parentView, R.id.entryCenterBtn, size, size, showText);
@@ -75,7 +74,6 @@ public final class TapZonePreviewPreference extends DialogPreference {
         UiUtils.UpdateButtonVisibility(rootView, R.id.pageUpBtnFS, false);
         UiUtils.UpdateButtonVisibility(rootView, R.id.entryRightBottomBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.entryLeftBottomBtn, visible);
-        UiUtils.UpdateButtonVisibility(rootView, R.id.backBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.leftTopBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.rightTopBtn, visible);
         UiUtils.UpdateButtonVisibility(rootView, R.id.leftTopBtnFS, visible);

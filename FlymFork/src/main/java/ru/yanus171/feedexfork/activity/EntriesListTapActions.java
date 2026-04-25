@@ -87,7 +87,6 @@ public class EntriesListTapActions {
         UpdateButton( R.id.brightnessSliderRight, true );
         UpdateButton( R.id.entryLeftBottomBtn, true );
         UpdateButton( R.id.entryRightBottomBtn, true );
-        UpdateButton( R.id.backBtn, false );
         UpdateButton( R.id.entryCenterBtn, false );
     }
     public static void hideAll(View rootView ) {
@@ -102,7 +101,6 @@ public class EntriesListTapActions {
         UpdateButtonEnable( rootView, R.id.brightnessSliderRight, false );
         UpdateButtonEnable( rootView, R.id.entryLeftBottomBtn, false );
         UpdateButtonEnable( rootView, R.id.entryRightBottomBtn, false );
-        UpdateButtonEnable( rootView, R.id.backBtn, false );
         UpdateButtonEnable( rootView, R.id.entryCenterBtn, false );
     }
     private void UpdateButton(int viewID, boolean enabled ) {

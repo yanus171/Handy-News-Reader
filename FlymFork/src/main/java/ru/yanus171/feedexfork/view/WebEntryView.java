@@ -1115,9 +1115,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
         setupButtonAction(R.id.btn_share, false, v -> {
             share();
         });
-
         setupButtonAction(R.id.btn_reload, false, v -> ReloadFullText());
-
+        if ( CanGoBack() ) {
+            setupButtonAction(R.id.btn_go_back, false, v -> GoBack());
+            setupButtonLongClickAction( R.id.btn_go_back, v -> ClearHistoryAnchor() );
+        }
     }
 
     @Override

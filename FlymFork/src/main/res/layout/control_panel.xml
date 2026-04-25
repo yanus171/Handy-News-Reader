@@ -54,6 +54,10 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|bottom">
         <ImageButton
+            android:id="@+id/btn_go_back"
+            android:src="@drawable/ic_arrow_back"
+            style="@style/ControlButton"/>
+        <ImageButton
             android:id="@+id/btn_force_landscape_orientation_toggle"
             android:src="@drawable/landscape_orientation"
             style="@style/ControlButton"/>

@@ -176,7 +176,7 @@ public class UiUtils {
         TextView btn = rootView.findViewById(ID);
         if ( btn != null ) {
             if (visible)
-                btn.setBackgroundResource(ID == R.id.backBtn ? R.drawable.arrow_back_tap_zone : R.drawable.round_background);
+                btn.setBackgroundResource(R.drawable.round_background);
             else
                 btn.setBackgroundColor(Color.TRANSPARENT);
             btn.setText("");
@@ -191,7 +191,7 @@ public class UiUtils {
             else {
                 btn.setVisibility( View.VISIBLE );
                 if (visible)
-                    btn.setBackgroundResource( ID == R.id.backBtn ? R.drawable.arrow_back_tap_zone : R.drawable.round_background);
+                    btn.setBackgroundResource( R.drawable.round_background);
                 else
                     btn.setBackgroundColor(Color.TRANSPARENT);
             }

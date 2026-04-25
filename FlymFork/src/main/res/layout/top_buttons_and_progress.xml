@@ -14,11 +14,7 @@
             android:id="@+id/leftTopBtn"
             style="@style/TapZoneBtn"
             android:text="@string/fullScreenToggle" />
-        <TextView
-            android:id="@+id/backBtn"
-            style="@style/BackTapBtn"
-            android:text="" />
-    </LinearLayout>
+        </LinearLayout>
     <LinearLayout
         android:layout_gravity="end"
         android:orientation="vertical"

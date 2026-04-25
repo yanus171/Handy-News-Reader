@@ -445,7 +445,7 @@ public abstract class EntryView {
 
         setItemChecked( menu, R.id.menu_full_screen, GetIsStatusBarHidden() );
         setItemChecked( menu, R.id.menu_actionbar_visible, !GetIsStatusBarHidden() );
-        setItemChecked( menu, R.id.menu_go_back, CanGoBack() );
+        setItemVisible( menu, R.id.menu_go_back, CanGoBack() );
         setItemChecked( menu, R.id.menu_zoom_shift_enabled, false );
         setItemChecked( menu, R.id.menu_disable_all_tap_actions, mEntryFragment.mTapZones != null );
 

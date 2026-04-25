@@ -60,6 +60,10 @@
             android:id="@+id/btn_force_orientation_by_sensor"
             android:src="@drawable/orientation_by_sensor"
             style="@style/ControlButton"/>
+        <ImageButton
+            android:id="@+id/btn_go_back"
+            android:src="@drawable/ic_arrow_back"
+            style="@style/ControlButton"/>
     </LinearLayout>
 
 </LinearLayout>
