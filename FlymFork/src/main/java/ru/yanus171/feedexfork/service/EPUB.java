@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.provider.FeedData;
@@ -62,6 +64,7 @@ public class EPUB {
     public static Document getDoc(ZIP zip, String relativeFileName) throws IOException {
         Document doc = loadDoc( zip.GetFile( relativeFileName ) );
         fixAnchors(doc);
+        fixImageRelativeSrc(doc, relativeFileName);
         return doc;
     }
 
@@ -73,17 +76,30 @@ public class EPUB {
                     item.text( " ["+ item.attr("title") + "]" );
             }
     }
-
-
+    private static void fixImageRelativeSrc(Document doc, String relativeFileName) {
+        final String rootFolderName = getRootFolderName(relativeFileName);
+        for (Element item: doc.getElementsByTag( "img" )) {
+            final String src = item.attr("src");
+            if (src.contains(".."))
+                item.attr("src", src.replace( "..", rootFolderName ));
+        }
+    }
+    public static String getRootFolderName(String path) {
+        String[] list = TextUtils.split( path, "/" );
+        if ( list.length > 0 )
+            return list[0];
+        else
+            return path;
+    }
     static private String getTitle(Document doc) {
         return getElementText( doc, "dc:title" ) + " " +
                 getElementText( doc, "dc:title" ) + " " +
                 getElementText( doc, "dc:creator" );
     }
     static private String getElementText(Document doc, String tagName) {
-        Elements els = doc.getElementsByTag(tagName);
-        if ( !els.isEmpty() )
-            return els.first().text();
+        Element el = doc.getElementsByTag(tagName).first();
+        if ( el != null )
+            return el.text();
         return "";
     }
     private static void saveImage( File file, String relativeFileName, String entryLink ) throws IOException {
@@ -102,10 +118,10 @@ public class EPUB {
     }
 
     private static String getAttributeValue(Document doc, String tagName, String attributeName) {
-        final Elements els = doc.getElementsByTag(tagName);
-        if ( els.isEmpty() )
+        final Element el = doc.getElementsByTag(tagName).first();
+        if ( el == null )
             throw new IllegalStateException( String.format( "Tag %s not found in doc", tagName ) );
-        final String result = els.first().attr( attributeName );
+        final String result = el.attr( attributeName );
         if ( result.isEmpty() )
             throw new IllegalStateException( String.format( "Attribute %s not found in tag %s", attributeName, tagName ) );
         return result;
