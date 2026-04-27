@@ -44,6 +44,9 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.getFeedTitle;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.isGroup;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -70,12 +73,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.ListFragment;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.ArticleWebSearchActivity;
 import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
@@ -84,171 +88,15 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
 import ru.yanus171.feedexfork.view.DragNDropListener;
 
-import static ru.yanus171.feedexfork.parser.OPML.mImportFileSelectDialog;
-
 public class EditFeedsListFragment extends ListFragment {
 
+    FeedsCursorAdapter mAdapter = null;
+    private ActionMode mActionMode = null;
 
-    private final ActionMode.Callback mFeedActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mFeedActionModeCallback = new FeedActionCallBack( this );
+    private final ActionMode.Callback mGroupActionModeCallBack = new GroupActionModeCallBack( this );
 
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.feed_context_menu, menu);
-            return true;
-        }
 
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            @SuppressWarnings("unchecked")
-            Pair<Long, String> tag = (Pair<Long, String>) mode.getTag();
-            final long feedId = tag.first;
-            final String title = tag.second;
-
-            switch (item.getItemId()) {
-                case R.id.menu_edit:
-                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(feedId)));
-
-                    mode.finish(); // Action picked, so close the CAB
-                    return true;
-                case R.id.menu_delete:
-                    DeleteFeed(EditFeedsListFragment.this.getActivity(), FeedColumns.CONTENT_URI(feedId), title);
-
-                    mode.finish(); // Action picked, so close the CAB
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            for (int i = 0; i < mListView.getCount(); i++) {
-                mListView.setItemChecked(i, false);
-            }
-        }
-    };
-
-    public static void DeleteFeed(final Activity activity,  final Uri feedUri, String title) {
-        new AlertDialog.Builder(activity) //
-                .setIcon(android.R.drawable.ic_dialog_alert) //
-                .setTitle(title) //
-                .setMessage(R.string.question_delete_feed) //
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                ContentResolver cr = MainApplication.getContext().getContentResolver();
-                                cr.delete(feedUri, null, null);
-                                EntryUrlVoc.INSTANCE.reinit( true );
-                            }
-                        }.start();
-                        if ( activity instanceof EditFeedActivity )
-                            activity.finish();
-                    }
-                }).setNegativeButton(android.R.string.no, null).show();
-    }
-
-    private final ActionMode.Callback mGroupActionModeCallback = new ActionMode.Callback() {
-
-        // Called when the action mode is created; startActionMode() was called
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            // Inflate a menu resource providing context menu items
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.edit_context_menu, menu);
-            return true;
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false; // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            @SuppressWarnings("unchecked")
-            Pair<Long, String> tag = (Pair<Long, String>) mode.getTag();
-            final long groupId = tag.first;
-            final String title = tag.second;
-
-            switch (item.getItemId()) {
-                case R.id.menu_edit:
-                    final EditText input = new EditText(getActivity());
-                    input.setSingleLine(true);
-                    input.setText(title);
-                    new AlertDialog.Builder(getActivity()) //
-                            .setTitle(R.string.edit_group_title) //
-                            .setView(input) //
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            String groupName = input.getText().toString();
-                                            if (!groupName.isEmpty()) {
-                                                ContentResolver cr = getActivity().getContentResolver();
-                                                ContentValues values = new ContentValues();
-                                                values.put(FeedColumns.NAME, groupName);
-                                                cr.update(FeedColumns.CONTENT_URI(groupId), values, null, null);
-                                            }
-                                        }
-                                    }.start();
-                                }
-                            }).setNegativeButton(android.R.string.cancel, null).show();
-
-                    mode.finish(); // Action picked, so close the CAB
-                    return true;
-                case R.id.menu_delete:
-                    new AlertDialog.Builder(getActivity()) //
-                            .setIcon(android.R.drawable.ic_dialog_alert) //
-                            .setTitle(title) //
-                            .setMessage(R.string.question_delete_group) //
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new Thread() {
-                                        @Override
-                                        public void run() {
-                                            ContentResolver cr = getActivity().getContentResolver();
-                                            cr.delete(FeedColumns.GROUPS_CONTENT_URI(groupId), null, null);
-                                        }
-                                    }.start();
-                                }
-                            }).setNegativeButton(android.R.string.no, null).show();
-
-                    mode.finish(); // Action picked, so close the CAB
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        // Called when the user exits the action mode
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            for (int i = 0; i < mListView.getCount(); i++) {
-                mListView.setItemChecked(i, false);
-            }
-        }
-    };
     private DragNDropExpandableListView mListView;
 
     @Override
@@ -263,22 +111,31 @@ public class EditFeedsListFragment extends ListFragment {
 
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setFastScrollEnabled(true);
-        mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
-                return true;
-            }
-        });
         mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (v.findViewById(R.id.indicator).getVisibility() != View.VISIBLE) { // This is no a real group
-                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
-                    return true;
-                }
+                long feedID = mListView.getItemIdAtPosition( groupPosition );
+                if ( isGroup( feedID ) ) {
+                    mAdapter.clearSelectedIDs();
+                    if (v.findViewById(R.id.indicator).getVisibility() != View.VISIBLE) { // This is no a real group
+                        startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
+                        return true;
+                    }
+                } else
+                    mAdapter.addOrRemoveIdToSelected( feedID );
                 return false;
+            }
+        });
+        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
+                if ( mAdapter.hasSelectedIDs() ) {
+                    int flatPosition = expandableListView.getFlatListPosition(
+                            ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+                    long feedID = mListView.getItemIdAtPosition(flatPosition);
+                    mAdapter.addOrRemoveIdToSelected( feedID );
+                }
+                return true;
             }
         });
         mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -286,28 +143,15 @@ public class EditFeedsListFragment extends ListFragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 AppCompatActivity activity = (AppCompatActivity) getActivity();
                 if (activity != null) {
-                    String title = ((TextView) view.findViewById(android.R.id.text1)).getText().toString();
-                    Matcher m = Pattern.compile("(.*) \\([0-9]+\\)$").matcher(title);
-                    if (m.matches()) {
-                        title = m.group(1);
-                    }
-
-                    long feedId = mListView.getItemIdAtPosition(position);
-                    ActionMode actionMode;
-                    if (view.findViewById(R.id.indicator).getVisibility() == View.VISIBLE) { // This is a group
-                        actionMode = activity.startSupportActionMode(mGroupActionModeCallback);
-                    } else { // This is a feed
-                        actionMode = activity.startSupportActionMode(mFeedActionModeCallback);
-                    }
-                    actionMode.setTag(new Pair<>(feedId, title));
-
-                    mListView.setItemChecked(position, true);
+                    long feedID = mListView.getItemIdAtPosition( position );
+                    mActionMode = activity.startSupportActionMode(isGroup(feedID) ? mGroupActionModeCallBack: mFeedActionModeCallback);
+                    mAdapter.setSingleSelectedId( feedID );
                 }
                 return true;
             }
         });
 
-        mListView.setAdapter(new FeedsCursorAdapter(getActivity(), FeedColumns.GROUPS_AND_ROOT_CONTENT_URI));
+        mListView.setAdapter(mAdapter = new FeedsCursorAdapter(getActivity(), FeedColumns.GROUPS_AND_ROOT_CONTENT_URI));
 
         mListView.setDragNDropListener(new DragNDropListener() {
             boolean fromHasGroupIndicator = false;
@@ -368,6 +212,8 @@ public class EditFeedsListFragment extends ListFragment {
         return rootView;
     }
 
+
+
     private void moveItem(boolean fromIsGroup, boolean toIsGroup, boolean fromIsFeedWithoutGroup, long packedPosTo, int packedGroupPosTo,
                           int flatPosFrom) {
         ContentValues values = new ContentValues();
@@ -414,8 +260,7 @@ public class EditFeedsListFragment extends ListFragment {
                 input.setSingleLine(true);
                 new AlertDialog.Builder(getActivity()) //
                         .setTitle(R.string.add_group_title) //
-                        .setView(input) //
-                                // .setMessage(R.string.add_group_sentence) //
+                        .setView(input)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -444,74 +289,13 @@ public class EditFeedsListFragment extends ListFragment {
                 OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.Import );
                 return true;
             }
-            /*case R.id.menu_fix_order: {
-                FeedDataContentProvider.mPriorityManagement = false;
-
-                final ProgressDialog pd = new ProgressDialog(getContext());
-                pd.setMessage(getString(R.string.applyOperations));
-                //pd.setCancelable(true);
-                //pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                pd.setIndeterminate(true);
-                pd.show();
-
-                final Handler handler = new Handler();
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-                        ContentResolver cr = MainApplication.getContext().getContentResolver();
-                        try {
-                            int order = 0;
-                            {
-                                final Cursor cur = cr.query(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, new String[]{FeedColumns._ID}, null, null, FeedColumns.PRIORITY + ", " + FeedColumns._ID);
-                                while (cur.moveToNext()) {
-                                    order++;
-                                    operations.add(ContentProviderOperation.newUpdate(FeedColumns.CONTENT_URI(cur.getLong(0))).withValue(FeedColumns.PRIORITY, order).build());
-                                }
-                                cur.close();
-                            }
-
-                            {
-                                final Cursor cur = cr.query(FeedColumns.GROUPS_CONTENT_URI, new String[]{FeedColumns._ID}, null, null, FeedColumns.PRIORITY + ", " + FeedColumns._ID);
-                                while (cur.moveToNext()) {
-                                    order = 0;
-                                    Cursor curGroupFeeds = cr.query(FeedColumns.FEEDS_FOR_GROUPS_CONTENT_URI(cur.getLong(0)), new String[]{FeedColumns._ID}, null, null, FeedColumns.PRIORITY + ", " + FeedColumns._ID);
-                                    while (curGroupFeeds.moveToNext()) {
-                                        order++;
-                                        operations.add(ContentProviderOperation.newUpdate(FeedColumns.CONTENT_URI(curGroupFeeds.getLong(0))).withValue(FeedColumns.PRIORITY, order).build());
-                                    }
-                                    curGroupFeeds.close();
-
-                                }
-                                cur.close();
-                            }
-                            try {
-                                cr.applyBatch(FeedData.AUTHORITY, operations);
-                            } catch (Throwable ignored) {
-                                ignored.printStackTrace();
-                            }
-                        } finally {
-                            FeedDataContentProvider.mPriorityManagement = true;
-                        }
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                pd.cancel();
-                            }
-                        });
-
-                    }
-                }).start();
-
-
-                return true;
-            }*/
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
+    long getSelectedFeedId() {
+        return mAdapter.getSelectedFeedId();
+    }
 
 }

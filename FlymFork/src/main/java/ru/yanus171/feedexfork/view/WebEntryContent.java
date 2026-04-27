@@ -5,6 +5,7 @@ import static ru.yanus171.feedexfork.adapter.EntriesCursorAdapter.CategoriesToOu
 import static ru.yanus171.feedexfork.fragment.EntriesListFragment.IsFeedUri;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_CONTENT;
 import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.DB_APPLIED_TO_TITLE;
+import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.getFeedTitle;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_ONE_WEB_PAGE;
 import static ru.yanus171.feedexfork.service.FetcherService.IS_RSS;
@@ -166,15 +167,6 @@ public class WebEntryContent {
 
         timer.End();
         return content.toString();
-    }
-
-    private static String getFeedTitle( String feedID ) {
-        final ContentResolver cr = MainApplication.getContext().getContentResolver();
-        try ( Cursor cursor = cr.query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null ) ) {
-            if (cursor.moveToFirst())
-                return cursor.getString(0);
-        }
-        return "";
     }
 
     private static void addButtonHtml(StringBuilder content, int captionID, String methodName) {

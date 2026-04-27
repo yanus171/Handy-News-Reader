@@ -81,6 +81,7 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
 import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
 import ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA
+import ru.yanus171.feedexfork.fragment.FeedActionCallBack
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment
 import ru.yanus171.feedexfork.loader.BaseLoader
 import ru.yanus171.feedexfork.parser.*
@@ -575,7 +576,7 @@ open class EditFeedActivity : BaseActivity(), LoaderManager.LoaderCallbacks<Curs
                 true
             }
             R.id.menu_delete_feed -> {
-                EditFeedsListFragment.DeleteFeed(this, intent.data, "")
+                FeedActionCallBack.DeleteFeed(this, intent.data, null)
                 true
             }
             else -> super.onOptionsItemSelected(item)

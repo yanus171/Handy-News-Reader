@@ -87,8 +87,11 @@ public class UiUtils {
         showMessage(activity, activity.getString(messageId));
     }
 
-    static public void toast( @StringRes int messageId) {
+    static public void toastOnLocalThread(@StringRes int messageId) {
         Toast.makeText(MainApplication.getContext(), messageId, Toast.LENGTH_LONG).show();
+    }
+    static public void toast( @StringRes int messageId) {
+        UiUtils.RunOnGuiThread(() -> UiUtils.toastOnLocalThread( messageId ));
     }
     static public void toastShort( @StringRes int messageId) {
         Toast.makeText(MainApplication.getContext(), messageId, Toast.LENGTH_SHORT).show();

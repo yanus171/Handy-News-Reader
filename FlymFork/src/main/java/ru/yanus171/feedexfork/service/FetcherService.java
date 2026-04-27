@@ -1164,6 +1164,9 @@ public class FetcherService extends IntentService {
         //timer.End();
         return mExtrenalLinkFeedID;
     }
+    public static long GetExtrenalLinkFeedIDLong() {
+        return Long.parseLong(GetExtrenalLinkFeedID());
+    }
 
     public static class DownloadResult{
         public Long mTaskID;

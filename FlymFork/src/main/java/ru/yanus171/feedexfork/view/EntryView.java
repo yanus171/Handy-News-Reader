@@ -387,7 +387,7 @@ public abstract class EntryView {
                 LocalFile.Is( iconUrl ) ? FileUtils.INSTANCE.loadBitmapFromUri( Uri.parse(iconUrl) ) :
                 NetworkUtils.downloadImage(iconUrl);
         if ( bitmap == null )
-            UiUtils.RunOnGuiThread(() -> UiUtils.toast( R.string.unable_to_load_article_icon ));
+            UiUtils.toast( R.string.unable_to_load_article_icon );
         else
             bitmap = UiUtils.getScaledBitmap( bitmap, 32 );
         return (bitmap == null) ?

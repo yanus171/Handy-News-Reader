@@ -136,6 +136,7 @@
     <string name="select_file">Select Downloads folder file:</string>
     <string name="select_file_from_subfolder">Select Downloads/handy_news_reader folder file:</string>
     <string name="question_delete_feed">Do you really want to delete this feed?</string>
+    <string name="question_delete_feeds">Do you really want to delete %d feeds?</string>
     <string name="question_delete_group">Do you really want to delete this group and all of its feeds?</string>
     <string name="question_delete_filter">Do you really want to delete this filter?</string>
     <string name="add_group_title">Select the group name</string>
@@ -767,5 +768,7 @@
     <string name="page_number_from_count">%d from %d</string>
     <string name="page_jump_PDF_confirm">Jump to page %d?</string>
     <string name="unknownLocalBookType">Unknown book type</string>
+    <string name="delete_several_feeds_title">Delete selected feeds?</string>
+    <string name="feed_deleted">Feeds were deleted</string>
 
 </resources>

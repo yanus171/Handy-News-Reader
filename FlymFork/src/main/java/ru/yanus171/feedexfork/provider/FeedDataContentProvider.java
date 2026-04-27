@@ -757,7 +757,8 @@ public class FeedDataContentProvider extends ContentProvider {
             }
             case URI_FEEDS: {
                 table = FeedColumns.TABLE_NAME;
-
+                if ( selection != null )
+                    throw new IllegalStateException( "Delete URI_FEEDS with selection is not supported" );
                 delete(TaskColumns.CONTENT_URI, null, null);
                 delete(FilterColumns.CONTENT_URI, null, null);
                 delete(EntryColumns.CONTENT_URI, null, null);
@@ -976,6 +977,34 @@ public class FeedDataContentProvider extends ContentProvider {
                  match == URI_LAST_READ_ENTRY ||
                  match == URI_UNREAD_ENTRY );
 
+    }
+
+    public static String getFeedTitle( long feedID ) {
+        return getFeedTitle( String.valueOf(feedID) );
+    }
+    public static String getFeedTitle( String feedID ) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        try ( Cursor cursor = cr.query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.NAME}, null, null, null ) ) {
+            if (cursor.moveToFirst())
+                return cursor.getString(0);
+        }
+        return "";
+    }
+    public static String getFeedTitle( Uri feedUri ) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        try ( Cursor cursor = cr.query(feedUri, new String[]{FeedData.FeedColumns.NAME}, null, null, null ) ) {
+            if (cursor.moveToFirst())
+                return cursor.getString(0);
+        }
+        return "";
+    }
+    public static boolean isGroup( long feedId ) {
+        final ContentResolver cr = MainApplication.getContext().getContentResolver();
+        try ( Cursor cursor = cr.query(FeedColumns.CONTENT_URI(feedId), new String[]{FeedColumns.IS_GROUP}, null, null, null ) ) {
+            if (cursor.moveToFirst())
+                return !cursor.isNull(0) &&  cursor.getInt( 0) == 1;
+        }
+        return false;
     }
 
 

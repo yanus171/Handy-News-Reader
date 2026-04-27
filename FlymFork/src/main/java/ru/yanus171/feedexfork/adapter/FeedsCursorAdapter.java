@@ -23,19 +23,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.utils.UiUtils.SetupTextView;
 import static ru.yanus171.feedexfork.utils.UiUtils.getFaviconBitmap;
 import static ru.yanus171.feedexfork.utils.UiUtils.getScaledBitmap;
+
+import java.util.HashSet;
 
 public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
 
@@ -44,6 +49,7 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
     private int mIdPos = -1;
     private int mLinkPos = -1;
     private int mIconUrlPos = -1;
+    private HashSet<Long> mSelectedIDs = new HashSet<>();
 
     public FeedsCursorAdapter(Activity activity, Uri groupUri) {
         super(activity, groupUri, R.layout.item_feed_list, R.layout.item_feed_list);
@@ -69,8 +75,16 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
         }
 
         textView.setText((cursor.isNull(mNamePos) ? cursor.getString(mLinkPos) : cursor.getString(mNamePos)));
+        long feedID = cursor.getLong(mIdPos);
+        view.setBackgroundColor( isItemSelected( feedID ) ? Theme.GetToolBarColorInt() : Color.TRANSPARENT );
     }
 
+    private boolean isItemSelected( long feedID ) {
+        for( long id: mSelectedIDs )
+            if ( id == feedID )
+                return true;
+        return false;
+    }
     @Override
     protected void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
         ImageView indicatorImage = view.findViewById(R.id.indicator);
@@ -92,6 +106,8 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
             bindChildView(view, context, cursor);
             indicatorImage.setVisibility(View.GONE);
         }
+        long feedID = cursor.getLong(mIdPos);
+        view.setBackgroundColor( isItemSelected( feedID ) ? Theme.GetToolBarColorInt() : Color.TRANSPARENT );
     }
 
     @Override
@@ -124,5 +140,35 @@ public class FeedsCursorAdapter extends CursorLoaderExpandableListAdapter {
             mLinkPos = cursor.getColumnIndex(FeedColumns.URL);
             mIconUrlPos = cursor.getColumnIndex(FeedColumns.ICON_URL);
         }
+    }
+    public long getSelectedFeedId() {
+        return (long) mSelectedIDs.toArray()[0];
+    }
+
+    public HashSet<Long> getSelectedIDs() {
+        return (HashSet<Long>) mSelectedIDs.clone();
+    }
+    public void clearSelectedIDs(){
+        mSelectedIDs.clear();
+        notifyDataSetChanged();
+    }
+    public boolean hasSelectedIDs(){
+        return !mSelectedIDs.isEmpty();
+    }
+    public boolean isSingleIdSelected(){
+        return mSelectedIDs.size() == 1;
+    }
+
+    public void addOrRemoveIdToSelected(long feedID) {
+        if ( mSelectedIDs.contains( feedID ) )
+            mSelectedIDs.remove( feedID );
+        else
+            mSelectedIDs.add(feedID);
+        notifyDataSetChanged();
+    }
+    public void setSingleSelectedId(long feedID) {
+        mSelectedIDs.clear();
+        mSelectedIDs.add(feedID);
+        notifyDataSetChanged();
     }
 }
