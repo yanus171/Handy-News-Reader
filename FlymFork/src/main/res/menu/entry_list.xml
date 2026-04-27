@@ -138,11 +138,11 @@
                         android:title="@string/menu_add_feed_shortcut"/>
                     <item
                         android:id="@+id/menu_create_auto_backup"
-                        android:icon="@drawable/ic_file_download"
+                        android:icon="@drawable/ic_export_to_backup_gray"
                         android:title="@string/create_auto_backup"/>
                     <item
                         android:id="@+id/menu_create_backup"
-                        android:icon="@drawable/ic_file_download"
+                        android:icon="@drawable/ic_export_to_backup"
                         android:title="@string/create_backup"/>
                     <item
                         android:id="@+id/menu_import_from_backup"

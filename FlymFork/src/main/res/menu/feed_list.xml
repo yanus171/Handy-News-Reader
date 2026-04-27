@@ -16,17 +16,28 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
     <item
-        android:id="@+id/menu_import"
+        android:id="@+id/menu_import_from_opml"
         android:icon="@drawable/ic_opml_import"
         android:title="@string/menu_import"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction"/>
     <item
-        android:id="@+id/menu_export"
+        android:id="@+id/menu_export_to_opml"
         android:icon="@drawable/ic_opml_export"
-        android:title="@string/menu_export"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"/>
+        android:title="@string/menu_export"/>
+    <item
+        android:id="@+id/menu_import_from_backup"
+        android:icon="@drawable/ic_import_from_backup"
+        android:title="@string/menu_import_from_backup_file"/>
+    <item
+        android:id="@+id/menu_export_to_backup"
+        android:icon="@drawable/ic_export_to_backup"
+        android:title="@string/create_backup"/>
+    <item
+        android:id="@+id/menu_create_auto_backup"
+        android:icon="@drawable/ic_export_to_backup_gray"
+        android:title="@string/create_auto_backup"/>
+
     <!--<item
         android:id="@+id/menu_fix_order"
         android:title="@string/menu_fix_order"/>-->

@@ -36,7 +36,11 @@ public class EntryMenu {
             inflater.inflate(mMenuID, menu);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             menu.setGroupDividerEnabled( true );
-        for ( int i = 0; i < menu.size(); i++ )
+        updateMenuIcon(menu);
+    }
+
+    public static void updateMenuIcon(Menu menu) {
+        for (int i = 0; i < menu.size(); i++ )
             updateMenuWithIcon( menu.getItem( i ) );
     }
 

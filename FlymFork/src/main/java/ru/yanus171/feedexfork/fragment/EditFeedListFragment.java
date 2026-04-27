@@ -44,6 +44,8 @@
 
 package ru.yanus171.feedexfork.fragment;
 
+import static ru.yanus171.feedexfork.fragment.EntryMenu.updateMenuIcon;
+import static ru.yanus171.feedexfork.fragment.EntryMenu.updateMenuWithIcon;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.isGroup;
 
 import android.app.AlertDialog;
@@ -65,10 +67,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.ListFragment;
 
+import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
+import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
 
 public class EditFeedListFragment extends ListFragment {
@@ -139,6 +143,7 @@ public class EditFeedListFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.feed_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        updateMenuIcon( menu );
     }
 
     @Override
@@ -174,12 +179,20 @@ public class EditFeedListFragment extends ListFragment {
                         }).setNegativeButton(android.R.string.cancel, null).show();
                 return true;
             }
-            case R.id.menu_export: {
+            case R.id.menu_export_to_opml: {
                 OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.ExportToOPML );
                 return true;
             }
-            case R.id.menu_import: {
+            case R.id.menu_import_from_opml: {
                 OPML.OnMenuExportImportClick(getActivity(), OPML.ExportImport.Import );
+                return true;
+            }
+            case R.id.menu_create_backup: {
+                OPML.OnMenuExportImportClick( getActivity(), OPML.ExportImport.Backup );
+                return true;
+            }
+            case R.id.menu_create_auto_backup: {
+                FetcherService.Start(FetcherService.GetIntent(Constants.FROM_AUTO_BACKUP ), false );
                 return true;
             }
         }
