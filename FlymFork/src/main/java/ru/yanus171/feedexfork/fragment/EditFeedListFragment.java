@@ -58,11 +58,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
@@ -73,9 +70,8 @@ import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
-import ru.yanus171.feedexfork.view.DragNDropListener;
 
-public class EditFeedsListFragment extends ListFragment {
+public class EditFeedListFragment extends ListFragment {
 
     FeedsCursorAdapter mAdapter = null;
 
@@ -129,88 +125,8 @@ public class EditFeedsListFragment extends ListFragment {
         });
 
         mListView.setAdapter(mAdapter = new FeedsCursorAdapter(getActivity(), FeedColumns.GROUPS_AND_ROOT_CONTENT_URI));
-
-        mListView.setDragNDropListener(new DragNDropListener() {
-            boolean fromHasGroupIndicator = false;
-
-            @Override
-            public void onStopDrag(View itemView) {
-            }
-
-            @Override
-            public void onStartDrag(View itemView) {
-                fromHasGroupIndicator = itemView.findViewById(R.id.indicator).getVisibility() == View.VISIBLE;
-            }
-
-            @Override
-            public void onDrop(final int flatPosFrom, final int flatPosTo) {
-                final boolean fromIsGroup = ExpandableListView.getPackedPositionType(mListView.getExpandableListPosition(flatPosFrom)) == ExpandableListView.PACKED_POSITION_TYPE_GROUP;
-                final boolean toIsGroup = ExpandableListView.getPackedPositionType(mListView.getExpandableListPosition(flatPosTo)) == ExpandableListView.PACKED_POSITION_TYPE_GROUP;
-
-                final boolean fromIsFeedWithoutGroup = fromIsGroup && !fromHasGroupIndicator;
-
-                View toView = mListView.getChildAt(flatPosTo - mListView.getFirstVisiblePosition());
-                boolean toIsFeedWithoutGroup = toIsGroup && toView.findViewById(R.id.indicator).getVisibility() != View.VISIBLE;
-
-                final long packedPosTo = mListView.getExpandableListPosition(flatPosTo);
-                final int packedGroupPosTo = ExpandableListView.getPackedPositionGroup(packedPosTo);
-
-                if ((fromIsFeedWithoutGroup || !fromIsGroup) && toIsGroup && !toIsFeedWithoutGroup) {
-                    new AlertDialog.Builder(getActivity()) //
-                            .setTitle(R.string.to_group_title) //
-                            .setMessage(R.string.to_group_message) //
-                            .setPositiveButton(R.string.to_group_into, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ContentValues values = new ContentValues();
-                                    values.put(FeedColumns.PRIORITY, 1);
-                                    values.put(FeedColumns.GROUP_ID, mListView.getItemIdAtPosition(flatPosTo));
-
-                                    ContentResolver cr = getActivity().getContentResolver();
-                                    cr.update(FeedColumns.CONTENT_URI(mListView.getItemIdAtPosition(flatPosFrom)), values, null, null);
-                                    cr.notifyChange(FeedColumns.GROUPS_AND_ROOT_CONTENT_URI, null);
-                                }
-                            }).setNegativeButton(R.string.to_group_above, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            moveItem(fromIsGroup, toIsGroup, fromIsFeedWithoutGroup, packedPosTo, packedGroupPosTo, flatPosFrom);
-                        }
-                    }).show();
-                } else {
-                    moveItem(fromIsGroup, toIsGroup, fromIsFeedWithoutGroup, packedPosTo, packedGroupPosTo, flatPosFrom);
-                }
-            }
-
-            @Override
-            public void onDrag(int x, int y, ListView listView) {
-            }
-        });
-
+        mListView.setDragNDropListener(new EditFeedListDragNDropListener( mListView ) );
         return rootView;
-    }
-
-
-
-    private void moveItem(boolean fromIsGroup, boolean toIsGroup, boolean fromIsFeedWithoutGroup, long packedPosTo, int packedGroupPosTo,
-                          int flatPosFrom) {
-        ContentValues values = new ContentValues();
-        ContentResolver cr = getActivity().getContentResolver();
-
-        if (fromIsGroup && toIsGroup) {
-            values.put(FeedColumns.PRIORITY, packedGroupPosTo + 1);
-            cr.update(FeedColumns.CONTENT_URI(mListView.getItemIdAtPosition(flatPosFrom)), values, null, null);
-        } else if (!fromIsGroup && toIsGroup) {
-            values.put(FeedColumns.PRIORITY, packedGroupPosTo + 1);
-            values.putNull(FeedColumns.GROUP_ID);
-            cr.update(FeedColumns.CONTENT_URI(mListView.getItemIdAtPosition(flatPosFrom)), values, null, null);
-        } else if ((!fromIsGroup && !toIsGroup) || (fromIsFeedWithoutGroup && !toIsGroup)) {
-            int groupPrio = ExpandableListView.getPackedPositionChild(packedPosTo) + 1;
-            values.put(FeedColumns.PRIORITY, groupPrio);
-
-            int flatGroupPosTo = mListView.getFlatListPosition(ExpandableListView.getPackedPositionForGroup(packedGroupPosTo));
-            values.put(FeedColumns.GROUP_ID, mListView.getItemIdAtPosition(flatGroupPosTo));
-            cr.update(FeedColumns.CONTENT_URI(mListView.getItemIdAtPosition(flatPosFrom)), values, null, null);
-        }
     }
 
     @Override

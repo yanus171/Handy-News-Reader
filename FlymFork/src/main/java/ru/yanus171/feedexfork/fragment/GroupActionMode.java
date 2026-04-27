@@ -5,8 +5,6 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.getFeedTit
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,9 +16,9 @@ import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData;
 
 class GroupActionModeCallBack implements ActionMode.Callback {
-    private final EditFeedsListFragment mFragment;
+    private final EditFeedListFragment mFragment;
 
-    GroupActionModeCallBack( EditFeedsListFragment fragment ) {
+    GroupActionModeCallBack( EditFeedListFragment fragment ) {
         mFragment = fragment;
     }
 

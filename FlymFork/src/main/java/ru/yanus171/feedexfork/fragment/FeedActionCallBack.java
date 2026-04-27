@@ -7,31 +7,27 @@ import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedI
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.view.ActionMode;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.provider.FeedData;
-import ru.yanus171.feedexfork.service.FetcherService;
 import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 public class FeedActionCallBack implements ActionMode.Callback {
-    private final EditFeedsListFragment mFragment;
+    private final EditFeedListFragment mFragment;
 
-    FeedActionCallBack( EditFeedsListFragment fragment ) {
+    FeedActionCallBack( EditFeedListFragment fragment ) {
         mFragment = fragment;
     }
     // Called when the action mode is created; startActionMode() was called

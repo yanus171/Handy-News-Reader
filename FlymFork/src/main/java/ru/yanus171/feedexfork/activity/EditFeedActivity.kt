@@ -79,7 +79,6 @@ import ru.yanus171.feedexfork.Constants.HTTP_SCHEME
 import ru.yanus171.feedexfork.MainApplication.getContext
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.adapter.FiltersCursorAdapter
-import ru.yanus171.feedexfork.fragment.EditFeedsListFragment
 import ru.yanus171.feedexfork.fragment.EntryFragment.NEW_TASK_EXTRA
 import ru.yanus171.feedexfork.fragment.FeedActionCallBack
 import ru.yanus171.feedexfork.fragment.GeneralPrefsFragment
