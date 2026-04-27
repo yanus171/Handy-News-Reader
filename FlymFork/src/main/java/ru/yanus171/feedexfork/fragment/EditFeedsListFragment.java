@@ -44,18 +44,14 @@
 
 package ru.yanus171.feedexfork.fragment;
 
-import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.getFeedTitle;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.isGroup;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,31 +63,21 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.ListFragment;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
-import ru.yanus171.feedexfork.activity.EditFeedActivity;
 import ru.yanus171.feedexfork.adapter.FeedsCursorAdapter;
 import ru.yanus171.feedexfork.parser.OPML;
 import ru.yanus171.feedexfork.provider.FeedData.FeedColumns;
-import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.view.DragNDropExpandableListView;
 import ru.yanus171.feedexfork.view.DragNDropListener;
 
 public class EditFeedsListFragment extends ListFragment {
 
     FeedsCursorAdapter mAdapter = null;
-    private ActionMode mActionMode = null;
 
     private final ActionMode.Callback mFeedActionModeCallback = new FeedActionCallBack( this );
     private final ActionMode.Callback mGroupActionModeCallBack = new GroupActionModeCallBack( this );
