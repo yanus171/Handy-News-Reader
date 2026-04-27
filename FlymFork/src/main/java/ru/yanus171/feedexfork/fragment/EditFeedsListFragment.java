@@ -97,44 +97,35 @@ public class EditFeedsListFragment extends ListFragment {
 
         mListView = rootView.findViewById(android.R.id.list);
         mListView.setFastScrollEnabled(true);
-        mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                long feedID = mListView.getItemIdAtPosition( groupPosition );
-                if ( isGroup( feedID ) ) {
-                    mAdapter.clearSelectedIDs();
-                    if (v.findViewById(R.id.indicator).getVisibility() != View.VISIBLE) { // This is no a real group
-                        startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
-                        return true;
-                    }
-                } else
-                    mAdapter.addOrRemoveIdToSelected( feedID );
-                return false;
-            }
-        });
-        mListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
-                if ( mAdapter.hasSelectedIDs() ) {
-                    int flatPosition = expandableListView.getFlatListPosition(
-                            ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
-                    long feedID = mListView.getItemIdAtPosition(flatPosition);
-                    mAdapter.addOrRemoveIdToSelected( feedID );
+        mListView.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            long feedID = mListView.getItemIdAtPosition( groupPosition );
+            if ( isGroup( feedID ) ) {
+                mAdapter.clearSelectedIDs();
+                if (v.findViewById(R.id.indicator).getVisibility() != View.VISIBLE) { // This is no a real group
+                    startActivity(new Intent(Intent.ACTION_EDIT).setData(FeedColumns.CONTENT_URI(id)));
+                    return true;
                 }
-                return true;
-            }
+            } else
+                mAdapter.addOrRemoveIdToSelected( feedID );
+            return false;
         });
-        mListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                AppCompatActivity activity = (AppCompatActivity) getActivity();
-                if (activity != null) {
-                    long feedID = mListView.getItemIdAtPosition( position );
-                    mActionMode = activity.startSupportActionMode(isGroup(feedID) ? mGroupActionModeCallBack: mFeedActionModeCallback);
-                    mAdapter.setSingleSelectedId( feedID );
-                }
-                return true;
+        mListView.setOnChildClickListener((expandableListView, view, groupPosition, childPosition, l) -> {
+            if ( mAdapter.hasSelectedIDs() ) {
+                int flatPosition = expandableListView.getFlatListPosition(
+                        ExpandableListView.getPackedPositionForChild(groupPosition, childPosition));
+                long feedID = mListView.getItemIdAtPosition(flatPosition);
+                mAdapter.addOrRemoveIdToSelected( feedID );
             }
+            return true;
+        });
+        mListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            if (activity != null) {
+                long feedID = mListView.getItemIdAtPosition( position );
+                activity.startSupportActionMode(isGroup(feedID) ? mGroupActionModeCallBack: mFeedActionModeCallback);
+                mAdapter.setSingleSelectedId( feedID );
+            }
+            return true;
         });
 
         mListView.setAdapter(mAdapter = new FeedsCursorAdapter(getActivity(), FeedColumns.GROUPS_AND_ROOT_CONTENT_URI));
