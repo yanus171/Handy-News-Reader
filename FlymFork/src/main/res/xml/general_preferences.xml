@@ -81,6 +81,17 @@
                 colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
 
             <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@color/dark_theme_drawer_background"
+                android:dependency="customColors"
+                android:key="feedListColor"
+                android:title="@string/feed_list_color"
+                android:summary="@string/feed_list_color_desc"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_text_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_text_sample_long" />
+
+
+            <ru.yanus171.feedexfork.view.ColorPreference
                 android:defaultValue="@string/default_read_color"
                 android:dependency="customColors"
                 android:key="textColorRead"
@@ -90,6 +101,25 @@
                 colorPreference:istransparency="false"
                 colorPreference:sampletextShort="@string/settings_color_text_read_sample_short"
                 colorPreference:sampletextLong="@string/settings_color_text_read_sample_long" />
+
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_text_color"
+                colorPreference:backgroundColor1="@string/transparent_color"
+                android:key="linkColor"
+                android:title="@string/linkColor"
+                android:summary="@string/linkColor_descr"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_link_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
+            <ru.yanus171.feedexfork.view.ColorPreference
+                android:defaultValue="@string/default_loaded_link_color"
+                colorPreference:backgroundColor1="@string/transparent_color"
+                android:key="loadedLinkColor"
+                android:title="@string/loadedLinkColor"
+                android:summary="@string/loadedLinkColor_descr"
+                colorPreference:istransparency="false"
+                colorPreference:sampletextShort="@string/settings_color_link_sample_short"
+                colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
 
 
         </PreferenceCategory>
@@ -284,24 +314,6 @@
             android:summary="@string/entry_text_align_justify_description"
             android:title="@string/entry_text_align_justify"/>
 
-        <ru.yanus171.feedexfork.view.ColorPreference
-            android:defaultValue="@string/default_text_color"
-            colorPreference:backgroundColor1="@string/transparent_color"
-            android:key="linkColor"
-            android:title="@string/linkColor"
-            android:summary="@string/linkColor_descr"
-            colorPreference:istransparency="false"
-            colorPreference:sampletextShort="@string/settings_color_link_sample_short"
-            colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
-        <ru.yanus171.feedexfork.view.ColorPreference
-            android:defaultValue="@string/default_loaded_link_color"
-            colorPreference:backgroundColor1="@string/transparent_color"
-            android:key="loadedLinkColor"
-            android:title="@string/loadedLinkColor"
-            android:summary="@string/loadedLinkColor_descr"
-            colorPreference:istransparency="false"
-            colorPreference:sampletextShort="@string/settings_color_link_sample_short"
-            colorPreference:sampletextLong="@string/settings_color_link_sample_long" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="underline_links"

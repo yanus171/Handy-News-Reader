@@ -770,5 +770,7 @@
     <string name="unknownLocalBookType">Unknown book type</string>
     <string name="delete_several_feeds_title">Delete selected feeds?</string>
     <string name="feed_deleted">Feeds were deleted</string>
+    <string name="feed_list_color">Feed list color</string>
+    <string name="feed_list_color_desc">Background color of left pane</string>
 
 </resources>

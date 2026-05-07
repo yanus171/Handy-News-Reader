@@ -42,6 +42,7 @@ public class Theme {
 	public static final String NEW_ARTICLE_INDICATOR_RES_ID = "NEW_ARTICLE_INDICATOR";
 	public static final String STARRED_ARTICLE_INDICATOR_RES_ID = "STARRED_ARTICLE_INDICATOR";
 	private static final String TOOL_BAR_COLOR = "toolBarColor";
+	private static final String FEED_LIST_COLOR = "feedListColor";
 	private static HashMap<String, HashMap<String, String>> ThemeList = null;
 	static final String THEME_CUSTOM = "Custom";
 	private static String mTheme = DARK;
@@ -73,6 +74,7 @@ public class Theme {
 				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Light) );
 				theme.put(PREF_STYLE_THEME, String.valueOf( R.style.Theme_Light_Pref) );
 				theme.put(TOOL_BAR_COLOR, GetResourceColor( R.color.light_theme_color_primary));
+				theme.put(FEED_LIST_COLOR, GetResourceColor( R.color.light_theme_drawer_background));
 				theme.put(NEW_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_new_article_light) );
 				theme.put(STARRED_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_star_light) );
 				ThemeList.put(LIGHT, theme);
@@ -92,7 +94,9 @@ public class Theme {
 				theme.put(STYLE_THEME, String.valueOf( R.style.Theme_Dark) );
 				theme.put(PREF_STYLE_THEME, String.valueOf( R.style.Theme_Dark_Pref) );
 				theme.put(TOOL_BAR_COLOR, GetResourceColor(R.color.dark_theme_color_primary));
+				theme.put(FEED_LIST_COLOR, GetResourceColor( R.color.dark_theme_drawer_background));
 				theme.put(NEW_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_new_article_dark) );
+				theme.put(STARRED_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_star_dark) );
 				theme.put(STARRED_ARTICLE_INDICATOR_RES_ID, String.valueOf(R.drawable.ic_indicator_star_dark) );
 				ThemeList.put(DARK, theme);
 			}
@@ -175,6 +179,10 @@ public class Theme {
 	//-------------------------------------------------------------------
 	public static String GetToolBarColor() {
 		return Theme.GetColor(TOOL_BAR_COLOR, R.string.default_toolbar_color );
+	}
+	//-------------------------------------------------------------------
+	public static int GetFeedListColorInt() {
+		return Theme.GetColorInt(FEED_LIST_COLOR, R.color.dark_theme_drawer_background );
 	}
 	//-------------------------------------------------------------------
 	@SuppressLint("DefaultLocale")

@@ -221,7 +221,10 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
             getLoaderManager().restartLoader(LOADER_ID, null, this);
             TapZonePreviewPreference.SetupZones(findViewById(R.id.layout_root), false);
             mEntriesFragment.recreateTapActions();
+
         }
+        if ( mLeftDrawer != null )
+            mLeftDrawer.setBackgroundColor(Theme.GetFeedListColorInt());
         setFullScreen( GetIsStatusBarEntryListHidden(), GetIsActionBarEntryListHidden() );
         if ( mDrawerLayout != null )
             mDrawerLayout.findViewById( R.id.drawer_header ).setBackgroundColor( Theme.GetToolBarColorInt() );
@@ -249,7 +252,6 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mTitle = getTitle().toString();
 
         mLeftDrawer = findViewById(R.id.left_drawer);
-        //mLeftDrawer.setBackgroundColor(ContextCompat.getColor( this, PrefUtils.IsLightTheme() ?  R.color.light_background : R.color.dark_background));
 
         mDrawerList = findViewById(R.id.drawer_list);
         mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
