@@ -323,10 +323,14 @@ object FileUtils {
     }
 
     fun loadBitmapFromUri( uri: Uri ): Bitmap? {
-        val imageStream = MainApplication.getContext().contentResolver.openInputStream(uri); try {
+        var imageStream: InputStream? = null;
+        try {
+            imageStream = MainApplication.getContext().contentResolver.openInputStream(uri);
             return BitmapFactory.decodeStream(imageStream, null, BitmapFactory.Options());
+        } catch ( e: Exception ) {
+            return null
         } finally {
-            imageStream?.close();
+            imageStream?.close()
         }
     }
 

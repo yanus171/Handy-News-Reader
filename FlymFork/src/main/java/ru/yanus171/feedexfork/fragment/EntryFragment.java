@@ -667,7 +667,8 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         if ( ShortcutManagerCompat.isRequestPinShortcutSupported(activity) ) {
             //Adding shortcut for MainActivity on Home screen
             new WaitDialog(activity, R.string.downloadImage, () -> {
-                final IconCompat icon = LoadIcon(iconUrl);
+                final IconCompat icon = LoadIcon(iconUrl, FeedData.EntryColumns.CONTENT_URI(entryID));
+
                 UiUtils.RunOnGuiThread(() -> {
                     final Intent intent = new Intent(activity, EntryActivityNewTask.class)
                             .setAction(Intent.ACTION_VIEW)
@@ -688,6 +689,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
         } else
             UiUtils.toast( R.string.new_feed_shortcut_add_failed );
     }
+
     public boolean isCurrentPage( int position ) {
         return mCurrentPagerPos == position;
     }

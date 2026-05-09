@@ -849,7 +849,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             final String finalName = name;
             final IconCompat finalImage = image;
             new WaitDialog(getActivity(), R.string.downloadImage, () -> {
-                final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl) : finalImage;
+                final IconCompat icon = (finalImage == null) ? LoadIcon(finalIconUrl, null) : finalImage;
                 getActivity().runOnUiThread(() -> {
 
                     ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(getContext(), mCurrentUri.toString() + intent.getLongExtra(LABEL_ID_EXTRA, 0))
@@ -861,7 +861,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     ShortcutManagerCompat.requestPinShortcut( getContext(), pinShortcutInfo, null);
                     if(Build.VERSION.SDK_INT< Build.VERSION_CODES.O)
                         Toast.makeText(
-
                                 getContext(),R.string.new_feed_shortcut_added,Toast.LENGTH_LONG).show();
                 });
             }).execute();

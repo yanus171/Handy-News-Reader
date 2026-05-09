@@ -381,7 +381,7 @@ public abstract class EntryView {
     }
 
     @NotNull
-    public static IconCompat LoadIcon(String iconUrl) {
+    public static IconCompat LoadIcon(String iconUrl, Uri entryUri) {
         Bitmap bitmap =
                 iconUrl == null ? null :
                 LocalFile.Is( iconUrl ) ? FileUtils.INSTANCE.loadBitmapFromUri( Uri.parse(iconUrl) ) :
@@ -390,10 +390,23 @@ public abstract class EntryView {
             UiUtils.toast( R.string.unable_to_load_article_icon );
         else
             bitmap = UiUtils.getScaledBitmap( bitmap, 32 );
+        if ( bitmap == null && LocalFile.Is(iconUrl) )
+            repairIcon(entryUri);
         return (bitmap == null) ?
                 IconCompat.createWithResource( MainApplication.getContext(), R.mipmap.ic_launcher ) :
                 IconCompat.createWithBitmap(bitmap);
     }
+    private static void repairIcon(Uri entryUri) {
+        new Thread() {
+            @Override
+            public void run() {
+                ContentValues values = new ContentValues();
+                values.putNull( FeedData.EntryColumns.IMAGE_URL );
+                MainApplication.getContext().getContentResolver().update( entryUri, values, null, null );
+            }
+        }.start();
+    }
+
 
     public void OpenLabelSetup() {
         LabelVoc.INSTANCE.showDialogToSetArticleLabels(getContext(), mEntryId, null);
