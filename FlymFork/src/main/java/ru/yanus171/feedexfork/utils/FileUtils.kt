@@ -19,6 +19,7 @@
 
 package ru.yanus171.feedexfork.utils
 
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -30,8 +31,8 @@ import android.provider.BaseColumns._ID
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
-import ru.yanus171.feedexfork.Constants.DB_AND
 import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.MainApplication.mHTMLFileVoc
 import ru.yanus171.feedexfork.R
@@ -45,6 +46,7 @@ import ru.yanus171.feedexfork.utils.DebugApp.AddErrorToLog
 import ru.yanus171.feedexfork.view.StorageItem
 import java.io.*
 import java.util.*
+import kotlin.text.Regex
 
 object FileUtils {
 
@@ -73,21 +75,11 @@ object FileUtils {
 
     private fun copyFileToDownload(fileName: String, destName: String, destSubFolder: String, isToast: Boolean ) {
         val context = MainApplication.getContext();
+
         if (Build.VERSION.SDK_INT >= 29) {
             val resolver = context.contentResolver
             val relPath = Environment.DIRECTORY_DOWNLOADS + "/" + SUB_FOLDER + destSubFolder;
-            run {
-                val cursor = resolver.query( MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-                        arrayOf(MediaStore.Downloads._ID),
-                        MediaStore.MediaColumns.DISPLAY_NAME + "='" + destName + "' " + DB_AND +
-                                MediaStore.MediaColumns.RELATIVE_PATH + " LIKE '" + relPath + "%' ", null, null)
-                if ( cursor!!.moveToFirst() ) {
-                    val uri = Uri.withAppendedPath(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cursor.getString(0))
-                    resolver.delete(uri, null, null)
-                }
-                cursor.close()
-
-            }
+            deleteExistingFiles(destName, relPath)
             try {
                 val contentValues = ContentValues()
                 contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName)
@@ -128,8 +120,34 @@ object FileUtils {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun deleteExistingFiles( destName: String, relPath: String ) {
+        val idsToDelete = getFileIDsToDelete(destName, relPath)
+        for (id in idsToDelete) {
+            val uri = Uri.withAppendedPath(MediaStore.Downloads.EXTERNAL_CONTENT_URI, id.toString())
+            MainApplication.getContext().contentResolver.delete(uri, null, null)
+        }
+    }
 
-    public const val APP_SUBDIR = "feedex/"
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun getFileIDsToDelete(destName: String, relPath: String ): ArrayList<Long> {
+        val idsToDelete = ArrayList<Long>()
+        val cursor = MainApplication.getContext().contentResolver.query(
+            MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+            arrayOf(_ID, MediaStore.Downloads.DISPLAY_NAME, MediaStore.Downloads.RELATIVE_PATH), null, null
+        )
+        if (cursor!!.moveToFirst())
+            do {
+                val currentName = cursor.getString(1).replace(Regex("\\s\\(\\d+\\)"), "")
+                val currentRelPath = cursor.getString(2)
+                if ( currentRelPath == "$relPath/" && currentName == destName )
+                    idsToDelete.add(cursor.getLong(0))
+            } while (cursor.moveToNext())
+        cursor.close()
+        return idsToDelete
+    }
+
+    const val APP_SUBDIR = "feedex/"
 
     fun getFolder(): File {
         val customPath = PrefUtils.getString(PrefUtils.DATA_FOLDER, "").trim { it <= ' ' }
