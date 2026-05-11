@@ -974,10 +974,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
             if (restoreType.equals("new"))
                 return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
-            else if (restoreType.equals("top_bottom"))
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
+            else if ( restoreType.equals("unread") )
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomReadPos() : mEntriesCursorAdapter.GetTopReadPos();
             else
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
+                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
         }
 
         @Override

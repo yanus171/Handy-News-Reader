@@ -806,7 +806,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             holder.titleTextView.setSingleLine();
             holder.mainImgView.setMaxHeight(  );
         }*/
-        final boolean isNew = getBoolean( "show_new_icon", true ) && EntryColumns.IsNew( cursor, mIsNewPos ) && !isInMarkAsReadList(EntryUri(holder.entryID).toString());
+        final boolean isNew = getBoolean( "show_new_icon", true ) && isNew(cursor) && !isInMarkAsReadList(EntryUri(holder.entryID).toString());
         holder.newImgView.setVisibility( isNew ? View.VISIBLE : View.GONE );
         holder.newImgView.setImageResource(Theme.GetResID( NEW_ARTICLE_INDICATOR_RES_ID ) );
 
@@ -1483,7 +1483,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         try {
             for (int i = 0; i < getCount(); i++) {
                 Cursor cursor = (Cursor) getItem(i);
-                if ( EntryColumns.IsNew( cursor, mIsNewPos ) )
+                if (isNew(cursor))
                     return i;
             }
         } catch ( IllegalStateException e ) {
@@ -1495,13 +1495,43 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         try {
             for (int i = getCount() - 1; i >= 0; i--) {
                 Cursor cursor = (Cursor) getItem(i);
-                if (EntryColumns.IsNew(cursor, mIsNewPos))
+                if (isNew(cursor))
                     return i;
             }
         } catch ( IllegalStateException e ) {
             e.printStackTrace();
         }
         return 0;
+    }
+    private boolean isNew(Cursor cursor) {
+        return EntryColumns.IsNew(cursor, mIsNewPos);
+    }
+    public int GetTopReadPos() {
+        try {
+            for (int i = 0; i < getCount(); i++) {
+                Cursor cursor = (Cursor) getItem(i);
+                if (isRead(cursor))
+                    return i;
+            }
+        } catch ( IllegalStateException e ) {
+            e.printStackTrace();
+        }
+        return getCount() - 1;
+    }
+    public int GetBottomReadPos() {
+        try {
+            for (int i = getCount() - 1; i >= 0; i--) {
+                Cursor cursor = (Cursor) getItem(i);
+                if (isRead(cursor))
+                    return i;
+            }
+        } catch ( IllegalStateException e ) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    private static boolean isRead(Cursor cursor) {
+        return EntryColumns.IsRead(cursor, mIsReadPos);
     }
     public int GetPosByID( long id ) {
         if ( !isEmpty() ) {
