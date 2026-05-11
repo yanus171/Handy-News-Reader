@@ -953,7 +953,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                     mEntriesCursorAdapter.changeCursor(data);
                     if (mNeedSetSelection) {
                         mNeedSetSelection = false;
-                        mListView.setSelection(getInitialPosition());
+                        mListView.setSelection( mEntriesCursorAdapter.getInitialPosition(IsOldestFirst()) );
                     } else
                         RestoreListScrollPosition();
 
@@ -970,15 +970,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
         }
 
-        private int getInitialPosition() {
-            final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
-            if (restoreType.equals("new"))
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetTopNewPos() : mEntriesCursorAdapter.GetBottomNewPos();
-            else if ( restoreType.equals("unread") )
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomReadPos() : mEntriesCursorAdapter.GetTopReadPos();
-            else
-                return IsOldestFirst() ? mEntriesCursorAdapter.GetBottomPos() : mEntriesCursorAdapter.GetTopPos();
-        }
+
 
         @Override
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {

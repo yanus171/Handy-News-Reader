@@ -1473,13 +1473,22 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     }
 
-    public int GetTopPos() {
+    public int getInitialPosition( boolean isOldestFirst ) {
+        final String restoreType = PrefUtils.getString( "article_list_restore_type", "new" );
+        if (restoreType.equals("new"))
+            return isOldestFirst ? GetTopNewPos() : GetBottomNewPos();
+        else if ( restoreType.equals("unread") )
+            return isOldestFirst ? GetBottomReadPos() : GetTopReadPos();
+        else
+            return isOldestFirst ? GetBottomPos() : GetTopPos();
+    }
+    private int GetTopPos() {
         return isEmpty() ? - 1 : 0;
     }
-    public int GetBottomPos() {
+    private int GetBottomPos() {
         return getCount() - 1;
     }
-    public int GetTopNewPos() {
+    private int GetTopNewPos() {
         try {
             for (int i = 0; i < getCount(); i++) {
                 Cursor cursor = (Cursor) getItem(i);
@@ -1491,7 +1500,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         return getCount() - 1;
     }
-    public int GetBottomNewPos() {
+    private int GetBottomNewPos() {
         try {
             for (int i = getCount() - 1; i >= 0; i--) {
                 Cursor cursor = (Cursor) getItem(i);
@@ -1506,7 +1515,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     private boolean isNew(Cursor cursor) {
         return EntryColumns.IsNew(cursor, mIsNewPos);
     }
-    public int GetTopReadPos() {
+    private int GetTopReadPos() {
         try {
             for (int i = 0; i < getCount(); i++) {
                 Cursor cursor = (Cursor) getItem(i);
@@ -1518,7 +1527,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
         }
         return getCount() - 1;
     }
-    public int GetBottomReadPos() {
+    private int GetBottomReadPos() {
         try {
             for (int i = getCount() - 1; i >= 0; i--) {
                 Cursor cursor = (Cursor) getItem(i);
