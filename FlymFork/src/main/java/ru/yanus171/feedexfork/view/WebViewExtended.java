@@ -98,6 +98,12 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     static final String TEXT_HTML = "text/html";
     public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
+
+    private static boolean NeedsFileAccessForCustomFont() {
+        String fontName = ru.yanus171.feedexfork.utils.PrefUtils.getString(
+                FontSelectPreference.KEY, FontSelectPreference.DefaultFontFamily);
+        return fontName != null && !fontName.equals(FontSelectPreference.DefaultFontFamily);
+    }
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
     private static final int TOGGLE_TAP_ZONE_VISIBIILTY = 3;
@@ -134,7 +140,12 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
         Timer timer = new Timer("EntryView.init");
 
-        getSettings().setAllowFileAccess(true);
+        // Only enable file:// access when the user has actually picked a
+        // custom font that lives outside the bundled assets. In the default
+        // case the WebView only renders the article HTML built locally and
+        // does not need file URL access. android_asset URLs work either
+        // way.
+        getSettings().setAllowFileAccess(NeedsFileAccessForCustomFont());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             setTextDirection(TEXT_DIRECTION_LOCALE);
         // For scrolling
