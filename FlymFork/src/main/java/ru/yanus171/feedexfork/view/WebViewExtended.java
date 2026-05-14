@@ -99,10 +99,18 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
 
-    private static boolean NeedsFileAccessForCustomFont() {
+    private static boolean NeedsFileAccess() {
+        // Custom fonts are loaded via @font-face src: url('file://<fonts dir>/...').
         String fontName = ru.yanus171.feedexfork.utils.PrefUtils.getString(
                 FontSelectPreference.KEY, FontSelectPreference.DefaultFontFamily);
-        return fontName != null && !fontName.equals(FontSelectPreference.DefaultFontFamily);
+        boolean customFont = fontName != null
+                && !fontName.equals(FontSelectPreference.DefaultFontFamily);
+        // HtmlUtils.replaceImageURLs rewrites <img src> to file://<cached path>
+        // when downloaded images are displayed, so the WebView needs to load
+        // file:// URLs to render inline cached images.
+        boolean displayImages = ru.yanus171.feedexfork.utils.PrefUtils
+                .getBoolean(ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_IMAGES, true);
+        return customFont || displayImages;
     }
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
@@ -140,12 +148,13 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
         Timer timer = new Timer("EntryView.init");
 
-        // Only enable file:// access when the user has actually picked a
-        // custom font that lives outside the bundled assets. In the default
-        // case the WebView only renders the article HTML built locally and
-        // does not need file URL access. android_asset URLs work either
-        // way.
-        getSettings().setAllowFileAccess(NeedsFileAccessForCustomFont());
+        // Enable file:// access only when a feature on this WebView depends on
+        // it: a user-picked custom font (loaded via @font-face from device
+        // storage) or downloaded image display (HtmlUtils rewrites <img src>
+        // to file://<cached path>). When neither is in use, the article HTML
+        // is rendered from in-memory content with no file:// references and
+        // the flag is unneeded. android_asset URLs work either way.
+        getSettings().setAllowFileAccess(NeedsFileAccess());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             setTextDirection(TEXT_DIRECTION_LOCALE);
         // For scrolling
