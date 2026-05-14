@@ -98,6 +98,20 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     static final String TEXT_HTML = "text/html";
     public static final String NO_MENU = "NO_MENU_";
     public static final String BASE_URL = "";
+
+    private static boolean NeedsFileAccess() {
+        // Custom fonts are loaded via @font-face src: url('file://<fonts dir>/...').
+        String fontName = ru.yanus171.feedexfork.utils.PrefUtils.getString(
+                FontSelectPreference.KEY, FontSelectPreference.DefaultFontFamily);
+        boolean customFont = fontName != null
+                && !fontName.equals(FontSelectPreference.DefaultFontFamily);
+        // HtmlUtils.replaceImageURLs rewrites <img src> to file://<cached path>
+        // when downloaded images are displayed, so the WebView needs to load
+        // file:// URLs to render inline cached images.
+        boolean displayImages = ru.yanus171.feedexfork.utils.PrefUtils
+                .getBoolean(ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_IMAGES, true);
+        return customFont || displayImages;
+    }
     private static final int CLICK_ON_WEBVIEW = 1;
     private static final int CLICK_ON_URL = 2;
     private static final int TOGGLE_TAP_ZONE_VISIBIILTY = 3;
@@ -134,7 +148,13 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 
         Timer timer = new Timer("EntryView.init");
 
-        getSettings().setAllowFileAccess(true);
+        // Enable file:// access only when a feature on this WebView depends on
+        // it: a user-picked custom font (loaded via @font-face from device
+        // storage) or downloaded image display (HtmlUtils rewrites <img src>
+        // to file://<cached path>). When neither is in use, the article HTML
+        // is rendered from in-memory content with no file:// references and
+        // the flag is unneeded. android_asset URLs work either way.
+        getSettings().setAllowFileAccess(NeedsFileAccess());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             setTextDirection(TEXT_DIRECTION_LOCALE);
         // For scrolling
