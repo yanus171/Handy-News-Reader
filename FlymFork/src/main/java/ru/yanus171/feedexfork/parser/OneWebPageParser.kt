@@ -43,10 +43,6 @@ object OneWebPageParser {
         val status = FetcherService.Status().Start(if (recursionCount > 0) MainApplication.getContext().getString(R.string.parsing_one_web_page) + ": " + recursionCount.toString() else "", false)
         var urlNextPage = ""
         try { /* check and optionally find favicon */
-            try {
-                NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
-            } catch (ignored: Throwable) {
-            }
             var connection: Connection? = null
             val doc: Document
             try {
@@ -142,25 +138,22 @@ object OneWebPageParser {
                     }
                 }
                 urlNextPage = getUrl(doc, urlNextPageClassName, "a", "href", feedBaseUrl)
+                if ( urlNextPage.isNotEmpty() )
+                    newCount += parse(lastUpdateDate, feedID, urlNextPage, jsonOptions, fetchImages, recursionCount + 1)
+                else {
+                    val values = ContentValues()
+                    values.put(FeedColumns.LAST_UPDATE, System.currentTimeMillis())
+                    cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null)
+                }
+                NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
+
             } catch (e: Exception) {
                 FetcherService.Status().SetError(e.localizedMessage, feedID, "", e)
             } finally {
                 connection?.disconnect()
             }
-
-            //        synchronized ( FetcherService.mCancelRefresh ) {
-//			FetcherService.mCancelRefresh = false;
-//		}
-
         } finally {
             FetcherService.Status().End(status)
-        }
-        if ( urlNextPage.isNotEmpty() )
-            newCount += parse(lastUpdateDate, feedID, urlNextPage, jsonOptions, fetchImages, recursionCount + 1)
-        else {
-            val values = ContentValues()
-            values.put(FeedColumns.LAST_UPDATE, System.currentTimeMillis())
-            cr.update(FeedColumns.CONTENT_URI(feedID), values, null, null)
         }
         return newCount
     }

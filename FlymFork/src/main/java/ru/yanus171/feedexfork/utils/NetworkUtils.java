@@ -55,6 +55,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.WebEntryView;
 
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
+import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
 
 public class NetworkUtils {
 
@@ -108,7 +109,7 @@ public class NetworkUtils {
 
     public static boolean downloadImage(final long entryId, String entryUrl, String imgUrl, boolean isSizeLimit, boolean notify ) throws IOException {
         boolean result = false;
-        if ( FetcherService.isCancelRefresh() )
+        if ( isCancelRefresh() )
             return result;
         String tempImgPath = getTempDownloadedImagePath(entryUrl, imgUrl);
         String finalImgPath = getDownloadedImagePath(entryUrl, imgUrl);
@@ -136,7 +137,7 @@ public class NetworkUtils {
                             byte[] buffer = new byte[2048];
                             int bufferLength;
                             //FetcherService.Status().ChangeProgress(getProgressText(bytesRecieved));
-                            while (!FetcherService.isCancelRefresh() && ( bufferLength = inputStream.read(buffer) ) > 0) {
+                            while (!isCancelRefresh() && ( bufferLength = inputStream.read(buffer) ) > 0) {
                                 if (isSizeLimit && size > maxImageDownloadSize) {
                                     abort = true;
                                     break;
@@ -192,14 +193,14 @@ public class NetworkUtils {
 
             Cursor cursor = MainApplication.getContext().getContentResolver().query(entriesUri, FeedData.EntryColumns.PROJECTION_ID, selection, selectionArgs, null);
 
-            while (cursor.moveToNext() && !FetcherService.isCancelRefresh()) {
+            while (cursor.moveToNext() && !isCancelRefresh()) {
                 filenameFilter.setEntryId(cursor.getString(0));
 
                 File[] files = FileUtils.INSTANCE.GetImagesFolder().listFiles(filenameFilter);
                 if (files != null && files.length > 0 ) {
                     for (File file : files) {
                         file.delete();
-                        if ( FetcherService.isCancelRefresh() )
+                        if ( isCancelRefresh() )
                             break;
                     }
                     //FetcherService.mDeletedImageCount += files.length;
@@ -278,6 +279,8 @@ public class NetworkUtils {
     }
 
     public static void retrieveFavicon(Context context, URL url, String feedID) {
+        if ( isCancelRefresh() )
+            return;
         final String imageUrl = url.getProtocol() + PROTOCOL_SEPARATOR + url.getHost() + FILE_FAVICON;
         ContentResolver cr = context.getContentResolver();
         try (Cursor cursor = cr.query(FeedData.FeedColumns.CONTENT_URI(feedID), new String[]{FeedData.FeedColumns.ICON_URL}, null, null, null)) {

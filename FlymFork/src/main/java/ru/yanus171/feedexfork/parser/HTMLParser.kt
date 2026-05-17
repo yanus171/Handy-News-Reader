@@ -97,11 +97,6 @@ object HTMLParser {
         val cal = Calendar.getInstance()
         val isTomorrow = feedUrlparam.contains(TOMORROW_YYYY_MM_DD) && cal[Calendar.HOUR_OF_DAY] >= 16
         val feedUrl = replaceTomorrow(feedUrlparam)
-        /* check and optionally find favicon */
-        try {
-            NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
-        } catch (ignored: Throwable) {
-        }
         var connection: Connection? = null
         var doc: Document? = null
         try {
@@ -244,10 +239,11 @@ object HTMLParser {
 			//String link = matcher.group().replace( "<a href=\"", "" );
 			FetcherService.OpenExternalLink( link, intent.getStringExtra( Constants.TITLE_TO_LOAD ), null  );
 		}*/
-        return if ( urlNextPage.isEmpty() || isCancelRefresh() )
-            newEntries
-        else
-            Parse(executor, feedID, urlNextPage, jsonOptions, recursionCount + 1)
+        if ( urlNextPage.isEmpty() || isCancelRefresh() ) {
+            NetworkUtils.retrieveFavicon(MainApplication.getContext(), URL(feedUrl), feedID)
+            return newEntries
+        } else
+            return Parse(executor, feedID, urlNextPage, jsonOptions, recursionCount + 1)
     }
 
     fun replaceTomorrow(feedUrl: String): String {

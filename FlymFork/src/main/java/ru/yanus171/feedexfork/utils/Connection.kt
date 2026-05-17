@@ -6,6 +6,7 @@ import org.jsoup.Jsoup
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.security.cert.X509Certificate
 import java.security.SecureRandom
 import java.util.concurrent.TimeUnit
@@ -79,13 +80,13 @@ class Connection(url: String, var mIsOKHttp: Boolean = true) {
                     .header( "referer", NetworkUtils.getBaseUrl( url ) )
                             .build()
             if ( PrefUtils.getBoolean("ignore_all_ssl_errors", false) )
-                client.apply {
-                    ignoreAllSSLErrors()
-                }
+                client.ignoreAllSSLErrors()
             var call = client.build().newCall(request)
 
             try {
                 mResponse = call.execute()
+            } catch (e: SocketTimeoutException) {
+                throw e
             } catch (e: IOException) {
                 e.printStackTrace();
                 if ( url.startsWith("https") ) {

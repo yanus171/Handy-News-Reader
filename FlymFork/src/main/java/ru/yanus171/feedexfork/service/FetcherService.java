@@ -143,6 +143,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1754,9 +1755,7 @@ public class FetcherService extends IntentService {
                     break;
                 }
             }
-
-
-            connection.disconnect();
+            retrieveFavicon(feedUrl, feedId, handler);
         } catch(FileNotFoundException e){
             if (handler == null || (!handler.isDone() && !handler.isCancelled())) {
                 ContentValues values = new ContentValues();
@@ -1782,22 +1781,19 @@ public class FetcherService extends IntentService {
                         feedId, "", e);
             }
         } finally{
-            /* check and optionally find favicon */
-            try {
-                if (handler != null ) {
-                    if (handler.getFeedLink() != null)
-                        NetworkUtils.retrieveFavicon(getContext(), new URL(handler.getFeedLink()), feedId);
-                    else
-                        NetworkUtils.retrieveFavicon(getContext(), new URL( feedUrl ), feedId);
-                }
-            } catch (Throwable ignored) {
-            }
-
-            if (connection != null) {
+            if (connection != null)
                 connection.disconnect();
-            }
         }
         return handler != null ? handler.getNewCount() : 0;
+    }
+
+    private static void retrieveFavicon(String feedUrl, String feedId, RssAtomParser handler) throws MalformedURLException {
+        if (handler != null ) {
+            if (handler.getFeedLink() != null)
+                NetworkUtils.retrieveFavicon(getContext(), new URL(handler.getFeedLink()), feedId);
+            else
+                NetworkUtils.retrieveFavicon(getContext(), new URL(feedUrl), feedId);
+        }
     }
 
     @NotNull
