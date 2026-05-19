@@ -263,7 +263,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
             mRootView.findViewById(R.id.pageDownBtn).setOnClickListener(listener);
             //rootView.findViewById(R.id.pageDownBtnVert).setOnClickListener(listener);
             mRootView.findViewById(R.id.pageDownBtn).setOnLongClickListener(v -> {
-                GetSelectedEntryView().LongClickOnBottom();
+                GetSelectedEntryView().longClickOnBottom();
                 return true;
             });
         }
@@ -281,11 +281,11 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
     }
 
     public void PageUp() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollOneScreen(-1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).scrollOneScreen(-1);
     }
 
     public void PageDown() {
-        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).ScrollOneScreen(1);
+        mEntryPagerAdapter.GetEntryView( mEntryPager.getCurrentItem() ).scrollOneScreen(1);
     }
 
     public void NextEntry() {
@@ -781,7 +781,7 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                         @Override
                         public void run() {
                             if (!wasUp && !mWasSwipe) {
-                                GetSelectedEntryView().GoTop();
+                                GetSelectedEntryView().goTop();
                                 UiUtils.toast( R.string.list_was_scrolled_to_top );
                             }
                         }

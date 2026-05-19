@@ -181,7 +181,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void LongClickOnBottom() {
+    public void longClickOnBottom() {
         AddNavigationHistoryStep();
         ScrollTo((int) mWebView.GetContentHeight() - mWebView.getHeight(), false);
         UiUtils.toastShort( R.string.list_was_scrolled_to_bottom );
@@ -197,7 +197,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     @Override
-    public void ScrollOneScreen(int direction) {
+    public void scrollOneScreen(int direction) {
         ScrollTo((int) (mWebView.getScrollY() + direction * mWebView.getPageHeight() * getPageChangeMultiplier()), true);
     }
 

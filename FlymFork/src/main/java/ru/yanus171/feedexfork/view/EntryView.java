@@ -106,7 +106,7 @@ public abstract class EntryView {
             mEntryFragment.mTapZones.Update();
     }
 
-    public void GoTop() {
+    public void goTop() {
         AddNavigationHistoryStep();
         ScrollTo(0, false );
     }
@@ -119,8 +119,8 @@ public abstract class EntryView {
 
     protected abstract int GetScrollY();
     protected abstract void ScrollTo( int y, boolean smooth );
-    public abstract void LongClickOnBottom();
-    public abstract void ScrollOneScreen(int direction);
+    public abstract void longClickOnBottom();
+    public abstract void scrollOneScreen(int direction);
     protected abstract double GetViewScrollPartY();
 
     public void SaveScrollPos() {

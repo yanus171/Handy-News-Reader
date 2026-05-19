@@ -39,11 +39,11 @@ class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long
     }
 
     override fun leftBottomBtnClick() {
-        ScrollOneScreen(+1)
+        scrollOneScreen(+1)
     }
 
     override fun rightBottomBtnClick() {
-        ScrollOneScreen(+1)
+        scrollOneScreen(+1)
     }
 
     fun openRenderer(link: String) {
@@ -67,10 +67,10 @@ class PDFEntryView(fragment: EntryFragment, mContainer: ViewGroup, entryId: Long
     override fun ScrollTo(y: Int, smooth: Boolean) {
     }
 
-    override fun LongClickOnBottom() {
+    override fun longClickOnBottom() {
     }
 
-    override fun ScrollOneScreen(direction: Int) {
+    override fun scrollOneScreen(direction: Int) {
     }
 
     override fun GetViewScrollPartY(): Double {
