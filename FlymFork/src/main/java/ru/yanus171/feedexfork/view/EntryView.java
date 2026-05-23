@@ -263,19 +263,19 @@ public abstract class EntryView {
     }
 
     @SuppressLint("Range")
-    protected float readFloat( String fieldName, float defaultValue) {
+    public float readFloat( String fieldName, float defaultValue) {
         return !mCursor.isNull(mCursor.getColumnIndex(fieldName)) ?
             mCursor.getFloat(mCursor.getColumnIndex(fieldName)) :
             defaultValue;
     }
     @SuppressLint("Range")
-    protected double readDouble( String fieldName, double defaultValue) {
+    public double readDouble( String fieldName, double defaultValue) {
         return !mCursor.isNull(mCursor.getColumnIndex(fieldName)) ?
                 mCursor.getDouble( mCursor.getColumnIndex(fieldName)) :
                 defaultValue;
     }
     @SuppressLint("Range")
-    protected boolean readBooleanWithNullTrue( String fieldName) {
+    public boolean readBooleanWithNullTrue( String fieldName) {
         final int fieldPos = mCursor.getColumnIndex(fieldName);
         return mCursor.getInt(fieldPos) == 1 || mCursor.isNull(fieldPos);
     }
@@ -507,7 +507,7 @@ public abstract class EntryView {
         setupButtonLongClickAction( R.id.btn_force_landscape_orientation_toggle, v -> mEntryFragment.mMenu.openDisplay());
         setupButtonLongClickAction( R.id.btn_reload, v -> mEntryFragment.mMenu.openReload());
     }
-    protected void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
+    public void setupButtonAction(int viewId, boolean checked, View.OnClickListener click ) {
         mEntryFragment.mControlPanel.setupButtonAction(viewId, checked, click );
     }
     protected void setupButtonLongClickAction(int viewId, View.OnClickListener click ) {
