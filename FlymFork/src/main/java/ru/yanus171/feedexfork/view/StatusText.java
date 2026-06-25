@@ -35,6 +35,8 @@ import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
 
+import org.apache.http.conn.ConnectTimeoutException;
+
 /**
  * Created by Admin on 03.06.2016.
  */
@@ -295,9 +297,14 @@ public class StatusText implements Observer {
             synchronized ( mList ) {
                 mErrorFeedID = feedID;
                 mErrorEntryID = entryID;
-                mErrorText = ( text == null ? "" : text + ", " ) + e.toString();
+                mErrorText = getErrorText( text, e );
             }
             UpdateText();
+        }
+        private String getErrorText( String text, Exception e ) {
+            if ( e instanceof java.net.SocketTimeoutException )
+                return MainApplication.getContext().getString( R.string.error_no_connection );
+            return ( text == null ? "" : text + ", " ) + e.toString();
         }
         public void ChangeProgress(int textID) {
             ChangeProgress(MainApplication.getContext().getString( textID ));
