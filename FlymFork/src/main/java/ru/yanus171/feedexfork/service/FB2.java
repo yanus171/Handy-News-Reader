@@ -152,18 +152,30 @@ public class FB2 {
 
     @NonNull
     private static String removeTags(String content) {
-        //content = content.replaceAll( "[^\\s]{50,}", "" );
+        // Content cleanup first
         content = content.replace( "<style>", "" );
         content = content.replace( "</style>", "" );
-        content = content.replace( "<empty-line", "<br" );
-        content = content.replace( "emphasis>", "i>" );
-        //content = content.replace( "</i>, ", ",</i>" );
-        content = content.replace( "strong>", "b>" );
-        content = content.replace( "strikethrough>.", "del>" );
         content = content.replace( "xlink:href", "href" );
         content = content.replaceAll( "\\n\\s+<", "<" );
-        //content = content.replace( "\n\r<", "<" );
-        //content = content.replace( "\r\n<", "<" );
+
+        // Convert stanza - wrap in div with class
+        content = content.replace( "<stanza>", "<div class=\"stanza\">" );
+        content = content.replace( "</stanza>", "</div>" );
+
+        // Convert verse lines with class
+        content = content.replace( "<v>", "<p class=\"verse\">" );
+        content = content.replace( "</v>", "</p>" );
+
+        // Convert other tags
+        content = content.replace( "<empty-line", "<br" );
+        content = content.replace( "emphasis>", "i>" );
+        content = content.replace( "strong>", "b>" );
+        content = content.replace( "strikethrough>.", "del>" );
+
+        // Clean up extra whitespace
+        content = content.replaceAll( ">\\s+<", "><" );
+        content = content.replaceAll( "\\s{2,}", " " );
+
         return content;
     }
 

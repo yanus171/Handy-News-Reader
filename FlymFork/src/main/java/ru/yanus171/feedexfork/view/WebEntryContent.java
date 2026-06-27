@@ -30,7 +30,6 @@ import static ru.yanus171.feedexfork.view.FontSelectPreference.GetTypeFaceLocalU
 import static ru.yanus171.feedexfork.view.WebViewExtended.NO_MENU;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -191,7 +190,7 @@ public class WebEntryContent {
                 + "body { font-family: \"MainFont\"; font-size: " + mainFontSize + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
                 + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
                 + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
-                + "* {word-break: break-word}\n"//+ "* {max-width: 100%; word-break: break-word}\n"
+                + "* {word-break: break-word}\n"
                 + "title, h1, h2 {font-weight: normal; text-align:center; line-height: 120%}\n "
                 + "title, h1 {font-size: " + PrefUtils.getFontSizeText(4 ) + "; margin-top: 1.0cm; margin-bottom: 0.1em}\n "
                 + "h2 {font-size: " + PrefUtils.getFontSizeText(2 ) + "}\n "
@@ -202,7 +201,6 @@ public class WebEntryContent {
                 (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
                 + "h1 {color: inherit; text-decoration: none}\n"
                 + "img {display: block; width: 100%; height: auto; max-width: 100%; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
-                //+ ".inverted .math {color: white; background-color: black; } "
                 + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
                 + "pre {white-space: pre-wrap;}\n "
                 + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
@@ -211,6 +209,9 @@ public class WebEntryContent {
                 + "p.button {text-align: center}\n "
                 + "math {color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "}\n "
                 + "p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.8em 0 0.8em 0; text-align:" + textAlign + "}\n "
+
+                + fb2PoetryCSS(mainFontSize, textAlign)
+
                 + getCustomFontClassStyle("p", customFontInfo)
                 + getCustomFontClassStyle("span", customFontInfo)
                 + getCustomFontClassStyle("div", customFontInfo)
@@ -222,7 +223,6 @@ public class WebEntryContent {
                 + "div {text-align:" + textAlign + "}\n "
                 + "div.toc {text-align: center}\n "
                 + "p.toc {text-align: center}\n "
-                //+ "* { -webkit-tap-highlight-color: rgba(" + Theme.GetToolBarColorRGBA() + "); } "
                 + ".categories {font-style: italic; color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "}\n "
                 + ".button-section p {font-family: \"MainFont\"; font-size: " + mainFontSize + "; margin: 0.1cm 0 0.2cm 0}\n "
                 + ".button-section p.marginfix {margin: 0.2cm 0 0.2cm 0}\n"
@@ -236,6 +236,63 @@ public class WebEntryContent {
                 + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
                 + PrefUtils.getString( "custom_css_text", "" )
                 + "</style><meta name='viewport' content='width=device-width'/></head>";
+    }
+
+    private static String fb2PoetryCSS(String mainFontSize, String textAlign) {
+        // Stanza container - groups verse lines together
+        return ".stanza { \n"
+                + "    margin: 1.5em 0 1.5em 0; \n"
+                + "    padding: 0; \n"
+                + "    page-break-inside: avoid; \n"
+                + "    display: block; \n"
+                + "} \n"
+
+                // Individual verse lines
+                + ".verse { \n"
+                + "    font-family: \"MainFont\"; \n"
+                + "    font-size: " + mainFontSize + "; \n"
+                + "    margin: 0.2em 0 0.2em 0; \n"
+                + "    padding: 0; \n"
+                + "    text-align: " + textAlign + "; \n"
+                + "    text-indent: 0; \n"
+                + "} \n"
+
+                // First verse line of a stanza (optional extra indent)
+                + ".stanza .verse:first-child { \n"
+                + "    margin-top: 0; \n"
+                + "} \n"
+
+                // Last verse line of a stanza
+                + ".stanza .verse:last-child { \n"
+                + "    margin-bottom: 0; \n"
+                + "} \n"
+
+                // Stanza title (optional)
+                + ".stanza-title { \n"
+                + "    font-family: \"MainFont\"; \n"
+                + "    font-size: " + PrefUtils.getFontSizeText(1 ) + "; \n"
+                + "    font-weight: bold; \n"
+                + "    text-align: center; \n"
+                + "    margin: 0.5em 0 0.3em 0; \n"
+                + "    color: " + Theme.GetTextColor() + "; \n"
+                + "} \n"
+
+                // Stanza subtitle
+                + ".stanza-subtitle { \n"
+                + "    font-family: \"MainFont\"; \n"
+                + "    font-size: " + PrefUtils.getFontSizeText(0 ) + "; \n"
+                + "    font-style: italic; \n"
+                + "    text-align: center; \n"
+                + "    margin: 0 0 0.5em 0; \n"
+                + "    color: " + Theme.GetColor(SUBTITLE_COLOR, android.R.color.black) + "; \n"
+                + "} \n"
+
+                // Poetry block - surrounds the entire poem
+                + ".poem { \n"
+                + "    margin: 1em 0 1em 0; \n"
+                + "    padding: 0; \n"
+                + "    display: block; \n"
+                + "} \n";
     }
 
     @NotNull
