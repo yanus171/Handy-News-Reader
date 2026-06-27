@@ -201,7 +201,7 @@ public class WebEntryContent {
                 + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
                 (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
                 + "h1 {color: inherit; text-decoration: none}\n"
-                + "img {display: inline;max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
+                + "img {display: block; width: 100%; height: auto; max-width: 100%; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
                 //+ ".inverted .math {color: white; background-color: black; } "
                 + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
                 + "pre {white-space: pre-wrap;}\n "
