@@ -740,4 +740,6 @@
     <string name="unknownLocalBookType">Unbekannter Buchtyp</string>
     <string name="delete_several_feeds_title">Ausgewählte Feeds löschen?</string>
     <string name="feed_deleted">Feeds wurden gelöscht</string>
+    <string name="feed_list_color">Farbe der Feedliste</string>
+    <string name="feed_list_color_desc">Hintergrundfarbe des linken Fensters</string>
 </resources>
