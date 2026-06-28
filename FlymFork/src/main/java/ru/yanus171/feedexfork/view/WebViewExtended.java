@@ -124,6 +124,8 @@ public class WebViewExtended extends WebView implements Handler.Callback {
     public WebEntryView mEntryView = null;
     public Runnable mScrollChangeListener = null;
 
+    private final AnchorNavigationObject mAnchorNavigationObject = new AnchorNavigationObject();
+
     public WebViewExtended( Context context, WebEntryView entryView ) {
         super(context);
         mEntryView = entryView;
@@ -167,6 +169,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
         getSettings().setJavaScriptEnabled(true);
         addJavascriptInterface(mInjectedJSObject, mInjectedJSObject.toString());
         addJavascriptInterface(mImageDownloadObject, mImageDownloadObject.toString());
+        addJavascriptInterface(mAnchorNavigationObject, "anchorNav"); // Add this
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         //    setNestedScrollingEnabled(true);
         
@@ -196,6 +199,23 @@ public class WebViewExtended extends WebView implements Handler.Callback {
 //        }
         //setNestedScrollingEnabled( true );
         timer.End();
+    }
+
+    private class AnchorNavigationObject {
+        @Override
+        @JavascriptInterface
+        public String toString() {
+            return "anchorNav";
+        }
+
+        @JavascriptInterface
+        public void onAnchorClick(String anchor) {
+            // Called from JavaScript when an anchor is clicked
+            if (!anchor.isEmpty()) {
+                // Save current position before navigating to anchor
+                UiUtils.RunOnGuiThread(() -> mEntryView.AddNavigationHistoryStep());
+            }
+        }
     }
 
     private void setupOnTouchListener() {

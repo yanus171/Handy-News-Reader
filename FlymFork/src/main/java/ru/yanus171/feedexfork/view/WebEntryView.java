@@ -58,6 +58,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.net.URL;
 
 import org.jetbrains.annotations.NotNull;
@@ -341,12 +343,44 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             mScrollPartY = GetViewScrollPartY();
             Log( "LoadData mScrollPartY = " + mScrollPartY );
         }
-        final String data;
+        String data;
         synchronized (mWebView) {
             data = mData;
         }
         mWebView.mLastContentHeight = 0;
+
+        data = injectAnchorClickCallback(data);
+
         mWebView.loadDataWithBaseURL(BASE_URL, data, TEXT_HTML, Constants.UTF8, null);
+    }
+
+    @NonNull
+    private static String injectAnchorClickCallback(String data) {
+        // Inject JavaScript to detect anchor clicks
+        String injectedScript =
+                "<script>" +
+                        "document.addEventListener('click', function(e) {" +
+                        "  var target = e.target.closest('a[href^=\"#\"]');" +
+                        "  if (target) {" +
+                        "    var anchor = target.getAttribute('href').substring(1);" +
+                        "    if (anchor) {" +
+                        "      anchorNav.onAnchorClick(anchor);" +
+                        "    }" +
+                        "  }" +
+                        "});" +
+                        "</script>";
+
+        // Insert script before </body> or at the end
+        String modifiedData = data;
+        int bodyEndIndex = modifiedData.lastIndexOf("</body>");
+        if (bodyEndIndex != -1) {
+            modifiedData = modifiedData.substring(0, bodyEndIndex) +
+                    injectedScript +
+                    modifiedData.substring(bodyEndIndex);
+        } else {
+            modifiedData = modifiedData + injectedScript;
+        }
+        return modifiedData;
     }
 
     public void DownLoadImages() {
