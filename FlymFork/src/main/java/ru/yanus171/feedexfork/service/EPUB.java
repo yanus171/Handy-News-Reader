@@ -71,9 +71,10 @@ public class EPUB {
     private static void fixAnchors(Document doc) {
         for (Element item: doc.getElementsByTag( "a" ))
             if ( item.attr("href").contains( "#" ) ) {
-                item.tagName( "sub" );
-                if ( item.hasAttr("title" ) )
-                    item.text( " ["+ item.attr("title") + "]" );
+                if ( item.hasAttr("title" ) ) {
+                    item.tagName( "sub" );
+                    item.text(" [" + item.attr("title") + "]");
+                }
             }
     }
     private static void fixImageRelativeSrc(Document doc, String relativeFileName) {
