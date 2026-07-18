@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,6 +61,7 @@ public class FB2 {
         convertTitle(doc);
         createImageFiles(fileLink, doc);
         final String title = doc.getElementsByTag( "author" ).first().text() + ". " + doc.getElementsByTag( "book-title" ).first().text();
+        insertNotes( doc );
         removeElements(doc);
         String content = getContent(doc);
         content = removeTags(content);
@@ -204,6 +207,38 @@ public class FB2 {
         for ( Element item: doc.getElementsByTag( tag ) )
             item.remove();
     }
+
+    private static void insertNotes(Document doc) {
+        Map<String, String> notes = extractNotes( doc );
+        for (Element a : doc.select("a[type=note]")) {
+            String href = a.attr("l:href");
+            if (href.isEmpty()) href = a.attr("href");
+            String id = href.replace("#", "");
+            String text = notes.get(id);
+            if (text != null && !text.isEmpty()) {
+                a.replaceWith(new Element("sub").text( " [" + text + "]" ));
+            }
+        }
+    }
+    private static Map<String, String> extractNotes(Document doc) {
+        Map<String, String> notes = new HashMap<>();
+        Elements noteSections = doc.select("body[name=notes] section");
+        for (Element section : noteSections) {
+            String id = section.id();
+            if (!id.isEmpty()) {
+                Elements p = section.getElementsByTag("p");
+                String text = "";
+                for (int i = 0; i < p.size(); i++) {
+                    if (i > 1) text += " ";
+                    text += p.get(i).text();
+                }
+                //if (text.isEmpty()) text = section.text();
+                notes.put(id, text);
+            }
+        }
+        return notes;
+    }
+
 
     private static String AddFB2TableOfContent(String content) {
         final Pattern PATTERN = Pattern.compile("<(h1|title)>((.|\\n|\\t)+?)</(h1|title)>", Pattern.CASE_INSENSITIVE);
