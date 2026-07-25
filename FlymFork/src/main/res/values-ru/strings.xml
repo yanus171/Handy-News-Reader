@@ -745,8 +745,8 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="page_number_from_count">%d из %d</string>
     <string name="page_jump_PDF_confirm">Перейти к странице %d?</string>
     <string name="unknownLocalBookType">Неизвестный тип книги</string>
-    <string name="delete_several_feeds_title">Удалить выбранные фиды?</string>
-    <string name="feed_deleted">Фиды были удалены</string>
+    <string name="delete_several_feeds_title">Удалить выбранные ленты?</string>
+    <string name="feed_deleted">Ленты были удалены</string>
     <string name="feed_list_color">Цвет списка лент</string>
-    <string name="feed_list_color_desc">Цвет фона левой панели</string>
+    <string name="feed_list_color_desc">Цвет фона панели списка лент</string>
 </resources>
