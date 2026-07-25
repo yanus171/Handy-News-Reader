@@ -133,6 +133,7 @@
     <string name="select_file">Виберіть файл (з теки Завантаження)</string>
     <string name="select_file_from_subfolder">Оберіть файл з теки Завантаження/handy_news_reader:</string>
     <string name="question_delete_feed">Ви дійсно бажаєте вилучити цю стрічку?</string>
+    <string name="question_delete_feeds">Ви дійсно бажаєте вилучити %d стрічок?</string>
     <string name="question_delete_group">Ви дійсно бажаєте вилучити цю групу та всі ії стрічки?</string>
     <string name="question_delete_filter">Ви дійсно бажаєте вилучити цей фільтр?</string>
     <string name="add_group_title">Виберіть назву групи</string>
@@ -738,4 +739,10 @@
     <string name="scroll_to_top_disabled_for_pdf">Прокручування вгору вимкнуто для PDF</string>
     <string name="zoom_is_disabled">Масштабування &amp; зміщення вимкнено</string>
     <string name="page_number_from_count">%d з %d</string>
+    <string name="page_jump_PDF_confirm">Перейти на сторінку %d?</string>
+    <string name="unknownLocalBookType">Невідомий тип книги</string>
+    <string name="delete_several_feeds_title">Вилучити обрані стрічки?</string>
+    <string name="feed_deleted">Стрічки вилучено</string>
+    <string name="feed_list_color">Колір списку стрічок</string>
+    <string name="feed_list_color_desc">Колір фону лівої панелі</string>
 </resources>

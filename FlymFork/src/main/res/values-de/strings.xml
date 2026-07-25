@@ -131,6 +131,7 @@
     <string name="select_file">Datei auswählen (Feedex-Ordner)</string>
     <string name="select_file_from_subfolder">Datei aus Downloads/handy_news_reader-Ordner auswählen:</string>
     <string name="question_delete_feed">Möchten Sie diesen Feed wirklich löschen?</string>
+    <string name="question_delete_feeds">Möchten Sie wirklich %d Dateien löschen?</string>
     <string name="question_delete_group">Möchten Sie diese Gruppe mit allen Feeds wirklich löschen?</string>
     <string name="question_delete_filter">Möchten Sie diesen Filter wirklich löschen?</string>
     <string name="add_group_title">Gruppenname wählen</string>
@@ -737,4 +738,8 @@
     <string name="page_number_from_count">%d von %d</string>
     <string name="page_jump_PDF_confirm">Zur Seite %d springen?</string>
     <string name="unknownLocalBookType">Unbekannter Buchtyp</string>
+    <string name="delete_several_feeds_title">Ausgewählte Feeds löschen?</string>
+    <string name="feed_deleted">Feeds wurden gelöscht</string>
+    <string name="feed_list_color">Farbe der Feedliste</string>
+    <string name="feed_list_color_desc">Hintergrundfarbe des linken Fensters</string>
 </resources>
