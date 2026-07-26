@@ -105,6 +105,7 @@ public final class Constants {
   public static final int NOTIFICATION_ID_NEW_ITEMS_COUNT = -2;
   public static final long MILLS_IN_DAY = 1000 * 60 * 60 * 24;
   public static final long MILLS_IN_SECOND = 1000;
+  public static final long MILLS_IN_MINUTE = 60 * MILLS_IN_SECOND;
 
   public static final int VIBRATE_DURATION = 25;
 

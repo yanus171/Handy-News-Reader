@@ -10,6 +10,8 @@ import static ru.yanus171.feedexfork.service.FetcherService.EXTRA_LABEL_ID_LIST;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
 import static ru.yanus171.feedexfork.service.FetcherService.isLinkToLoad;
 import static ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount;
+import static ru.yanus171.feedexfork.service.LongOper.cancelRefresh;
+import static ru.yanus171.feedexfork.service.LongOper.resetCancelRefresh;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_IFRAME;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.PATTERN_VIDEO;
 import static ru.yanus171.feedexfork.utils.PrefUtils.CATEGORY_EXTRACT_RULES;
@@ -88,6 +90,7 @@ import ru.yanus171.feedexfork.fragment.EntryTextSearch;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
 import ru.yanus171.feedexfork.service.FetcherService;
+import ru.yanus171.feedexfork.service.LongOper;
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor;
 import ru.yanus171.feedexfork.utils.DebugApp;
 import ru.yanus171.feedexfork.utils.Dog;
@@ -580,20 +583,17 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             new Thread() {
                 @Override
                 public void run() {
-                    int status = FetcherService.Status().Start(getContext().getString(R.string.loadFullText), true);
-                    try {
+                    new LongOper(R.string.loadFullText, () -> {
                         FetcherService.mobilizeEntry(mEntryId,
-                                mEntryFragment.mFilters,
-                                mobilize,
-                                FetcherService.AutoDownloadEntryImages.Yes,
-                                false,
-                                true,
-                                isForceReload,
-                                withScripts);
+                                                     mEntryFragment.mFilters,
+                                                     mobilize,
+                                                     FetcherService.AutoDownloadEntryImages.Yes,
+                                                     false,
+                                                     true,
+                                                     isForceReload,
+                                                     withScripts);
                         UiUtils.RunOnGuiThread(() -> update( true ) );
-                    } finally {
-                        FetcherService.Status().End(status);
-                    }
+                    });
                 }
             }.start();
         } else
@@ -835,7 +835,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     @Override
     public void downloadImage(final String url) {
         new Thread(() -> {
-            FetcherService.mCancelRefresh = false;
+            resetCancelRefresh();
             int status = FetcherService.Status().Start(getContext().getString(R.string.downloadImage), true);
             try {
                 NetworkUtils.downloadImage(mEntryId, mEntryLink, url, false, true);
@@ -1025,7 +1025,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 break;
             }
             case R.id.menu_cancel_refresh: {
-                FetcherService.cancelRefresh();
+                cancelRefresh();
                 break;
             }
 

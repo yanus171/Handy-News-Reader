@@ -47,6 +47,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.LongOper.cancelRefresh;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TEMP;
 import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_FORCE_ORIENTATION_BY_SENSOR;
 import static ru.yanus171.feedexfork.utils.PrefUtils.SHOW_ARTICLE_BIG_IMAGE;
@@ -559,7 +560,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             }
 
             case R.id.menu_cancel_refresh: {
-                FetcherService.cancelRefresh();
+                cancelRefresh();
                 return true;
             }
 

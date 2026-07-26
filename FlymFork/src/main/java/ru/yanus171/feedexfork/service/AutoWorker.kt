@@ -13,7 +13,7 @@ import ru.yanus171.feedexfork.MainApplication
 import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData
 import ru.yanus171.feedexfork.service.FetcherService.CUSTOM_REFRESH_INTERVAL
-import ru.yanus171.feedexfork.service.FetcherService.createCancelPI
+import ru.yanus171.feedexfork.service.LongOper.createCancelPI
 import ru.yanus171.feedexfork.utils.Dog
 import ru.yanus171.feedexfork.utils.PrefUtils.*
 import ru.yanus171.feedexfork.view.EntryView.TAG
@@ -79,7 +79,7 @@ class AutoWorker(context: Context, workerParams: WorkerParameters) : Worker(cont
             var time = defaultValue
             try {
                 time = max(60L * 1000, getString(key, "").toLong())
-            } catch (ignored: Exception) {
+            } catch (_: Exception) {
             }
             return time
         }

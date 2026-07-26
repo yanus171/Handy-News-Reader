@@ -13,6 +13,7 @@ import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.service.FetcherService
 import ru.yanus171.feedexfork.service.FetcherService.NEXT_PAGE_URL_CLASS_NAME
 import ru.yanus171.feedexfork.service.FetcherService.mMaxImageDownloadCount
+import ru.yanus171.feedexfork.service.LongOper.isCancelRefresh
 import ru.yanus171.feedexfork.service.MarkItem
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.ArticleTextExtractor.RemoveHiddenElements
@@ -63,7 +64,7 @@ object OneWebPageParser {
                 val filters = FeedFilters(feedID)
                 var now = Date().time
                 for (elArticle in articleList) {
-                    if ( FetcherService.isCancelRefresh() )
+                    if ( isCancelRefresh() )
                         return newCount;
                     val author = getValue(authorClassName, elArticle)
                     var date = 0L

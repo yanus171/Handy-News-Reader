@@ -26,6 +26,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.SetNotifyE
 import static ru.yanus171.feedexfork.service.FetcherService.GetEntryUri;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
 import static ru.yanus171.feedexfork.service.FetcherService.Status;
+import static ru.yanus171.feedexfork.service.LongOper.resetCancelRefresh;
 import static ru.yanus171.feedexfork.utils.PrefUtils.DISPLAY_ENTRIES_FULLSCREEN;
 import static ru.yanus171.feedexfork.utils.Theme.GetToolBarColorInt;
 import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservable;
@@ -137,7 +138,7 @@ public class EntryActivity extends BaseActivity implements Observer {
         }
 
         mEntryFragment.setData(getIntent().getData());
-        FetcherService.mCancelRefresh = false;
+        resetCancelRefresh();
     }
 
 

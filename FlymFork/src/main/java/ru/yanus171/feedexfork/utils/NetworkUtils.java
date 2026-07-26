@@ -55,7 +55,7 @@ import ru.yanus171.feedexfork.view.EntryView;
 import ru.yanus171.feedexfork.view.WebEntryView;
 
 import static ru.yanus171.feedexfork.MainApplication.mImageFileVoc;
-import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
+import static ru.yanus171.feedexfork.service.LongOper.isCancelRefresh;
 
 public class NetworkUtils {
 

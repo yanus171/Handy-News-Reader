@@ -145,8 +145,8 @@ import static ru.yanus171.feedexfork.provider.FeedData.FilterColumns.LABEL_ID_LI
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIES_FOR_FEED;
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.FetcherService.GetExtrenalLinkFeedID;
-import static ru.yanus171.feedexfork.service.FetcherService.isCancelRefresh;
 import static ru.yanus171.feedexfork.service.FetcherService.isNotCancelRefresh;
+import static ru.yanus171.feedexfork.service.LongOper.isCancelRefresh;
 
 public class OPML {
 

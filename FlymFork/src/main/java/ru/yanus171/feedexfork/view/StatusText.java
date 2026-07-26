@@ -34,6 +34,7 @@ import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
 import static ru.yanus171.feedexfork.MainApplication.OPERATION_NOTIFICATION_CHANNEL_ID;
+import static ru.yanus171.feedexfork.service.LongOper.isCancelRefresh;
 
 import org.apache.http.conn.ConnectTimeoutException;
 
@@ -189,11 +190,11 @@ public class StatusText implements Observer {
                         s.add( mProgressText );
                     if (!mList.isEmpty() && !mDBText.isEmpty())
                         s.add( mDBText );
-                    if (!mList.isEmpty() && FetcherService.mCancelRefresh)
+                    if (!mList.isEmpty() && isCancelRefresh())
                         s.add( "\n cancel Refresh" );
                     if (mBytesRecievedLast > 0)
                         s.add(0, String.format("(%.2f MB) ", (float) mBytesRecievedLast / 1024 / 1024) );
-                    if ( PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
+                    if ( !mNotificationTitle.isEmpty() && PrefUtils.getBoolean( PrefUtils.IS_REFRESHING, false ) &&
                        ( ( new Date() ).getTime() - mLastNotificationUpdateTime  > 1000 ) ) {
 
                         Constants.NOTIF_MGR.notify(Constants.NOTIFICATION_ID_REFRESH_SERVICE, GetNotification(TextUtils.join(DELIMITER, s ), mNotificationTitle, R.drawable.ic_sync, OPERATION_NOTIFICATION_CHANNEL_ID, mCancelPI));

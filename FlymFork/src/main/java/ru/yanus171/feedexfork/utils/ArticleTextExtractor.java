@@ -32,6 +32,7 @@ import ru.yanus171.feedexfork.service.FetcherService;
 
 import static ru.yanus171.feedexfork.fragment.EntryFragment.STATE_RELOAD_WITH_DEBUG;
 import static ru.yanus171.feedexfork.parser.RssAtomParser.parseDate;
+import static ru.yanus171.feedexfork.service.LongOper.isCancelRefresh;
 import static ru.yanus171.feedexfork.utils.DebugApp.CreateFileUri;
 import static ru.yanus171.feedexfork.utils.FileUtils.SUB_FOLDER;
 import static ru.yanus171.feedexfork.utils.NetworkUtils.OKHTTP;
@@ -740,14 +741,14 @@ public class ArticleTextExtractor {
             for (Element item : scripts)
                 item.remove();
 
-        if (FetcherService.isCancelRefresh())
+        if (isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("noscript");
         for (Element item : noscripts)
             item.remove();
 
-        if (FetcherService.isCancelRefresh())
+        if (isCancelRefresh())
             return;
 
         Elements styles = doc.getElementsByTag("style");
@@ -760,7 +761,7 @@ public class ArticleTextExtractor {
         for (Element item : selects)
             item.remove();
 
-        if (FetcherService.isCancelRefresh())
+        if (isCancelRefresh())
             return;
 
         Elements noscripts = doc.getElementsByTag("option");

@@ -14,7 +14,7 @@ class BroadcastActionReciever : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         when {
             intent.hasExtra("StopReadingService") -> context.stopService(Intent(context, ReadingService::class.java))
-            intent.hasExtra("FetchingServiceStart") -> FetcherService.cancelRefresh()
+            intent.hasExtra("FetchingServiceStart") -> LongOper.cancelRefresh()
             intent.hasExtra("UnstarArticle") -> {
                 val link = intent.getStringExtra(EXTRA_TEXT)
                 val count = context.contentResolver.update(FetcherService.GetEntryUri(link), FeedData.getUnstarContentValues(), null, null)

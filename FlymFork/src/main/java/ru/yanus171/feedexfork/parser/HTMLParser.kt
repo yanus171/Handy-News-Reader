@@ -67,6 +67,7 @@ import ru.yanus171.feedexfork.R
 import ru.yanus171.feedexfork.provider.FeedData.*
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns.CATEGORY_LIST_SEP
 import ru.yanus171.feedexfork.service.FetcherService.*
+import ru.yanus171.feedexfork.service.LongOper.isCancelRefresh
 import ru.yanus171.feedexfork.utils.*
 import ru.yanus171.feedexfork.utils.EntryUrlVoc.remove
 import ru.yanus171.feedexfork.utils.LabelVoc.setEntry
@@ -186,7 +187,7 @@ object HTMLParser {
                                     if (cursor.moveToFirst()) {
                                         val title = cursor.getString(0)
                                         val author = cursor.getString(1)
-                                        val categoryList = TextUtils.split(if (cursor.isNull(2)) "" else cursor.getString(2), CATEGORY_LIST_SEP);
+                                        val categoryList = TextUtils.split(if (cursor.isNull(2)) "" else cursor.getString(2), CATEGORY_LIST_SEP)
                                         if (filters.isMarkAsStarred(title, author, item.mUrl, "", categoryList)) {
                                             val values = ContentValues()
                                             PutFavorite( values, true )

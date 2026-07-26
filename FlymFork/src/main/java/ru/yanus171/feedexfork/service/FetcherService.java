@@ -55,6 +55,8 @@ import static ru.yanus171.feedexfork.Constants.EXTRA_FILENAME;
 import static ru.yanus171.feedexfork.Constants.EXTRA_ID;
 import static ru.yanus171.feedexfork.Constants.EXTRA_URI;
 import static ru.yanus171.feedexfork.Constants.GROUP_ID;
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_MINUTE;
+import static ru.yanus171.feedexfork.Constants.MILLS_IN_SECOND;
 import static ru.yanus171.feedexfork.Constants.NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED;
 import static ru.yanus171.feedexfork.Constants.NOTIFICATION_ID_NEW_ITEMS_COUNT;
 import static ru.yanus171.feedexfork.MainApplication.MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID;
@@ -83,6 +85,7 @@ import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.URI_ENTRIE
 import static ru.yanus171.feedexfork.provider.FeedDataContentProvider.notifyChangeOnAllUris;
 import static ru.yanus171.feedexfork.service.AutoWorker.DEFAULT_INTERVAL;
 import static ru.yanus171.feedexfork.service.BroadcastActionReciever.Action;
+import static ru.yanus171.feedexfork.service.LongOper.isCancelRefresh;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.ClearContentStepToFile;
 import static ru.yanus171.feedexfork.utils.ArticleTextExtractor.SaveContentStepToFile;
 import static ru.yanus171.feedexfork.utils.HtmlUtils.extractTitle;
@@ -111,6 +114,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.os.PowerManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -166,6 +170,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
+import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.activity.EntryActivity;
 import ru.yanus171.feedexfork.activity.HomeActivity;
@@ -224,7 +229,6 @@ public class FetcherService extends IntentService {
 
     public static final long MILLS_IN_DAY = 86400000L;
 
-    public static Boolean mCancelRefresh = false;
     private static final ArrayList<Long> mActiveEntryIDList = new ArrayList<>();
     private static Boolean mIsDownloadImageCursorNeedsRequery = false;
 
@@ -335,7 +339,7 @@ public class FetcherService extends IntentService {
         FileUtils.INSTANCE.reloadPrefs();
 
         if (intent.hasExtra(Constants.FROM_AUTO_BACKUP)) {
-            LongOper(R.string.exportingToFile, () -> {
+            new LongOper(R.string.exportingToFile, () -> {
                 try {
                     final String sourceFileName = OPML.GetAutoBackupOPMLFileName();
                     moveBackupFileVersion( sourceFileName, 2 );
@@ -352,7 +356,7 @@ public class FetcherService extends IntentService {
             }, service);
             return;
         } else if (intent.hasExtra(Constants.FROM_IMPORT)) {
-            LongOper(R.string.importingFromFile, () -> {
+            new LongOper(R.string.importingFromFile, () -> {
                 try {
                     final boolean isRemoveExistingFeeds = intent.getBooleanExtra( EXTRA_REMOVE_EXISTING_FEEDS_BEFORE_IMPORT, false );
                     if ( intent.hasExtra( EXTRA_FILENAME ) )
@@ -365,7 +369,7 @@ public class FetcherService extends IntentService {
             }, service);
             return;
         } else if (intent.hasExtra( Constants.FROM_DELETE_OLD )) {
-            LongOper(R.string.menu_delete_old, () -> {
+            new LongOper(R.string.menu_delete_old, () -> {
                 SetNotifyEnabled( false );
                 try {
                     long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
@@ -383,7 +387,7 @@ public class FetcherService extends IntentService {
             }, service);
             return;
         } else if (intent.hasExtra( Constants.FROM_RELOAD_ALL_TEXT )) {
-            LongOper(R.string.reloading_all_texts, () -> {
+            new LongOper(R.string.reloading_all_texts, () -> {
                 SetNotifyEnabled(false);
                 try (Cursor cursor = contentResolver().query(intent.getData(), new String[]{_ID, LINK}, intent.getStringExtra(WHERE_SQL_EXTRA), null, null)) {
                     ContentValues[] values = new ContentValues[cursor.getCount()];
@@ -423,7 +427,7 @@ public class FetcherService extends IntentService {
                 executor.shutdown();
             }
         } else if (ACTION_LOAD_LINK.equals(intent.getAction())) {
-            LongOper(R.string.loadingLink, () -> {
+            new LongOper(R.string.loadingLink, () -> {
                 ExecutorService executor = CreateExecutorService(GetLoadImageThreadCount()); try {
                     Pair<Uri,Boolean> result = LoadLink(GetExtrenalLinkFeedID(),
                              intent.getStringExtra(Constants.URL_TO_LOAD),
@@ -445,7 +449,7 @@ public class FetcherService extends IntentService {
                 } finally { executor.shutdown(); }
             }, service );
         } else { // == Constants.ACTION_REFRESH_FEEDS
-            LongOper(R.string.RefreshFeeds, () -> {
+            new LongOper(R.string.RefreshFeeds, () -> {
                 long keepTime = (long) (GetDefaultKeepTime() * MILLS_IN_DAY);
                 long keepDateBorderTime = keepTime > 0 ? System.currentTimeMillis() - keepTime : 0;
 
@@ -550,7 +554,7 @@ public class FetcherService extends IntentService {
                     if ( new File( folder, fileName ).delete() )
                         deletedCount++;
                     Status().ChangeProgress(String(R.string.deleteFullTexts) + String.format( " %d", deletedCount ) );
-                    if (FetcherService.isCancelRefresh())
+                    if (isCancelRefresh())
                         break;
 
                 }
@@ -594,7 +598,7 @@ public class FetcherService extends IntentService {
                     if (mImageFileVoc.removeFile(fileName))
                         deletedCount++;
                     Status().ChangeProgress(String(R.string.deleteImages) + String.format(" %d", deletedCount));
-                    if (FetcherService.isCancelRefresh())
+                    if (isCancelRefresh())
                         break;
                 }
             }
@@ -604,34 +608,6 @@ public class FetcherService extends IntentService {
         }
     }
 
-    private static void LongOper(int textID, Runnable oper, Service service) {
-        LongOper( String( textID ), oper, service );
-    }
-
-    private static void LongOper(String title, Runnable oper, Service service) {
-        if ( service != null )
-            service.startForeground(Constants.NOTIFICATION_ID_REFRESH_SERVICE, StatusText.GetNotification("", title, R.drawable.refresh, OPERATION_NOTIFICATION_CHANNEL_ID, createCancelPI()));
-        Status().SetNotificationTitle( title, createCancelPI() );
-        PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, true);
-        synchronized (mCancelRefresh) {
-            mCancelRefresh = false;
-        }
-        try {
-            oper.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-            //Toast.makeText( this, getString( R.string.error ) + ": " + e.getMessage(), Toast.LENGTH_LONG ).show();
-            DebugApp.SendException( e, getContext() );
-        } finally {
-            Status().SetNotificationTitle( "", null );
-            PrefUtils.putBoolean(PrefUtils.IS_REFRESHING, false);
-            if ( service != null )
-                service.stopForeground(true);
-            synchronized (mCancelRefresh) {
-                mCancelRefresh = false;
-            }
-        }
-    }
 
     public static float GetDefaultKeepTime() {
         return Float.parseFloat(PrefUtils.getString(PrefUtils.KEEP_TIME, "4"));
@@ -640,7 +616,7 @@ public class FetcherService extends IntentService {
         return Float.parseFloat(PrefUtils.getString(PrefUtils.REFRESH_INTERVAL, "3"));
     }
 
-    private static boolean mIsWiFi = false;
+    static boolean mIsWiFi = false;
     private static boolean GetIsWifi() {
         ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -648,16 +624,6 @@ public class FetcherService extends IntentService {
     }
     public static boolean isNotCancelRefresh() {
         return !isCancelRefresh();
-    }
-    public static boolean isCancelRefresh() {
-        synchronized (mCancelRefresh) {
-            if ( !mIsWiFi && Status().mBytesRecievedLast > PrefUtils.getMaxSingleRefreshTraffic() * 1024 * 1024 )
-                return true;
-            //if (mCancelRefresh) {
-            //    contentResolver().delete( TaskColumns.CONTENT_URI, null, null );
-            //}
-            return mCancelRefresh;
-        }
     }
 
     public static boolean isEntryIDActive(long id) {
@@ -832,7 +798,7 @@ public class FetcherService extends IntentService {
                                 connection = new Connection(linkToLoad, OKHTTP);
                                 Status().ChangeProgress(R.string.extractContent);
 
-                                if (FetcherService.isCancelRefresh())
+                                if (isCancelRefresh())
                                     return false;
                                 doc = Jsoup.parse(connection.getInputStream(), null, "");
                                 for (Element el : doc.getElementsByTag("meta")) {
@@ -943,8 +909,10 @@ public class FetcherService extends IntentService {
                 }
             }
         }
+
         return success;
     }
+
 
     @Nullable
     private static String getContentIndicator(Cursor entryCursor, int abstractHtmlPos) {
@@ -1129,7 +1097,7 @@ public class FetcherService extends IntentService {
             if ( forceReload == ForceReload.Yes )
                 FileUtils.INSTANCE.deleteMobilized( entryUri );
 
-            if ( load && !FetcherService.isCancelRefresh() ) {
+            if ( load && !isCancelRefresh() ) {
                 final long entryId = Long.parseLong(entryUri.getLastPathSegment());
                 mobilizeEntry( entryId, filters, ArticleTextExtractor.MobilizeType.Yes, autoDownloadEntryImages, true, isShowError, false, false);
             }
@@ -1823,12 +1791,6 @@ public class FetcherService extends IntentService {
         Status().AddBytes(contentHandler.toString().length());
     }
 
-    public static void cancelRefresh () {
-        synchronized (mCancelRefresh) {
-            contentResolver().delete( TaskColumns.CONTENT_URI, null, null );
-            mCancelRefresh = true;
-        }
-    }
 
     public static void deleteAllFeedEntries( Uri entriesUri, String condition ){
         int status = Status().Start("deleteAllFeedEntries", true);
@@ -2001,7 +1963,7 @@ public class FetcherService extends IntentService {
                 index++;
                 if ( index % 71 == 0 ) {
                     Status().ChangeProgress(String.format("%d/%d", index, files.length));
-                    if (FetcherService.isCancelRefresh())
+                    if (isCancelRefresh())
                         break;
                 }
                 final String fileName = file.getName();
@@ -2037,18 +1999,18 @@ public class FetcherService extends IntentService {
             }
 
             Status().ChangeProgress(R.string.applyOperations);
-            if (FetcherService.isCancelRefresh())
+            if (isCancelRefresh())
                 return;
             ArrayList<ContentProviderOperation> operations = new ArrayList<>();
             for (Map.Entry<Long, Long> item : mapEntryIDToSize.entrySet())
                 operations.add(ContentProviderOperation.newUpdate(EntryColumns.CONTENT_URI(item.getKey()))
                                    .withValue(EntryColumns.IMAGES_SIZE, item.getValue()).build());
-            if (FetcherService.isCancelRefresh())
+            if (isCancelRefresh())
                 return;
             for (Map.Entry<Long, Long> item : mapFeedIDToSize.entrySet())
                 operations.add(ContentProviderOperation.newUpdate(FeedColumns.CONTENT_URI(item.getKey()))
                                    .withValue(FeedColumns.IMAGES_SIZE, item.getValue()).build());
-            if (FetcherService.isCancelRefresh())
+            if (isCancelRefresh())
                 return;
 
             if (!operations.isEmpty())
@@ -2066,12 +2028,6 @@ public class FetcherService extends IntentService {
         }
 
     }
-    public static PendingIntent createCancelPI() {
-        Context context = getContext();
-        Intent intent = new Intent(context, BroadcastActionReciever.class);
-        intent.setAction( Action );
-        intent.putExtra("FetchingServiceStart", true );
-        return PendingIntent.getBroadcast(context, GetPendingIntentRequestCode(), intent, PendingIntent.FLAG_IMMUTABLE);
-    }
+
 
 }
