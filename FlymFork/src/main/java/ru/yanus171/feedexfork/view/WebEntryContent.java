@@ -36,6 +36,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +50,8 @@ import ru.yanus171.feedexfork.MainApplication;
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.parser.FeedFilters;
 import ru.yanus171.feedexfork.provider.FeedData;
+import ru.yanus171.feedexfork.service.EPUB;
+import ru.yanus171.feedexfork.service.FB2;
 import ru.yanus171.feedexfork.utils.Dog;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
@@ -80,13 +84,8 @@ public class WebEntryContent {
     private static final String BUTTON_SECTION_START = "<div class='button-section'>";
     private static final String BOTTOM_PAGE = "<div class='bottom-page'/>";
     private static final String BUTTON_SECTION_END = "</div>";
-    private static String BUTTON_START( String layout ) {
-        return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
-    }
-    private static final String BUTTON_MIDDLE = "' onclick='";
-    private static String BUTTON_END( String layout ) {
-        return "'/>" + (layout.equals(ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL) ? "" : "</p>");
-    }
+    private boolean mIsFullWidthImages = false;
+
     @SuppressLint("Range")
     WebEntryContent(Cursor cursor, Uri articleLiastUri, FeedFilters filters, boolean loadTitleOnly, boolean isFullTextShown) {
         mIsEditingMode = false;
@@ -107,6 +106,7 @@ public class WebEntryContent {
         } catch (Exception ignored) {
         }
         mIsFullTextShown = isFullTextShown;
+        mIsFullWidthImages = isBook(mLink);
         setContent(cursor, filters, loadTitleOnly);
     }
 
@@ -120,10 +120,13 @@ public class WebEntryContent {
         mContentText = doc.toString();
     }
 
+    private boolean isBook( String entrUri ) {
+        return FB2.IsFB2( entrUri ) || EPUB.Is( entrUri );
+    }
     public String generateHtml() {
         Timer timer = new Timer("EntryView.generateHtmlContent");
 
-        StringBuilder content = new StringBuilder(GetCSS(mTitle, mLink, mIsEditingMode))
+        StringBuilder content = new StringBuilder(GetCSS())
                 .append(String.format(BODY_START, isTextRTL(mTitle) ? "rtl" : "inherit"));
 
         if (getBoolean("entry_text_title_link", true))
@@ -168,7 +171,7 @@ public class WebEntryContent {
         return content.toString();
     }
 
-    private static void addButtonHtml(StringBuilder content, int captionID, String methodName) {
+    private void addButtonHtml(StringBuilder content, int captionID, String methodName) {
         final String layout = PrefUtils.getString( "setting_article_text_buttons_layout", ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL );
         content.append(BUTTON_START(layout));
         content.append(MainApplication.getContext().getString(captionID))
@@ -176,35 +179,44 @@ public class WebEntryContent {
         content.append(BUTTON_END(layout));
     }
 
+    private static String BUTTON_START( String layout ) {
+        return ( layout.equals( ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL ) ? "" : "<p class='button'>" ) + "<input type='button' value='";
+    }
+    private static final String BUTTON_MIDDLE = "' onclick='";
+    private static String BUTTON_END( String layout ) {
+        return "'/>" + (layout.equals(ARTICLE_TEXT_BUTTON_LAYOUT_HORIZONTAL) ? "" : "</p>");
+    }
 
-    private static String GetCSS(final String text, final String url, boolean isEditingMode) {
-        String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), isEditingMode);
-        final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", url);
+
+
+    private String GetCSS() {
+        String mainFontLocalUrl = GetTypeFaceLocalUrl(PrefUtils.getString("fontFamily", DefaultFontFamily), mIsEditingMode);
+        final CustomClassFontInfo customFontInfo = GetCustomClassAndFontName("font_rules", mLink);
         if ( !customFontInfo.mKeyword.isEmpty() && customFontInfo.mClassName.isEmpty() )
-            mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, isEditingMode );
+            mainFontLocalUrl = GetTypeFaceLocalUrl( customFontInfo.mFontName, mIsEditingMode );
         String mainFontSize = PrefUtils.getFontSizeText(0 );
-        String textAlign = getAlign(text);
+        String textAlign = getAlign(mTitle);
         return "<head><style type='text/css'> "
                 + "@font-face { font-family:\"MainFont\"; src: url(\"" + mainFontLocalUrl + "\");" + "} \n"
-                + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, isEditingMode) + "\");}\n"
+                + "@font-face { font-family:\"CustomFont\"; src: url(\"" + GetTypeFaceLocalUrl(customFontInfo.mFontName, mIsEditingMode) + "\");}\n"
                 + "body { font-family: \"MainFont\"; font-size: " + mainFontSize + "; text-align:" + textAlign + "; font-weight: " + getFontBold() + "; "
                 + "font-size: " + mainFontSize + "; color: " + Theme.GetTextColor() + "; background-color:" + Theme.GetBackgroundColor() + "; "
-                + "max-width: 100%; margin: " + getMargins() + "; " +  PrefUtils.getString( "main_font_css_text", "" ) + "}\n "
+                + "max-width: 100%; margin: " + getMargins() + "; " + PrefUtils.getString("main_font_css_text", "") + "}\n "
                 + "* {word-break: break-word}\n"
                 + "title, h1, h2 {font-weight: normal; text-align:center; line-height: 120%}\n "
                 + "title, h1, h2, h3, h4, h5 {margin-top: 1.0cm; margin-bottom: 0.1em}\n"
-                + "title, h1 {font-size: " + PrefUtils.getFontSizeText( 3 ) + "; }\n "
-                + "h2 {font-size: " + PrefUtils.getFontSizeText( 3 ) + "}\n "
-                + "h3 {font-size: " + PrefUtils.getFontSizeText( 2 ) + "}\n "
-                + "h4 {font-size: " + PrefUtils.getFontSizeText( 2 ) + "}\n "
-                + "h5 {font-size: " + PrefUtils.getFontSizeText( 1 ) + "}\n "
+                + "title, h1 {font-size: " + PrefUtils.getFontSizeText(3) + "; }\n "
+                + "h2 {font-size: " + PrefUtils.getFontSizeText(3) + "}\n "
+                + "h3 {font-size: " + PrefUtils.getFontSizeText(2) + "}\n "
+                + "h4 {font-size: " + PrefUtils.getFontSizeText(2) + "}\n "
+                + "h5 {font-size: " + PrefUtils.getFontSizeText(1) + "}\n "
                 + "} body {color: #000; text-align: justify; background-color: #fff;}\n"
                 + "a.loaded_link {color: " + Theme.GetColor(LOADED_LINK_COLOR, R.string.default_loaded_link_color) + "; background: " + Theme.GetColor(LOADED_LINK_COLOR_BACKGROUND, R.string.default_text_color_background) + "}\n"
                 + "a.no_draw_link {color: " + Theme.GetTextColor() + "; background: " + Theme.GetBackgroundColor() + "; text-decoration: none" + "}\n"
                 + "a {color: " + Theme.GetColor(LINK_COLOR, R.string.default_link_color) + "; background: " + Theme.GetColor(LINK_COLOR_BACKGROUND, R.string.default_text_color_background) +
                 (getBoolean("underline_links", true) ? "" : "; text-decoration: none") + "}\n"
                 + "h1 {color: inherit; text-decoration: none}\n"
-                + "img {display: block; width: 100%; height: auto; max-width: 100%; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "") + "}\n"
+                + "img {" + getImgStyle() + "}\n"
                 + "iframe {allowfullscreen; position:relative;top:0;left:0;width:100%;height:100%;}\n"
                 + "pre {white-space: pre-wrap;}\n "
                 + "blockquote {border-left: thick solid " + Theme.GetColor(QUOTE_LEFT_COLOR, android.R.color.black) + "; background-color:" + Theme.GetColor(QUOTE_BACKGROUND_COLOR, android.R.color.black) + "; margin: 0.5em 0 0.5em 0em; padding: 0.5em}\n "
@@ -238,11 +250,17 @@ public class WebEntryContent {
                 + "." + TAG_BUTTON_CLASS_DATE + " i {background-color: #0000AA}\n "
                 + "." + TAG_BUTTON_FULL_TEXT_ROOT_CLASS + " i {background-color: #00AA00}\n "
                 + "." + TAG_BUTTON_CLASS_HIDDEN + " i {background-color: #888888}\n "
-                + PrefUtils.getString( "custom_css_text", "" )
+                + PrefUtils.getString("custom_css_text", "")
                 + "</style><meta name='viewport' content='width=device-width'/></head>";
     }
 
-    private static String fb2PoetryCSS(String mainFontSize, String textAlign) {
+    @NonNull
+    private String getImgStyle() {
+        final String widthText = mIsFullWidthImages ? "display: block; width: 100%" : "display: inline";
+        return widthText + "; max-width: 100%;height: auto; " + (PrefUtils.isImageWhiteBackground() ? "background: white" : "");
+    }
+
+    private String fb2PoetryCSS(String mainFontSize, String textAlign) {
         // Stanza container - groups verse lines together
         return ".stanza { \n"
                 + "    margin: 1.5em 0 1.5em 0; \n"
@@ -300,7 +318,7 @@ public class WebEntryContent {
     }
 
     @NotNull
-    private static String getCustomFontClassStyle(String tag, CustomClassFontInfo info) {
+    private String getCustomFontClassStyle(String tag, CustomClassFontInfo info) {
         if ( info.mKeyword.isEmpty() )
             return "";
         else
@@ -337,13 +355,13 @@ public class WebEntryContent {
         }
 
     }
-    private static CustomClassFontInfo GetCustomClassAndFontName(final String key, final String url ) {
+    private CustomClassFontInfo GetCustomClassAndFontName(final String key, final String url ) {
         final String pref = PrefUtils.getString( key, "" );
         for( String line: pref.split( "\\n" ) ) {
             if ((line == null) || line.isEmpty())
                 continue;
             try {
-                CustomClassFontInfo info = new CustomClassFontInfo( line );
+                CustomClassFontInfo info = new CustomClassFontInfo(line);
                 if (url.contains(info.mKeyword)) {
                     return info;
                 }
@@ -355,14 +373,14 @@ public class WebEntryContent {
     }
 
 
-    private static String getFontBold() {
+    private String getFontBold() {
         if (getBoolean(PrefUtils.ENTRY_FONT_BOLD, false))
             return "bold;";
         else
             return "normal;";
     }
 
-    private static String getMargins() {
+    private String getMargins() {
         if (getBoolean(PrefUtils.ENTRY_MAGRINS, true))
             return "4%";
         else
