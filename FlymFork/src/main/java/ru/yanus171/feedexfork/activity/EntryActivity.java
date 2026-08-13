@@ -65,7 +65,6 @@ import ru.yanus171.feedexfork.utils.EntryUrlVoc;
 import ru.yanus171.feedexfork.utils.FileUtils;
 import ru.yanus171.feedexfork.utils.HtmlUtils;
 import ru.yanus171.feedexfork.utils.PrefUtils;
-import ru.yanus171.feedexfork.view.ScreenOnKeeper;
 import ru.yanus171.feedexfork.utils.Timer;
 import ru.yanus171.feedexfork.view.Entry;
 import ru.yanus171.feedexfork.view.EntryView;
@@ -79,7 +78,6 @@ public class EntryActivity extends BaseActivity implements Observer {
     private static final String STATE_IS_STATUSBAR_HIDDEN = "STATE_IS_STATUSBAR_HIDDEN";
     private static final String STATE_IS_ACTIONBAR_HIDDEN = "STATE_IS_ACTIONBAR_HIDDEN";
     public boolean mIsNewTask = false;
-    private ScreenOnKeeper mScreenOnKeeper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +116,6 @@ public class EntryActivity extends BaseActivity implements Observer {
             setFullScreen(true, true, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
          else
             setFullScreen(false, false, STATE_IS_STATUSBAR_HIDDEN, STATE_IS_ACTIONBAR_HIDDEN);
-
-        mScreenOnKeeper = new ScreenOnKeeper();
-
     }
 
     private void setDataFrom(final Intent intent) {
@@ -158,13 +153,6 @@ public class EntryActivity extends BaseActivity implements Observer {
     protected void onStart() {
         super.onStart();
         mBrightness.mTapAction = () -> mEntryFragment.PageDown();
-        mScreenOnKeeper.start();
-    }
-
-    @Override
-    protected void onStop() {
-        mScreenOnKeeper.stop();
-        super.onStop();
     }
 
 
@@ -305,7 +293,6 @@ public class EntryActivity extends BaseActivity implements Observer {
         }.init( mEntryFragment.getCurrentFeedID() ).start();
 
         //mEntryFragment.mEntryPagerAdapter.GetEntryView( mEntryFragment.mEntryPager.getCurrentItem() ).SaveScrollPos();
-        mScreenOnKeeper.stop();
         super.onBackPressed();
     }
 
@@ -321,12 +308,16 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     public void onPause() {
         mImageDownloadObservable.deleteObserver( this );
-        mScreenOnKeeper.stop();
         super.onPause();
     }
 
     @Override
+    //protected void onRestoreInstanceState(Bundle savedInstanceState) {
     protected void onResume() {
+//        setFullScreen(savedInstanceState.getBoolean(STATE_IS_STATUSBAR_HIDDEN),
+//                savedInstanceState.getBoolean(STATE_IS_ACTIONBAR_HIDDEN));
+
+        //super.onRestoreInstanceState(savedInstanceState);
         super.onResume();
 
         setFullScreen();
@@ -335,8 +326,6 @@ public class EntryActivity extends BaseActivity implements Observer {
 
         Status().End( EntriesCursorAdapter.mEntryActivityStartingStatus );
         EntriesCursorAdapter.mEntryActivityStartingStatus = 0;
-
-        mScreenOnKeeper.start();
     }
 
     public void setFullScreen() {
@@ -424,17 +413,5 @@ public class EntryActivity extends BaseActivity implements Observer {
     @Override
     public void applyOrientation() {
         super.applyOrientation();
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN)
-            mScreenOnKeeper.resetTimer();
-        return super.dispatchTouchEvent(ev);
-    }
-    @Override
-    public void onUserInteraction() {
-        super.onUserInteraction();
-        mScreenOnKeeper.resetTimer();
     }
 }
