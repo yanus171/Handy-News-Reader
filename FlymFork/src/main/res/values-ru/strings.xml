@@ -753,4 +753,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="feed_list_color">Цвет списка лент</string>
     <string name="feed_list_color_desc">Цвет фона панели списка лент</string>
     <string name="error_no_connection">Не удается загрузить сайт. Превышено время ожидания</string>
+    <string name="screen_on_duration">Продолжительность включения экрана</string>
+    <string name="screen_on_duration_descr">Время включения экрана во время бездействия (По умолчанию = отключено)</string>
 </resources>
