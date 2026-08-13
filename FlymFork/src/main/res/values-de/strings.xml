@@ -744,4 +744,6 @@
     <string name="feed_list_color">Farbe der Feedliste</string>
     <string name="feed_list_color_desc">Hintergrundfarbe des linken Fensters</string>
     <string name="error_no_connection">Die Website konnte nicht geladen werden, da eine Zeitüberschreitung aufgetreten ist</string>
+    <string name="screen_on_duration">Bildschirm-Aktivierungsdauer</string>
+    <string name="screen_on_duration_descr">Wie lange soll der Bildschirm bei Inaktivität eingeschaltet bleiben? (Standard = deaktiviert)</string>
 </resources>
