@@ -495,6 +495,13 @@
             android:key="disable_tap_actions_when_video"
             android:summary="@string/disable_tap_actions_when_video_descr"
             android:title="@string/disable_tap_actions_when_video"/>
+        <ru.yanus171.feedexfork.view.AutoSummaryListPreference
+            android:defaultValue="0"
+            android:entries="@array/screen_on_duration_captions"
+            android:entryValues="@array/screen_on_duration_values"
+            android:key="screen_on_duration"
+            android:title="@string/screen_on_duration"
+            android:summary="@string/screen_on_duration_descr"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

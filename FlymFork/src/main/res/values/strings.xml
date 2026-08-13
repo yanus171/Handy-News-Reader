@@ -773,5 +773,6 @@
     <string name="feed_list_color">Feed list color</string>
     <string name="feed_list_color_desc">Background color of left pane</string>
     <string name="error_no_connection">Сan not load the website. The timeout has been exceeded</string>
-
+    <string name="screen_on_duration">Screen keep-on duration</string>
+    <string name="screen_on_duration_descr">How long to keep screen on during inactivity (Default = disabled)</string>
 </resources>
