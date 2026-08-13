@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[ <b><big>Ліцензії та інформація</big></b> 
+    <string name="about_us_content" translatable="true"><![CDATA[
+ <b><big>Ліцензії та інформація</big></b> 
  <br/>
  Цей застосунок - вільне програмне забезпечення: Ви можете розповсюджувати та/або змінювати його на умовах Стандартної громадської ліцензії GNU, опублікованої Фондом вільного програмного забезпечення; або версії 3 цієї ліцензії, або (на Ваш вибір) любої більш пізньої версії. Докладно на http://www.gnu.org/licenses<br/>
  <br/> 
@@ -745,4 +746,5 @@
     <string name="feed_deleted">Стрічки вилучено</string>
     <string name="feed_list_color">Колір списку стрічок</string>
     <string name="feed_list_color_desc">Колір фону лівої панелі</string>
+    <string name="error_no_connection">Не можу завантажити сайт через перевищення часу очікування</string>
 </resources>
