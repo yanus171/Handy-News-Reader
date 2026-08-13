@@ -57,4 +57,17 @@
         <item>Оставшееся время</item>
     </string-array>
     <!-- English -->
+    <string-array name="screen_on_duration_captions">
+        <item>Как в системе</item>
+        <item>30 секунд</item>
+        <item>1 минута</item>
+        <item>1.5 минуты</item>
+        <item>2 минуты</item>
+        <item>2.5 минуты</item>
+        <item>3 минуты</item>
+        <item>4 минуты</item>
+        <item>5 минут</item>
+        <item>7 минут</item>
+        <item>10 минут</item>
+    </string-array>
 </resources>
