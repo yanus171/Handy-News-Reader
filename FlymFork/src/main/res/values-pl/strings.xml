@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Licencja i informacje.</h2>
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <h2>Licencja i informacje.</h2>
     <p>Niniejszy program jest Wolnym Oprogramowaniem: możesz go rozpowszechniać i/lub modyfikować zgodnie z warunkami Powszechnej Licencji Publicznej GNU opublikowanej przez Fundację Wolnego Oprogramowania, tak w wersji 3 lub jakiejkolwiek późniejszej do Twego wyboru. Patrz <a href="http://www.gnu.org.pl/index.html">www.gnu.org.pl/index.html</a></p>
     <p>Ten program jest bazowany na \'Flym RSS Reader\', copyright 2013–2016 Frédéric Julian. Pośród funkcji dodanych do tego forka znajdują się:</p>
     
