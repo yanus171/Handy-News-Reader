@@ -222,18 +222,18 @@ public class FB2 {
     }
     private static Map<String, String> extractNotes(Document doc) {
         Map<String, String> notes = new HashMap<>();
-        Elements noteSections = doc.select("body[name=notes] section");
+        final Elements noteSections = doc.select("section[id]");
         for (Element section : noteSections) {
             String id = section.id();
             if (!id.isEmpty()) {
-                Elements p = section.getElementsByTag("p");
-                String text = "";
-                for (int i = 0; i < p.size(); i++) {
-                    if (i > 1) text += " ";
-                    text += p.get(i).text();
+                Elements pList = section.getElementsByTag("p");
+                StringBuilder text = new StringBuilder();
+                for (int i = 0; i < pList.size(); i++) {
+                    if (i > 1)
+                        text.append(" ");
+                    text.append(pList.get(i).text());
                 }
-                //if (text.isEmpty()) text = section.text();
-                notes.put(id, text);
+                notes.put(id, text.toString());
             }
         }
         return notes;
