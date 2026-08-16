@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Licença e informações</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <b><big>Licença e informações</big></b><br/>
     Este programa é um software livre: você pode redistribui-lo e/ou modificá-lo sob os termos da Licença GNU General Public como publicado pela Free Software Foundation, versão 3 desta Licença, ou (de acordo com sua escolha) por uma versão de licença posterior. Veja em http://www.gnu.org/licenses<br/>
     <br/>
     Este app é baseado no \'Flym RSS Reader\', direitos autorais 2013–2016 Frédéric Julian. Entre outras características adicionadas nesta ramificação, estão:<br/>

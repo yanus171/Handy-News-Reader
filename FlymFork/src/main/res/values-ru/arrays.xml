@@ -57,7 +57,7 @@
         <item>Оставшееся время</item>
     </string-array>
     <string-array name="screen_on_duration_captions">
-        <item>По умолчанию (системный)</item>
+        <item>Как в системе</item>
         <item>30 секунд</item>
         <item>1 минута</item>
         <item>1.5 минуты</item>

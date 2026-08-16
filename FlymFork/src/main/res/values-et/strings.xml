@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[<h2>Litsents ja teave</h2> 
+    <string name="about_us_content" translatable="true"><![CDATA[
+<h2>Litsents ja teave</h2> 
 <p>See programm on vaba/avatud lähtekoodiga tarkvara: sa võid seda levitada ja/või muuta GNU Üldise Avaliku Litsentsi tingimustel, mille on avaldanud Vaba Tarkvara Fond, kas litsentsi versioon 3 või (sinu valikul) mis tahes hilisem versioon. Vaata <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p> 
 <p>See rakendus põhineb \'Flym RSS Reader\'il, autoriõigus 2013–2016 Frédéric Julian. Sellele harule lisatud funktsioonide hulgas on:</p>
 
@@ -266,7 +267,8 @@ Sa võid ka <a href=\"https://github.com/yanus171/Handy-News-Reader\">annetuse t
     <string name="article_text_progress_height">Kõrgus</string>
     <string name="article_text_progress_color">Värv</string>
     <string name="settings_category_operation">Tehingud</string>
-    <string name="settings_category_operation_summary">Helitugevuse nupud. Puutealad. Heleduse muutmine</string>
+    <string name="settings_category_operation_summary">Helitugevuse nupud. Puutealad. Heleduse muutmine
+</string>
     <string name="tap_zone_size">Puuteala suurus</string>
     <string name="tap_zone_size_descr">Kõikide puutealade kõrgus ja laius millimeetrites</string>
     <!--    <string name="settings_show_tap_zones">Tap Zones are visible</string>-->

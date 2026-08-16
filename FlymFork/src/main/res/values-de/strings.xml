@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <h2>Lizenz und Informationen</h2>
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <h2>Lizenz und Informationen</h2>
     <p>Dieses Programm ist Free/Libre Open-Source Software: Sie können sie nach den, von der Free Software Foundation veröffentlichten Bedingungen der GNU General Public License in der Version 3 oder (auf Wunsch) jeder späteren Version dieser Lizenz weiterverbreiten oder verändern. Siehe <a href="http://www.gnu.org/licenses">www.gnu.org/licenses</a></p>
     <p>Diese App basiert auf \'Flym RSS Reader\', Copyright 2013–2016 Frédéric Julian. In diesem Fork wurden folgende Funktionen ergänzt:</p>
     
@@ -742,4 +743,7 @@
     <string name="feed_deleted">Feeds wurden gelöscht</string>
     <string name="feed_list_color">Farbe der Feedliste</string>
     <string name="feed_list_color_desc">Hintergrundfarbe des linken Fensters</string>
+    <string name="error_no_connection">Die Website konnte nicht geladen werden, da eine Zeitüberschreitung aufgetreten ist</string>
+    <string name="screen_on_duration">Bildschirm-Aktivierungsdauer</string>
+    <string name="screen_on_duration_descr">Wie lange soll der Bildschirm bei Inaktivität eingeschaltet bleiben? (Standard = deaktiviert)</string>
 </resources>
