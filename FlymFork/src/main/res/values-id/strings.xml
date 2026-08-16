@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lisensi dan informasi</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <b><big>Lisensi dan informasi</big></b><br/>
     Program ini adalah perangkat lunak bebas: Anda dapat mendistribusikannya kembali dan/atau memodifikasinya di bawah ketentuan
 Lisensi Publik Umum GNU yang diterbitkan oleh
 Free Software Foundation, baik versi 3 dari Lisensi, atau (sesuai pilihan Anda) versi yang lebih baru. Lihat http://www.gnu.org/licenses<br/>

@@ -56,4 +56,18 @@
         <item>Systemvorgabe</item>
         <item>Verbleibende Zeit</item>
     </string-array>
+    <!-- English -->
+    <string-array name="screen_on_duration_captions">
+        <item>Systemvorgabe</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>1,5 Minuten</item>
+        <item>2 Minuten</item>
+        <item>2,5 Minuten</item>
+        <item>3 Minuten</item>
+        <item>4 Minuten</item>
+        <item>5 Minuten</item>
+        <item>7 Minuten</item>
+        <item>10 Minuten</item>
+    </string-array>
 </resources>

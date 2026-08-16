@@ -752,7 +752,7 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="feed_deleted">Ленты были удалены</string>
     <string name="feed_list_color">Цвет списка лент</string>
     <string name="feed_list_color_desc">Цвет фона панели списка лент</string>
-    <!-- Add near other settings strings -->
-    <string name="screen_on_duration">Время удержания экрана</string>
-    <string name="screen_on_duration_descr">Как долго держать экран включенным при бездействии (По умолчанию = выключено)</string>
+    <string name="error_no_connection">Не удается загрузить сайт. Превышено время ожидания</string>
+    <string name="screen_on_duration">Продолжительность включения экрана</string>
+    <string name="screen_on_duration_descr">Время включения экрана во время бездействия</string>
 </resources>

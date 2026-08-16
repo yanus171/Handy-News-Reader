@@ -29,7 +29,8 @@
  THE SOFTWARE.
 -->
 <resources>
-    <string name="about_us_content" translatable="true"><![CDATA[    <b><big>Lizentzia eta informazioa</big></b><br/>
+    <string name="about_us_content" translatable="true"><![CDATA[
+    <b><big>Lizentzia eta informazioa</big></b><br/>
     Programa hau software librea da: Banatu dezakezu, eta/edo aldatu dezakezu Free Software Foundation fundazioaren GNU General Public License lizentziaren 3 bertsioarekin edo (nahiago baduzu) honen bertsio berriago batekin. Ikusi http://www.gnu.org/licenses<br/>
     <br/>
     Aplikazio hau  \'Flym RSS Reader\' du oinarri gisa, copyright 2013–2016 Frédéric Julian. Gehitu zaizkion ezaugarrien artean:<br/>
