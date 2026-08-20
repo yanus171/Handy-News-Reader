@@ -34,4 +34,8 @@
     <color name="black_theme_prefCategoryBackground">#404040</color>
     <color name="black_theme_prefItemBackground">#000000</color>
 
+    <color name="light_theme_search_bar_color">#FFF59D</color>
+    <color name="dark_theme_search_bar_color">#C68600</color>
+    <color name="black_theme_search_bar_color">#D4A017</color>
+
 </resources>

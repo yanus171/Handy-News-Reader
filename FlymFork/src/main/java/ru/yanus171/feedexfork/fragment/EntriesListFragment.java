@@ -187,6 +187,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private boolean mIsSingleLabelWithoutChildren = false;
     private static final HashSet<String> mWasVisibleList = new HashSet<>();
     private EntriesListTapActions mTapActions = null;
+    private Toolbar mToolbar = null;
 
     private boolean IsOldestFirst() { return mShowTextInEntryList || PrefUtils.getBoolean(PrefUtils.DISPLAY_OLDEST_FIRST, false); }
     private StatusText mStatusText = null;
@@ -307,10 +308,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 rootView.findViewById( R.id.progressText ),
                 Status());
 
-        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
+        mToolbar = rootView.findViewById(R.id.toolbar);
         AppCompatActivity activity = ( ( AppCompatActivity )getActivity() );
-        //toolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
-        activity.setSupportActionBar( toolbar );
+        //mToolbar.setBackgroundColor( Theme.GetColorInt("toolBarColor",  ) );
+        activity.setSupportActionBar( mToolbar );
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getBaseActivity().mProgressBarRefresh = rootView.findViewById(R.id.progressBarRefresh);
@@ -455,7 +456,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
 
         mEntriesSearch.setupSearchView(searchView, searchItem, newText -> {
             setData(mCurrentUri, true, false, mOptions);
-        }, () -> { setData(mCurrentUri, true, false, mOptions); getActivity().invalidateOptionsMenu(); });
+        }, () -> { setData(mCurrentUri, true, false, mOptions); getActivity().invalidateOptionsMenu(); }, mToolbar);
 
         UpdateActions();
 

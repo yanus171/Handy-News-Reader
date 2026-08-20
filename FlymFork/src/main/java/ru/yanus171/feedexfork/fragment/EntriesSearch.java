@@ -2,6 +2,8 @@ package ru.yanus171.feedexfork.fragment;
 
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.SearchView;
@@ -13,6 +15,7 @@ import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.provider.FeedData.EntryColumns;
+import ru.yanus171.feedexfork.utils.Theme;
 
 public class EntriesSearch {
     private String mSearchText = "";
@@ -41,10 +44,20 @@ public class EntriesSearch {
         void onSearchChanged(String newText);
     }
 
+    private void setToolbarColor(@NotNull androidx.appcompat.widget.Toolbar toolbar, int color) {
+        Drawable bg = toolbar.getBackground();
+        if (bg instanceof ColorDrawable) {
+            ((ColorDrawable) bg).setColor(color);
+        } else {
+            toolbar.setBackground(new ColorDrawable(color));
+        }
+    }
+
     public void setupSearchView(@NotNull SearchView searchView,
                                 @NotNull MenuItem searchItem,
                                 @NotNull OnSearchChangedListener onSearchChanged,
-                                @NotNull Runnable onSearchClosed) {
+                                @NotNull Runnable onSearchClosed,
+                                @NotNull androidx.appcompat.widget.Toolbar toolbar) {
         int searchImgId = androidx.appcompat.R.id.search_button;
         android.widget.ImageView v = searchView.findViewById(searchImgId);
         if (v != null) {
@@ -71,6 +84,11 @@ public class EntriesSearch {
                     mSearchText = newText;
                 }
                 onSearchChanged.onSearchChanged(newText);
+                if (hasSearch()) {
+                    setToolbarColor(toolbar, Theme.GetSearchBarColorInt());
+                } else {
+                    setToolbarColor(toolbar, Theme.GetToolBarColorInt());
+                }
                 return false;
             }
         });
@@ -78,6 +96,7 @@ public class EntriesSearch {
         searchView.setOnCloseListener(() -> {
             clearSearch(searchView);
             onSearchClosed.run();
+            setToolbarColor(toolbar, Theme.GetToolBarColorInt());
             return false;
         });
     }
