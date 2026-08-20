@@ -74,14 +74,13 @@ class Brightness(private val mActivity: Activity, rootView: View) {
                             paddingY = currentY - initialY
 
                             if (abs(paddingY) > abs(paddingX) ) {
-                                //if( abs(paddingY) <= abs(paddingX) )
-                                //    view1.parent.requestDisallowInterceptTouchEvent(true)
-                                val delta : Float = paddingY.toFloat() / mDimFrame.height.toFloat()
-                                val coeff : Float = max(0.1F, (min(1F, abs(delta))) * if (mInitialAlpha < MAX_ALPHA) 2 else 8)
-                                var currentAlpha : Float = (mInitialAlpha + delta * 255F * coeff.toDouble().pow(3.0)).toFloat()
-                                if (currentAlpha < 1)
+                                val delta : Double = paddingY.toDouble() / mDimFrame.height.toDouble()
+                                // Exponential curve: small movements are subtle, large movements are more pronounced
+                                val exponent : Double = 1.5
+                                val expDelta = if (delta >= 0) delta.pow(exponent) else -((-delta).pow(exponent))
+                                var currentAlpha : Float = (mInitialAlpha + expDelta * 255F).toFloat()
+                                if (currentAlpha < 1F)
                                     currentAlpha = 1F
-                                //Dog.v("onTouch ACTION_MOVE $paddingX, $paddingY, $delta, $coeff, $currentAlpha")
                                 setBrightness(currentAlpha)
                                 mInfo?.visibility = View.VISIBLE
                                 mInfo?.text = String.format("%s: %.1f %%",
