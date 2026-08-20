@@ -70,7 +70,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
+
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -117,8 +117,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ru.yanus171.feedexfork.Constants;
 import ru.yanus171.feedexfork.MainApplication;
@@ -185,7 +183,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     private JSONObject mOptions;
     private EntriesCursorAdapter mEntriesCursorAdapter = null;
     private static boolean mShowUnReadOnly = false;
-    private static String mSearchText = "";
+    private EntriesSearch mEntriesSearch = new EntriesSearch();
     private boolean mIsSingleLabelWithoutChildren = false;
     private static final HashSet<String> mWasVisibleList = new HashSet<>();
     private EntriesListTapActions mTapActions = null;
@@ -279,7 +277,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
             labelSQL = DB_AND + TextUtils.join(DB_AND, listCondition);
         }
         final String unreadSQL = mShowUnReadOnly ? DB_AND + EntryColumns.WHERE_UNREAD : "";
-        final String searchSQL = mSearchText.isEmpty() ? "" : DB_AND + getSearchWhereClause( mSearchText );
+        final String searchSQL = mEntriesSearch.getWhereClause().isEmpty() ? "" : DB_AND + mEntriesSearch.getWhereClause();
         return EMPTY_WHERE_SQL + labelSQL + unreadSQL + searchSQL;
     }
 
@@ -455,42 +453,9 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
-        // Use a custom search icon for the SearchView in AppBar
-        int searchImgId = androidx.appcompat.R.id.search_button;
-        ImageView v = searchView.findViewById(searchImgId);
-        v.setImageResource(R.drawable.ic_search);
-
-//        searchView.setMaxWidth( 30 );
-
-        if (!mSearchText.isEmpty()) {
-            searchItem.expandActionView();
-            // Without that, it just does not work
-            searchView.post(() -> {
-                searchView.setQuery(mSearchText, false);
-                searchView.clearFocus();
-            });
-        }
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText))
-                    mSearchText = newText;
-                setData(mCurrentUri, true, false, mOptions);
-                return false;
-            }
-        });
-        searchView.setOnCloseListener(() -> {
-            mSearchText = "";
+        mEntriesSearch.setupSearchView(searchView, searchItem, newText -> {
             setData(mCurrentUri, true, false, mOptions);
-            getActivity().invalidateOptionsMenu();
-            return false;
-        });
+        }, () -> { setData(mCurrentUri, true, false, mOptions); getActivity().invalidateOptionsMenu(); });
 
         UpdateActions();
 
@@ -985,27 +950,6 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
     };
 
 
-    private static String getSearchWhereClause(String uriSearchParam) {
-        uriSearchParam = Uri.decode(uriSearchParam).trim();
-        Pattern regex = Pattern.compile("\\b(?:AND|OR)\\b" );
-        Matcher matcher = regex.matcher(uriSearchParam );
-        int prevIndex = 0;
-        String where = "";
-        while (matcher.find()) {
-            final String word = uriSearchParam.substring( prevIndex, matcher.start() ).trim();
-            prevIndex = Math.min( uriSearchParam.length() - 1, matcher.end() + 1 );
-            if ( word.isEmpty() )
-                continue;
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%") + " " + matcher.group() + " ";
-        }
-        final String word = uriSearchParam.substring(prevIndex).trim();
-        if ( !word.isEmpty() )
-            where += EntryColumns.TITLE + " LIKE " + DatabaseUtils.sqlEscapeString("%" + word + "%");
-        else if ( !where.isEmpty() )
-            where += "(1 = 2)";
-        return where;
-    }
-
     private void RestoreListScrollPosition() {
         if ( mLastVisibleTopEntryID != -1 ) {
             int pos = mEntriesCursorAdapter.GetPosByID(mLastVisibleTopEntryID);
@@ -1057,7 +1001,7 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 getBaseActivity().mProgressBarRefresh.setVisibility(View.GONE);
         }
 
-        mTextViewFilterLabels.setVisibility((mIsSingleLabel || !mSearchText.isEmpty() || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
+        mTextViewFilterLabels.setVisibility((mIsSingleLabel || mEntriesSearch.hasSearch() || mLabelsID.isEmpty()) ? View.GONE : View.VISIBLE );
         mTextViewFilterLabels.setText(Html.fromHtml( getContext().getString( R.string.filter_label_title ) + ": " + LabelVoc.INSTANCE.getStringList(mLabelsID ) ) );
         if (mFab != null )
             mFab.setVisibility( PrefUtils.getBoolean("show_mark_all_as_read_button", true) ? View.VISIBLE : View.GONE );
