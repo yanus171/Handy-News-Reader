@@ -304,8 +304,13 @@ public class StatusText implements Observer {
         }
         private String getErrorText( String text, Exception e ) {
             if ( e instanceof java.net.SocketTimeoutException )
-                return MainApplication.getContext().getString( R.string.error_no_connection );
-            return ( text == null ? "" : text + ", " ) + e.toString();
+                return ( text == null ? "" : text + ", " ) +
+                       MainApplication.getContext().getString( R.string.error_no_connection ) +
+                       ": " + ( e.getMessage() == null ? e.toString() : e.getMessage() );
+            if ( e == null )
+                return ( text == null ? "" : text + ", " ) + MainApplication.getContext().getString( R.string.error );
+            String detail = e.getMessage() != null ? e.getMessage() : e.toString();
+            return ( text == null ? "" : text + ", " ) + detail;
         }
         public void ChangeProgress(int textID) {
             ChangeProgress(MainApplication.getContext().getString( textID ));

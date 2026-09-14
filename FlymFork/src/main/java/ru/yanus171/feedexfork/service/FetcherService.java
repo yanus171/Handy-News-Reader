@@ -711,7 +711,7 @@ public class FetcherService extends IntentService {
                                     }
                                 }
                             } catch (Exception e) {
-                                Status().SetError("", "", "", e);
+                                Status().SetError(String(R.string.mobilizeAll) + ", entry #" + entryId, "", String.valueOf(entryId), e);
                             }
                             return result;
                         }
@@ -720,6 +720,8 @@ public class FetcherService extends IntentService {
 
                 FinishExecutionService(statusText, status, futures);
             }
+        } catch (Exception e) {
+            Status().SetError(statusText, "", "", e);
         } finally {
             SetNotifyEnabled( true );
             notifyChangeOnAllUris( URI_ENTRIES_FOR_FEED, null );
@@ -1173,7 +1175,7 @@ public class FetcherService extends IntentService {
                                 if ( NetworkUtils.downloadImage(entryId, entryLink, imgPath, true, false) )
                                     result.mResultCount = 1;
                             } catch ( Exception e ) {
-                                Status().SetError( "", "", "", e );
+                                Status().SetError(String(R.string.AllImages) + ", entry #" + entryId + ", " + imgPath, "", String.valueOf(entryId), e);
                             }
                             return result;
                         }
@@ -1388,7 +1390,7 @@ public class FetcherService extends IntentService {
                                 if (!isCancelRefresh())
                                     result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
                             } catch (Exception e) {
-                                Status().SetError("", "", "", e);
+                                Status().SetError(statusText + ", feed #" + feedId, feedId, "", e);
                             }
                             return result;
                         }));
