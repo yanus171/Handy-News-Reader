@@ -43,7 +43,8 @@ public class LongOper {
         try {
             if ( mWakeLock == null )
                 mWakeLock = getWakeLock();
-            mWakeLock.acquire( 10 * MILLS_IN_MINUTE );
+            if ( !mWakeLock.isHeld() )
+                mWakeLock.acquire( 10 * MILLS_IN_MINUTE );
             oper.run();
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,7 +57,8 @@ public class LongOper {
             if ( service != null )
                 service.stopForeground(true);
             resetCancelRefresh();
-            mWakeLock.release();
+            if ( mWakeLock != null && mWakeLock.isHeld() )
+                mWakeLock.release();
         }
     }
 
