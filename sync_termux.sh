@@ -36,6 +36,7 @@ rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --exclude "*.log" \
     --exclude "**/build/" \
     --exclude "**/.gradle/" \
+    --exclude "**/gradle/" \
     --exclude ".idea/" \
     --exclude "*.iml" \
     --exclude "local.properties" \

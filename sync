@@ -27,8 +27,8 @@ GIT_BACKUP_FILE="$GIT_BACKUP_DIR/Flym.git_$(date +%Y%m%d_%H%M%S).tar.gz"
 
 if tar -czf "$GIT_BACKUP_FILE" -C "$LOCAL_PATH" .git; then
     log "🗜 Архив .git создан: $GIT_BACKUP_FILE"
-    # Оставить только последние 5 архивов
-    ls -1t "$GIT_BACKUP_DIR"/Flym.git_*.tar.gz 2>/dev/null | tail -n +6 | while read -r old; do
+    # Оставить только последние 3 архива
+    ls -1t "$GIT_BACKUP_DIR"/Flym.git_*.tar.gz 2>/dev/null | tail -n +4 | while read -r old; do
         rm -f "$old"
         log "🗑 Удалён старый архив: $old"
     done
@@ -53,6 +53,7 @@ rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --exclude "*.log" \
     --exclude "**/build/" \
     --exclude "**/.gradle/" \
+    --exclude "**/gradle/" \
     --exclude ".idea/" \
     --exclude "*.iml" \
     --exclude "local.properties" \
