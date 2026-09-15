@@ -119,6 +119,19 @@ PUBLIC_LINK="$(rclone link "$YANDEX_PATH/$(basename "$APK")" | tail -1)"
 if [ -n "$PUBLIC_LINK" ]; then
     echo "Публичная ссылка:"
     echo "$PUBLIC_LINK"
+    # --- копирование ссылки в буфер обмена (termux-api) ---
+    if command -v termux-clipboard-set >/dev/null 2>&1; then
+        if ! pm list packages com.termux.api 2>/dev/null | grep -q com.termux.api; then
+            echo "Внимание: приложение Termux:API не установлено." >&2
+            echo "Установите его из F-Droid (com.termux.api), затем перезапустите Termux." >&2
+        elif printf '%s' "$PUBLIC_LINK" | timeout 5 termux-clipboard-set; then
+            echo "Ссылка скопирована в буфер обмена."
+        else
+            echo "Внимание: не удалось скопировать ссылку в буфер обмена (timeout)." >&2
+        fi
+    else
+        echo "Внимание: termux-clipboard-set не найден, установите termux-api (pkg install termux-api)." >&2
+    fi
 else
     echo "Не удалось получить ссылку." >&2
     exit 1
