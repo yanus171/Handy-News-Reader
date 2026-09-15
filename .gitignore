@@ -39,3 +39,9 @@ build
 BackUp*.bat
 Default.sfx
 /FlymFork/src/main/nbproject/private/
+# Signing keystore (release build secrets)
+/KeyStore/
+
+#Codewhale
+.codewhale/
+cw.sh

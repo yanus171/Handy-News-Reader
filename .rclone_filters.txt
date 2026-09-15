@@ -1,0 +1,54 @@
+# ===== ANDROID/JAVA/KOTLIN EXCLUSIONS =====
+
+# System files
+- .DS_Store
+- Thumbs.db
+- *.tmp
+- *.temp
+- *.log
+- *.lock
+- *.pid
+
+# Android build outputs
+- **/build/
+- **/.gradle/
+- **/gradle/
+- **/captures/
+- **/outputs/
+- **/reports/
+- **/test-results/
+- **/coverage/
+- **/lint-results*
+
+# IDE files
+- .idea/
+- *.iml
+- .classpath
+- .project
+- .settings/
+- .vscode/
+
+# Compiled files
+- *.class
+- *.dex
+- *.apk
+- *.aab
+- *.jar
+- *.war
+- *.ear
+- *.hprof
+- *.prof
+
+# Local configs
+- local.properties
+#- keystore.*
+- *.jks
+#- *.keystore
+
+# Editor temp files
+- *.swp
+- *.swo
+- *~
+- .#*
+- #*#
+- .fuse_hidden*

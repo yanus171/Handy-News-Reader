@@ -1,0 +1,72 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# ===== НАСТРОЙКИ =====
+REMOTE="yandex"
+REMOTE_PATH="Projects/Flym"
+LOCAL_PATH="$HOME/Yandex.Disk/Projects/Flym"
+LOG_FILE="$HOME/.rclone_sync.log"
+LOCK_FILE="${TMPDIR:-/data/data/com.termux/files/usr/tmp}/rclone_sync.lock"
+
+# ===== ФУНКЦИИ =====
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# ===== ПРОВЕРКА БЛОКИРОВКИ =====
+if [ -f "$LOCK_FILE" ]; then
+    log "⚠️ Синхронизация уже выполняется (PID $(cat $LOCK_FILE))"
+    exit 1
+fi
+echo $$ > "$LOCK_FILE"
+
+# ===== АРХИВАЦИЯ .git (ПЕРЕД синхронизацией) =====
+log "🗜 Архивация .git перед синхронизацией"
+GIT_BACKUP_DIR="$HOME/flym_git_backups"
+mkdir -p "$GIT_BACKUP_DIR"
+GIT_BACKUP_FILE="$GIT_BACKUP_DIR/Flym.git_$(date +%Y%m%d_%H%M%S).tar.gz"
+
+if tar -czf "$GIT_BACKUP_FILE" -C "$LOCAL_PATH" .git; then
+    log "🗜 Архив .git создан: $GIT_BACKUP_FILE"
+    # Оставить только последние 5 архивов
+    ls -1t "$GIT_BACKUP_DIR"/Flym.git_*.tar.gz 2>/dev/null | tail -n +6 | while read -r old; do
+        rm -f "$old"
+        log "🗑 Удалён старый архив: $old"
+    done
+else
+    log "⚠️ Не удалось создать архив .git"
+fi
+
+# ===== ЗАПУСК BISYNC =====
+log "🔄 Запуск bisync"
+
+rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
+    --verbose \
+    --progress \
+    --checkers=32 \
+    --modify-window=2s \
+    --max-lock=2m \
+    --check-first \
+    --conflict-resolve newer \
+    --exclude ".DS_Store" \
+    --exclude "Thumbs.db" \
+    --exclude "*.tmp" \
+    --exclude "*.log" \
+    --exclude "**/build/" \
+    --exclude "**/.gradle/" \
+    --exclude ".idea/" \
+    --exclude "*.iml" \
+    --exclude "local.properties" \
+    --exclude "*.class" \
+    --exclude "*.apk" \
+    --exclude "*.jar" \
+    --log-file="$LOG_FILE"
+
+if [ $? -eq 0 ]; then
+    log "✅ Синхронизация успешно завершена"
+else
+    log "❌ Ошибка синхронизации (код $?)"
+fi
+
+rm -f "$LOCK_FILE"
+log "🏁 Завершено"
+exit 0

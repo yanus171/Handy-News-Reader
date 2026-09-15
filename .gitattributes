@@ -1,0 +1,35 @@
+# Нормализация окончаний строк для Flym (Termux / Android / Windows / macOS)
+# Правило: в индексе всегда LF; рабочие копии — LF, кроме явно Windows-файлов (CRLF).
+# Бинарники — без преобразований.
+
+# --- бинарные/двоичные файлы: не трогать ---
+*.png     -text
+*.jpg     -text
+*.jpeg    -text
+*.gif     -text
+*.ico     -text
+*.ttf     -text
+*.otf     -text
+*.woff    -text
+*.woff2   -text
+*.eot     -text
+*.jar     -text
+*.zip     -text
+*.rar     -text
+*.7z      -text
+*.apk     -text
+*.keystore -text
+*.p12     -text
+*.jks     -text
+
+# --- Windows-скрипты: только CRLF в рабочей копии (в индексе LF) ---
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# --- остальной текст: нормализация к LF в индексе и рабочей копии ---
+* text=auto eol=lf
+
+# Служебные файлы git/config — оставить как есть (без нормализации)
+.gitignore  -text
+.git/config -text
+.gitattributes -text
