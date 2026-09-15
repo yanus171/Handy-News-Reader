@@ -1,6 +1,20 @@
 # Handy Reader — Быстрая сборка в Termux
 
-## Рабочая команда (проверено)
+## ПРАВИЛО: для сборки и установки — только install.sh
+
+Для сборки и установки APK использовать **только** `install.sh` в корне проекта:
+
+```bash
+cd /data/data/com.termux/files/home/Yandex.Disk/Projects/Flym
+./install.sh
+```
+
+- Он сам находит кешированный Gradle, собирает флейвор для установки (в этом репозитории — `:FlymFork:assembleFullDebug`), ставит APK через adb на `emulator-5554` и запускает `HomeActivity`.
+- НЕ вызывать Gradle вручную напрямую (ни wrapper, ни кешированный бинарник) для сборки/установки — только `install.sh`.
+- install.sh использует adb из Termux (`/data/data/com.termux/files/usr/bin/adb`), не из `~/android-sdk`.
+- В этом репозитории флейворы — `fdroid` и `full` (НЕ `fpda`/`qa`).
+
+## Рабочая команда (проверено) — историческая справка, вручную НЕ запускать
 
 Wrapper-скрипты в Termux не работают — вызывать кешированный Gradle напрямую:
 
@@ -30,26 +44,19 @@ GRADLE_BIN="$(ls -d ~/.gradle/wrapper/dists/gradle-*-bin/*/gradle-*/bin/gradle |
 - aapt2: `android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2` в `gradle.properties`; warning «experimental» при конфигурации — норма
 - Gradle 8.11.1 закеширован: `~/.gradle/wrapper/dists/gradle-8.11.1-bin/`
 
-## Флейв и артефакт
+## Флейвор и артефакт
 
-- Собирать только Fpda QA: `assembleFpdaQa`
-- Результат: `app/build/outputs/apk/fpda/qa/ru.yanus171.feedexfork_fpdaQa_1.16.2_428.apk` (имя зависит от versionName/versionCode)
+- Собирать только через install.sh (см. выше). В этом репозитории: `:FlymFork:assembleFullDebug`.
+- Результат: `FlymFork/build/outputs/apk/full/debug/ru.yanus171.feedexfork_fullDebug_<version>_<code>.apk` (имя зависит от versionName/versionCode)
 - Если задачи все UP-TO-DATE, а правки в исходниках были — проверять, что APK свежий по времени файла (`ls -la`)
 
-## Проверка результата (по KODA.md — после компиляции)
+## Проверка результата
 
-**Сборка+установка+запуск — действие по умолчанию:** после ЛЮБОЙ правки кода/ресурсов сразу (не дожидаясь просьбы, не спрашивая) выполнять: `assembleFpdaQa` → install → `am start`. Только если пользователь явно сказал не собирать — пропустить.
+**Сборка+установка+запуск — действие по умолчанию:** после ЛЮБОЙ правки кода/ресурсов сразу (не дожидаясь просьбы, не спрашивая) выполнять `./install.sh`. Только если пользователь явно сказал не собирать — пропустить.
 
 Регресс-тесты (UI-проверки, клики по экрану) после установки НЕ выполнять — их делает пользователь вручную. Автоматически — сборка, установка и запуск (`am start`). На этом остановиться: pidof/dumpsys, logcat и любые проверки не выполнять — пользователь проверяет сам.
 
-adb брать из Termux (пакет android-tools), НЕ из `~/android-sdk` — тот сломан («Exec format error»), подробности в разделе «Установка APK на устройство» ниже:
-
-```bash
-ADB=/data/data/com.termux/files/usr/bin/adb   # $PREFIX в агентских сессиях бывает пуст
-$ADB devices                                  # emulator-5554 (может висеть и 127.0.0.1:5555 — всегда указывать -s)
-$ADB -s emulator-5554 install -r app/build/outputs/apk/fpda/qa/*_fpdaQa_*.apk
-$ADB -s emulator-5554 shell am start -n ru.yanus171.feedexfork/ru.yanus171.feedexfork.MainActivity
-```
+install.sh сам делает всё: использует adb из Termux (`/data/data/com.termux/files/usr/bin/adb`, НЕ из `~/android-sdk` — тот сломан, «Exec format error»), ставит на `emulator-5554` и запускает `ru.yanus171.feedexfork.activity.HomeActivity`.
 
 - Установка на устройство — только если пользователь её одобрил (может отменить запрос).
 
