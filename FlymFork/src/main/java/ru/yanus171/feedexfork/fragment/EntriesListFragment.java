@@ -454,9 +454,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         final MenuItem searchItem = menu.findItem(R.id.menu_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
-        mEntriesSearch.setupSearchView(searchView, searchItem, newText -> {
-            setData(mCurrentUri, true, false, mOptions);
-        }, () -> { setData(mCurrentUri, true, false, mOptions); getActivity().invalidateOptionsMenu(); }, mToolbar);
+        if (searchView != null) {
+            mEntriesSearch.setupSearchView(searchView, searchItem, newText -> {
+                setData(mCurrentUri, true, false, mOptions);
+            }, () -> { setData(mCurrentUri, true, false, mOptions); getActivity().invalidateOptionsMenu(); }, mToolbar);
+        }
 
         UpdateActions();
 
