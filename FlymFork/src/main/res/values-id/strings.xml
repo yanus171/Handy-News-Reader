@@ -362,6 +362,7 @@ maksimum per umpan<br/>
     <string name="force_landscape_orientation">Orientasi mendatar</string>
     <string name="markAsStarred">Tandai sebagai favorit</string>
     <string name="markedAsStarred">Artikel telah ditandai sebagai favorit: </string>
+    <string name="and_n_more">… dan %1$d lainnya</string>
     <string name="deleteAllEntries">Hapus semua artikel tanpa tanda favorit yang ditampilkan?</string>
     <string name="question">Pertanyaan</string>
     <string name="reload_full_text_with_tags">Sunting Konten</string>

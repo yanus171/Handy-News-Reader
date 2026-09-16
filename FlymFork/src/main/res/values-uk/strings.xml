@@ -365,6 +365,7 @@
     <string name="force_portrait_orientation">Портретний режим</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
+    <string name="and_n_more">… і ще %1$d</string>
     <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>

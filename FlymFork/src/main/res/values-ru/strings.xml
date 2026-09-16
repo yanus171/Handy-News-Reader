@@ -370,6 +370,7 @@
     <string name="force_portrait_orientation">Портретная ориентация</string>
     <string name="markAsStarred">Поместить в избранное</string>
     <string name="markedAsStarred">Статья помечена избранной</string>
+    <string name="and_n_more">… и ещё %1$d</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>
     <string name="question">Вопрос</string>
     <string name="reload_full_text_with_tags">Редактировать содержимое</string>

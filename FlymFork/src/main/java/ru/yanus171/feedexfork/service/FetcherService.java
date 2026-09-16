@@ -108,7 +108,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -478,7 +477,7 @@ public class FetcherService extends IntentService {
                             for (MarkItem item : mMarkAsStarredFoundList)
                                 list.add(item.mCaption);
 
-                            ShowEventNotification(TextUtils.join(", ", list),
+                            ShowEventNotification(joinNotificationText(list),
                                                   R.string.markedAsStarred,
                                                   new Intent(getContext(), HomeActivity.class),
                                                   NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED, null);
@@ -1479,7 +1478,6 @@ public class FetcherService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext()) //
                 .setContentIntent(contentIntent) //
                 .setSmallIcon(R.mipmap.ic_launcher) //
-                .setLargeIcon(BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.ic_launcher)) //
                 //.setTicker(text) //
                 .setWhen(System.currentTimeMillis()) //
                 .setAutoCancel(true) //
@@ -1489,6 +1487,8 @@ public class FetcherService extends IntentService {
                 builder.setChannelId(UNREAD_NOTIFICATION_CHANNEL_ID);
             else if ( ID == NOTIFICATION_ID_MANY_ITEMS_MARKED_STARRED )
                 builder.setChannelId(MARKED_AS_STARRED_NOTIFICATION_CHANNEL_ID);
+            else
+                builder.setChannelId(UNREAD_NOTIFICATION_CHANNEL_ID);
             if ( cancelPI != null )
                 builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, getContext().getString(android.R.string.cancel), cancelPI);
         } else {
@@ -1508,6 +1508,24 @@ public class FetcherService extends IntentService {
 
         if (Constants.NOTIF_MGR != null)
             Constants.NOTIF_MGR.notify(ID, nf);
+    }
+
+    /**
+     * Builds the text of the "N items marked as starred" notification.
+     * Large texts may crash NotificationManager.notify() on some firmwares
+     * (e.g. EMUI 8: SecurityException in queueNotificationWithTag),
+     * so it is limited to MAX_ITEMS captions plus a "... and N more" suffix.
+     */
+    private static final int NOTIFICATION_MAX_ITEMS = 5;
+    private static final int NOTIFICATION_MAX_TEXT_LENGTH = 1024;
+
+    private static String joinNotificationText(ArrayList<String> list) {
+        String text = TextUtils.join(", ", list.subList(0, Math.min(list.size(), NOTIFICATION_MAX_ITEMS)));
+        if (list.size() > NOTIFICATION_MAX_ITEMS)
+            text += " " + getContext().getString(R.string.and_n_more, list.size() - NOTIFICATION_MAX_ITEMS);
+        if (text.length() > NOTIFICATION_MAX_TEXT_LENGTH)
+            text = text.substring(0, NOTIFICATION_MAX_TEXT_LENGTH) + "…";
+        return text;
     }
 
     //private Uri getEntryUri(String entryLink) {

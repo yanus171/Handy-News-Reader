@@ -360,6 +360,7 @@
     <string name="force_portrait_orientation">اتجاه عمودي</string>
     <string name="markAsStarred">تَحْديدٌ كَمُمَيَّزٍ</string>
     <string name="markedAsStarred">تمَّ تحديد المقال كمميز: </string>
+    <string name="and_n_more">… و %1$d أكثر</string>
     <string name="deleteAllEntries">حذف كل المقالات المعروضة، عدا المميزة بنجمة؟</string>
     <string name="question">سؤال</string>
     <string name="reload_full_text_with_tags">تَحْريرُ المُحْتَوَى</string>

@@ -335,6 +335,7 @@
     <string name="entry_marked_unread">Artikulua irakurri gabeko gisa markatu da</string>
     <string name="markAsStarred">Markatu izardun gisa</string>
     <string name="markedAsStarred">Artikulua izardun gisa markatu da: </string>
+    <string name="and_n_more">… eta %1$d gehiago</string>
     <string name="deleteAllEntries">Ezabatu izarrik gabeko erakutsitako artikulu guztiak</string>
     <string name="question">Galdera</string>
     <string name="reload_full_text_with_tags">Birkargatu etiketekin</string>

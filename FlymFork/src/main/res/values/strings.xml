@@ -383,6 +383,7 @@
     <string name="force_portrait_orientation">Portrait orientation</string>
     <string name="markAsStarred">Mark as starred</string>
     <string name="markedAsStarred">The article has been marked as starred: </string>
+    <string name="and_n_more">… and %1$d more</string>
     <string name="deleteAllEntries">Delete all non-starred displayed articles?</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Edit Content</string>
