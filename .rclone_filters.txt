@@ -11,6 +11,7 @@
 
 # Git internals (sync через bare-репозиторий, не пофайлово)
 - .git/
+- **/.git/
 
 # Android build outputs
 - **/build/

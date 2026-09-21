@@ -28,7 +28,7 @@ log "🔄 Синхронизация .git (bare)"
 # Скачать свежий bare с облака (если есть)
 timeout 120 rclone copy "$REMOTE_BARE/" "$BARE/" --exclude ".DS_Store" >/dev/null 2>&1 || true
 
-if ! git pull --rebase "$BARE" master; then
+if ! git pull --rebase --autostash "$BARE" master; then
     log "❌ git pull --rebase не удался. Разрешите конфликты и запустите sync снова"
     rm -f "$LOCK_FILE"
     exit 1
@@ -55,6 +55,7 @@ rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --progress \
     --filter-from "$FILTER_FILE" \
     --exclude ".git/" \
+    --exclude "**/.git/" \
     --log-file="$LOG_FILE"
 
 if [ $? -eq 0 ]; then
