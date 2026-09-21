@@ -46,10 +46,10 @@ if [ $? -ne 0 ]; then
     log "⚠️ Не удалось залить bare на облако (код $?)"
 fi
 
-# ===== ЗАПУСК BISYNC (ПОСЛЕ bare) =====
-log "🔄 Запуск bisync"
+# ===== СИНХРОНИЗАЦИЯ РАБОЧЕЙ ПАПКИ (односторонняя: локально → облако) =====
+log "🔄 Запуск rclone sync (локально → облако)"
 
-rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
+rclone sync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --checkers=32 \
     --verbose \
     --progress \
