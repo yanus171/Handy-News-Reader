@@ -9,6 +9,9 @@
 - *.lock
 - *.pid
 
+# Git internals (sync через bare-репозиторий, не пофайлово)
+- .git/
+
 # Android build outputs
 - **/build/
 - **/.gradle/

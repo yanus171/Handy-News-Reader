@@ -6,6 +6,8 @@ REMOTE_PATH="Projects/Flym"
 LOCAL_PATH="$HOME/Yandex.Disk/Projects/Flym"
 LOG_FILE="$HOME/.rclone_sync.log"
 LOCK_FILE="${TMPDIR:-/data/data/com.termux/files/usr/tmp}/rclone_sync.lock"
+BARE="$HOME/Yandex.Disk/Projects/Flym.bare.git"
+REMOTE_BARE="$REMOTE:Projects/Flym.bare.git"
 
 # ===== ФУНКЦИИ =====
 log() {
@@ -25,7 +27,23 @@ GIT_BACKUP_DIR="$HOME/flym_git_backups"
 mkdir -p "$GIT_BACKUP_DIR"
 GIT_BACKUP_FILE="$GIT_BACKUP_DIR/Flym.git_$(date +%Y%m%d_%H%M%S).tar.gz"
 
-if tar -czf "$GIT_BACKUP_FILE" -C "$LOCAL_PATH" .git; then
+# .git может изменяться во время чтения (активные правки/авто-gc) — в этом случае
+# tar выдаёт "file changed as we read it" и всё равно возвращает 0. Считаем такой
+# архив неудачным: одна повторная попытка, затем прекращаем синхронизацию.
+TAR_ERR_FILE="$GIT_BACKUP_DIR/.tar_last.err"
+archive_ok=false
+for attempt in 1 2; do
+    if tar -czf "$GIT_BACKUP_FILE" -C "$LOCAL_PATH" .git 2>"$TAR_ERR_FILE" \
+       && ! grep -q "file changed as we read it" "$TAR_ERR_FILE"; then
+        archive_ok=true
+        break
+    fi
+    log "⚠️ Попытка $attempt: .git изменялся во время архивации, повторяю..."
+    sleep 2
+done
+rm -f "$TAR_ERR_FILE"
+
+if [ "$archive_ok" = true ]; then
     log "🗜 Архив .git создан: $GIT_BACKUP_FILE"
     # Оставить только последние 3 архива
     ls -1t "$GIT_BACKUP_DIR"/Flym.git_*.tar.gz 2>/dev/null | tail -n +4 | while read -r old; do
@@ -33,10 +51,37 @@ if tar -czf "$GIT_BACKUP_FILE" -C "$LOCAL_PATH" .git; then
         log "🗑 Удалён старый архив: $old"
     done
 else
-    log "⚠️ Не удалось создать архив .git"
+    log "❌ Не удалось создать архив .git, синхронизация прервана"
+    rm -f "$LOCK_FILE"
+    rm -f "$GIT_BACKUP_FILE"
+    exit 1
 fi
 
-# ===== ЗАПУСК BISYNC =====
+# ===== СИНХРОНИЗАЦИЯ .git через bare (СНАЧАЛА) =====
+log "🔄 Синхронизация .git (bare)"
+
+# Скачать свежий bare с облака (если есть)
+timeout 120 rclone copy "$REMOTE_BARE/" "$BARE/" --exclude ".DS_Store" >/dev/null 2>&1 || true
+
+if ! git pull --rebase "$BARE" master; then
+    log "❌ git pull --rebase не удался. Разрешите конфликты и запустите sync снова"
+    rm -f "$LOCK_FILE"
+    exit 1
+fi
+
+if ! git push "$BARE" master; then
+    log "❌ git push в bare не удался. Проверьте состояние bare"
+    rm -f "$LOCK_FILE"
+    exit 1
+fi
+
+# Залить обновлённый bare обратно на облако
+timeout 300 rclone copy "$BARE/" "$REMOTE_BARE/" --exclude ".DS_Store" >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    log "⚠️ Не удалось залить bare на облако (код $?)"
+fi
+
+# ===== ЗАПУСК BISYNC (ПОСЛЕ bare) =====
 log "🔄 Запуск bisync"
 
 rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
@@ -52,7 +97,7 @@ rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --exclude "*.tmp" \
     --exclude "*.log" \
     --exclude "**/build/" \
-    --exclude "**/.gradle/" \
+    --exclude ".gradle/" \
     --exclude "**/gradle/" \
     --exclude ".idea/" \
     --exclude "*.iml" \
@@ -60,12 +105,15 @@ rclone bisync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --exclude "*.class" \
     --exclude "*.apk" \
     --exclude "*.jar" \
+    --exclude ".git/" \
     --log-file="$LOG_FILE"
 
 if [ $? -eq 0 ]; then
-    log "✅ Синхронизация успешно завершена"
+    log "✅ Синхронизация рабочей папки успешно завершена"
 else
-    log "❌ Ошибка синхронизации (код $?)"
+    log "❌ Ошибка синхронизации рабочей папки (код $?)"
+    rm -f "$LOCK_FILE"
+    exit 1
 fi
 
 rm -f "$LOCK_FILE"
