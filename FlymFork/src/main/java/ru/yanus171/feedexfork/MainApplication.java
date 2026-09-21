@@ -171,7 +171,11 @@ public class MainApplication extends Application {
         try {
             @SuppressLint("DiscouragedPrivateApi") Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize" );
             field.setAccessible( true );
-            field.set( null, 100 * 1024 *  1024 );
+            // 16 MB instead of 100 MB: on 32-bit processes (Android 8, e.g. Huawei BAH2-L09)
+            // a 100 MB native allocation fails even for a single row, crashing with
+            // CursorWindowAllocationException before the window fill. Hospitable for
+            // entries list (row data fits a couple of windows) and entry view (single row).
+            field.set( null, 16 * 1024 * 1024 );
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

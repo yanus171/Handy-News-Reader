@@ -124,7 +124,7 @@ if [ -n "$PUBLIC_LINK" ]; then
         if ! pm list packages com.termux.api 2>/dev/null | grep -q com.termux.api; then
             echo "Внимание: приложение Termux:API не установлено." >&2
             echo "Установите его из F-Droid (com.termux.api), затем перезапустите Termux." >&2
-        elif printf '%s' "$PUBLIC_LINK" | timeout 5 termux-clipboard-set; then
+        elif printf '%s %s\n' "$PUBLIC_LINK" "v$NEW_VERSION_NAME" | timeout 5 termux-clipboard-set; then
             echo "Ссылка скопирована в буфер обмена."
         else
             echo "Внимание: не удалось скопировать ссылку в буфер обмена (timeout)." >&2
