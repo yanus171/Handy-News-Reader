@@ -1330,7 +1330,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
     public void changeCursor(Cursor cursor) {
         //SetIsReadMakredList();
         super.changeCursor(cursor);
-        reinit(cursor);
+        //reinit(cursor); // handled by super.changeCursor -> swapCursor -> notifyDataSetChanged
     }
 
     @Override
@@ -1367,12 +1367,31 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
 
     private void reinit(Cursor cursor) {
         mItemPositionVoc.clear();
-        for( int i = 0; i < getCount(); i++ )
-            mItemPositionVoc.put( getItemId( i ), i );
+        final int count = getCount();
+        for( int i = 0; i < count; i++ ) {
+            // During auto-refresh the cursor may be re-queried/moved by a
+            // concurrent DB write; getItemId can then throw
+            // IllegalStateException ("Couldn't read row ... from
+            // CursorWindow"). Skip such rows instead of crashing the list.
+            final long id;
+            try {
+                id = getItemId( i );
+            } catch ( IllegalStateException e ) {
+                continue; // row no longer in window; rebuilt on next refresh
+            }
+            mItemPositionVoc.put( id, i );
+        }
 
         mItemIDVoc.clear();
-        for( int i = 0; i < getCount(); i++ )
-            mItemIDVoc.put( i, getItemId( i ) );
+        for( int i = 0; i < count; i++ ) {
+            final long id;
+            try {
+                id = getItemId( i );
+            } catch ( IllegalStateException e ) {
+                continue;
+            }
+            mItemIDVoc.put( i, id );
+        }
 
         mDBReadMap.clear();
         if (cursor == null )
