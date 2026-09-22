@@ -1202,6 +1202,11 @@ public class FetcherService extends IntentService {
      * the DB (NUMBER_ATTEMPT is not bumped) and are picked up by the next run.
      */
     public static final long FUTURE_GET_TIMEOUT_MS = 60 * 1000; // 60s
+    /** Overall budget for one FinishExecutionService pass. Stuck futures eat
+     * 60s each and with 10 pool threads a single slow feed could otherwise
+     * stall the visible progress for many minutes. Cap the whole pass so the
+     * counter always advances and the run ends. */
+    public static final long FUTURE_PASS_DEADLINE_MS = 10 * 60 * 1000; // 10min
     public static int FinishExecutionService( String statusText,
                                               int status,
                                               ArrayList<Future<DownloadResult>> futures) {
@@ -1209,6 +1214,7 @@ public class FetcherService extends IntentService {
         int countOK = 0;
         mLastProgressText = "";
         Status().Change(status, statusText + String.format(" %d/%d", 0, futures.size()));
+        final long passDeadline = System.currentTimeMillis() + FUTURE_PASS_DEADLINE_MS;
         for ( Future<DownloadResult> item: futures ) {
             try {
                 if ( isCancelRefresh() ) {
@@ -1217,7 +1223,8 @@ public class FetcherService extends IntentService {
                 }
                 final DownloadResult result;
                 try {
-                    result = item.get( FUTURE_GET_TIMEOUT_MS, TimeUnit.MILLISECONDS );
+                    final long remaining = passDeadline - System.currentTimeMillis();
+                    result = item.get( Math.min( FUTURE_GET_TIMEOUT_MS, Math.max( 1, remaining ) ), TimeUnit.MILLISECONDS );
                 } catch ( java.util.concurrent.TimeoutException te ) {
                     item.cancel( false );
                     continue;
