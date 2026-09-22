@@ -165,6 +165,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1191,6 +1192,16 @@ public class FetcherService extends IntentService {
             downloadAllImages( executor );
         }
     }
+    /**
+     * Per-future wait before we give up on a network task. The OkHttp/Native
+     * read timeout is 10s, but slow proxies/redirections can exceed it, after
+     * which a pool thread parks forever and FinishExecutionService() (which
+     * awaits every future) would otherwise make the whole refresh stall
+     * silently at e.g. "479/1000" with no error. Waiting a bounded time per
+     * task and aborting keeps the refresh moving; the remaining tasks stay in
+     * the DB (NUMBER_ATTEMPT is not bumped) and are picked up by the next run.
+     */
+    public static final long FUTURE_GET_TIMEOUT_MS = 60 * 1000; // 60s
     public static int FinishExecutionService( String statusText,
                                               int status,
                                               ArrayList<Future<DownloadResult>> futures) {
@@ -1204,7 +1215,13 @@ public class FetcherService extends IntentService {
                     item.cancel(false );
                     continue;
                 }
-                final DownloadResult result = item.get();
+                final DownloadResult result;
+                try {
+                    result = item.get( FUTURE_GET_TIMEOUT_MS, TimeUnit.MILLISECONDS );
+                } catch ( java.util.concurrent.TimeoutException te ) {
+                    item.cancel( false );
+                    continue;
+                }
                 final String progressText = statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size());
                 if ( !progressText.equals( mLastProgressText ) ) {
                     mLastProgressText = progressText;
