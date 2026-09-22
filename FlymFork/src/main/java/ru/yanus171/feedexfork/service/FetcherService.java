@@ -1194,19 +1194,15 @@ public class FetcherService extends IntentService {
     }
     /**
      * Per-future wait before we give up on a network task. The OkHttp/Native
-     * read timeout is 10s, but slow proxies/redirections can exceed it, after
-     * which a pool thread parks forever and FinishExecutionService() (which
-     * awaits every future) would otherwise make the whole refresh stall
-     * silently at e.g. "479/1000" with no error. Waiting a bounded time per
-     * task and aborting keeps the refresh moving; the remaining tasks stay in
-     * the DB (NUMBER_ATTEMPT is not bumped) and are picked up by the next run.
+     * read timeout is 10s ("connection_timeout"), but it resets on every chunk,
+     * so a server that drips bytes just fast enough can park a pool thread
+     * forever; FinishExecutionService() (which awaits every future) would
+     * otherwise make the whole refresh stall silently at e.g. "479/1000" with
+     * no error. 30s is well above the 10s budget of any healthy feed yet small
+     * enough to keep the progress counter moving. Skipped tasks stay in the DB
+     * (NUMBER_ATTEMPT untouched) and are retried by the next run.
      */
-    public static final long FUTURE_GET_TIMEOUT_MS = 60 * 1000; // 60s
-    /** Overall budget for one FinishExecutionService pass. Stuck futures eat
-     * 60s each and with 10 pool threads a single slow feed could otherwise
-     * stall the visible progress for many minutes. Cap the whole pass so the
-     * counter always advances and the run ends. */
-    public static final long FUTURE_PASS_DEADLINE_MS = 10 * 60 * 1000; // 10min
+    public static final long FUTURE_GET_TIMEOUT_MS = 30 * 1000; // 30s
     public static int FinishExecutionService( String statusText,
                                               int status,
                                               ArrayList<Future<DownloadResult>> futures) {
@@ -1214,7 +1210,6 @@ public class FetcherService extends IntentService {
         int countOK = 0;
         mLastProgressText = "";
         Status().Change(status, statusText + String.format(" %d/%d", 0, futures.size()));
-        final long passDeadline = System.currentTimeMillis() + FUTURE_PASS_DEADLINE_MS;
         for ( Future<DownloadResult> item: futures ) {
             try {
                 if ( isCancelRefresh() ) {
@@ -1223,8 +1218,7 @@ public class FetcherService extends IntentService {
                 }
                 final DownloadResult result;
                 try {
-                    final long remaining = passDeadline - System.currentTimeMillis();
-                    result = item.get( Math.min( FUTURE_GET_TIMEOUT_MS, Math.max( 1, remaining ) ), TimeUnit.MILLISECONDS );
+                    result = item.get( FUTURE_GET_TIMEOUT_MS, TimeUnit.MILLISECONDS );
                 } catch ( java.util.concurrent.TimeoutException te ) {
                     item.cancel( false );
                     continue;
