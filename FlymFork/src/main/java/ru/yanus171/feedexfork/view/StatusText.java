@@ -173,6 +173,10 @@ public class StatusText implements Observer {
         private boolean mIsProgressTextVisible = false;
         public volatile boolean mIsHideByScrollEnabled = true;
         private PendingIntent mCancelPI = null;
+        /* Coalescing flag: bursts of Change()/Start()/End() from a background
+         * refresh (1000+ feeds) collapse into a single GUI-thread post instead of
+         * flooding it with hundreds of consecutive updates. */
+        private volatile boolean mUpdateScheduled = false;
 
         @Override
         public boolean hasChanged () {
@@ -180,7 +184,11 @@ public class StatusText implements Observer {
         }
 
         public void UpdateText() {
+            if ( mUpdateScheduled )
+                return;
+            mUpdateScheduled = true;
             UiUtils.RunOnGuiThread(() -> {
+                mUpdateScheduled = false;
                 synchronized ( mList ) {
                     ArrayList<String> s = new ArrayList<>();
                     for( java.util.Map.Entry<Integer,String> item: mList.entrySet() )

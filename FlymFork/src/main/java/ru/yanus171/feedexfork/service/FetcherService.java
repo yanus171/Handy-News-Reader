@@ -234,6 +234,7 @@ public class FetcherService extends IntentService {
     //private static volatile Boolean mIsDeletingOld = false;
 
     public static final ArrayList<MarkItem> mMarkAsStarredFoundList = new ArrayList<>();
+    private static String mLastProgressText = "";
     private final HashMap<String, HashSet<Long>> mLinkToLabelList = new HashMap<>();
 
     /* Allow different positions of the "rel" attribute w.r.t. the "href" attribute */
@@ -1195,6 +1196,7 @@ public class FetcherService extends IntentService {
                                               ArrayList<Future<DownloadResult>> futures) {
         final ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         int countOK = 0;
+        mLastProgressText = "";
         Status().Change(status, statusText + String.format(" %d/%d", 0, futures.size()));
         for ( Future<DownloadResult> item: futures ) {
             try {
@@ -1203,7 +1205,11 @@ public class FetcherService extends IntentService {
                     continue;
                 }
                 final DownloadResult result = item.get();
-                Status().Change(status, statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size()));
+                final String progressText = statusText + String.format(" %d/%d", futures.indexOf( item ) + 1, futures.size());
+                if ( !progressText.equals( mLastProgressText ) ) {
+                    mLastProgressText = progressText;
+                    Status().Change(status, progressText);
+                }
                 if (result.mResultCount > 0 ) {
                     countOK += result.mResultCount;// If we are here, everything WAS OK
                     if ( operations != null && result.mTaskID != null )
