@@ -801,6 +801,11 @@
             android:defaultValue="false"
             android:title="@string/setting_ignore_all_ssl_errors"
             android:summary="@string/setting_setting_ignore_all_ssl_errors_summary"/>
+        <CheckBoxPreference
+            android:key="okhttp_shared_client"
+            android:defaultValue="true"
+            android:title="@string/setting_okhttp_shared_client"
+            android:summary="@string/setting_okhttp_shared_client_summary"/>
 
         <PreferenceCategory
             android:layout="@layout/preference_category"

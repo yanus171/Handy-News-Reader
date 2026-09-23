@@ -690,6 +690,8 @@
     <string name="not_selected">Not selected</string>
     <string name="setting_ignore_all_ssl_errors">Ignore all SSL errors</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Check this if you experience certificate problems with loading web content. !!! ATTENTION !!! This can make your device insecure :(</string>
+    <string name="setting_okhttp_shared_client">Share HTTP connections between feeds</string>
+    <string name="setting_okhttp_shared_client_summary">Reuse one HTTP client for all feeds and images instead of creating a new one per connection. Prevents file-descriptor exhaustion and connection leaks on long refresh cycles. Disable only if you see connection problems on your device.</string>
     <string name="connection_timeout">Connection timeout</string>
     <string name="connection_timeout_summary">In mills. How long should we wait for internet connection</string>
     <string name="settings_category_connection">Connection</string>
