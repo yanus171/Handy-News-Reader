@@ -853,9 +853,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
 
     private void markPrevArticleAsRead() {
         // Mark the previous opened article as read
-        //if (entryCursor.getInt(mIsReadPos) != 1) {
         EntryView view = GetSelectedEntryView();
-        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && view != null && view.mCursor != null ) {
+        final EntryView prevView = mEntryPagerAdapter.GetEntryView( mLastPagerPos );
+        if ( !mMarkAsUnreadOnFinish && mLastPagerPos != -1 && prevView != null && prevView.mCursor != null ) {
             new Thread() {
                 private String mFeedID;
                 private boolean mSetAsRead;
@@ -875,13 +875,9 @@ public class EntryFragment extends /*SwipeRefresh*/Fragment implements LoaderMan
                             newNumber(mFeedID, DrawerAdapter.NewNumberOperType.Update, true );
                     }
                     cr.update(uri, FeedData.getOldContentValues(), EntryColumns.WHERE_NEW, null);
-                            /*// Update the cursor
-                            Cursor updatedCursor = cr.query(uri, null, null, null, null);
-                            updatedCursor.moveToFirst();
-                            mEntryPagerAdapter.setUpdatedCursor(mPagerPos, updatedCursor);*/
                 }
             }.init( mLastPagerPos,
-                    view.getIsUnReadFromCursor(),
+                    prevView.getIsUnReadFromCursor(),
                     getCurrentFeedID() ).start();
         }
     }
