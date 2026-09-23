@@ -1150,8 +1150,21 @@ public class FetcherService extends IntentService {
         StatusText.FetcherObservable obs = Status();
         final String statusText = getContext().getString(R.string.AllImages);
         int status = obs.Start(statusText, false); try {
+            try {
+                downloadAllImagesInternal( executor, statusText, status );
+            } catch ( Exception e ) {
+                // Native mmap window allocation failed (CursorWindowAllocationException
+                // is not visible to the app compiler) on Android 8 / 32-bit, e.g.
+                // Huawei BAH2-L09, when several cursors are open at once. That is a
+                // transient address-space shortage: log it and re-run this stage on
+                // the next refresh instead of crashing the whole process.
+                Status().SetError( statusText + ", retry", "", null, e );
+            }
+        } finally { obs.End( status ); }
+    }
 
-            ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
+    private static void downloadAllImagesInternal( ExecutorService executor, String statusText, int status ) {
+        ArrayList<Future<DownloadResult>> futures = new ArrayList<>();
             ContentResolver cr = contentResolver();
             try ( Cursor cursor = cr.query(TaskColumns.CONTENT_URI, new String[]{_ID, TaskColumns.ENTRY_ID, TaskColumns.IMG_URL_TO_DL,
                     TaskColumns.NUMBER_ATTEMPT, LINK}, TaskColumns.IMG_URL_TO_DL + Constants.DB_IS_NOT_NULL, null, null) ) {
@@ -1184,13 +1197,10 @@ public class FetcherService extends IntentService {
                 }
             }
             FinishExecutionService( statusText, status, futures);
-
-        } finally { obs.End( status ); }
-
-        if ( isDownloadImageCursorNeedsRequery() ) {
-            setDownloadImageCursorNeedsRequery( false );
-            downloadAllImages( executor );
-        }
+            if ( isDownloadImageCursorNeedsRequery() ) {
+                setDownloadImageCursorNeedsRequery( false );
+                downloadAllImages( executor );
+            }
     }
     /**
      * Per-future wait before we give up on a network task. The OkHttp/Native
