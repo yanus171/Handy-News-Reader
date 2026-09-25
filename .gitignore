@@ -45,5 +45,6 @@ Default.sfx
 #Codewhale
 .codewhale/
 cw.sh
-cw12.sh
+cw*.sh
 buffer.txt
+Temp
