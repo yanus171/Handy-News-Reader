@@ -370,7 +370,6 @@
     <string name="force_portrait_orientation">Портретная ориентация</string>
     <string name="markAsStarred">Поместить в избранное</string>
     <string name="markedAsStarred">Статья помечена избранной</string>
-    <string name="and_n_more">… и ещё %1$d</string>
     <string name="deleteAllEntries">Удалить все неотмеченные статьи?</string>
     <string name="question">Вопрос</string>
     <string name="reload_full_text_with_tags">Редактировать содержимое</string>
@@ -622,7 +621,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="web_search_title">Веб поиск статьи</string>
     <string name="settings_datetime_format">Формат даты и времени</string>
     <string name="menu_show_log">Показать журнал</string>
-    <string name="menu_send_report">Отправить отчет разработчику</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">%d новая статья</item>
         <item quantity="few">%d новые статьи</item>
@@ -671,8 +669,6 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="not_selected">Не выбрано</string>
     <string name="setting_ignore_all_ssl_errors">Игнорировать все ошибки SSL</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Установите этот флажок, если у вас возникают проблемы с сертификатом при загрузке веб-контента. !!! ВНИМАНИЕ !!! Это может сделать ваше устройство небезопасным :(</string>
-    <string name="setting_okhttp_shared_client">Использовать общий HTTP-клиент</string>
-    <string name="setting_okhttp_shared_client_summary">Переиспользовать один HTTP-клиент для всех фидов и картинок вместо создания нового на каждое соединение. Предотвращает исчерпание файловых дескрипторов и утечку соединений при длительных циклах обновления. Отключите только при проблемах с соединениями на вашем устройстве.</string>
     <string name="connection_timeout">Таймаут соединения</string>
     <string name="connection_timeout_summary">В миллисекундах. Как долго ждать подключения к интернету</string>
     <string name="settings_category_connection">Подключение</string>
@@ -758,5 +754,5 @@ https://developer.android.com/reference/java/text/SimpleDateFormat </string>
     <string name="feed_list_color_desc">Цвет фона панели списка лент</string>
     <string name="error_no_connection">Не удается загрузить сайт. Превышено время ожидания</string>
     <string name="screen_on_duration">Продолжительность включения экрана</string>
-    <string name="screen_on_duration_descr">Время включения экрана во время бездействия</string>
+    <string name="screen_on_duration_descr">Время включения экрана во время бездействия (По умолчанию = отключено)</string>
 </resources>
