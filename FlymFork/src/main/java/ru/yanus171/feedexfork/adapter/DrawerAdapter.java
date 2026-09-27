@@ -251,12 +251,12 @@ public class DrawerAdapter extends BaseAdapter {
                 PrefUtils.putInt( key, oldCount + newUnreadCount);
         }
         {
-            final String key = getFeedAllArticleCountKey(Long.parseLong(feedID));
-            int oldCount = PrefUtils.getInt(key, 0);
+            final String keyAll = getFeedAllArticleCountKey(Long.parseLong(feedID));
+            int oldAllCount = PrefUtils.getInt(keyAll, 0);
             if (type == NewNumberOperType.Insert)
-                PrefUtils.putInt(key, oldCount + newUnreadCount);
+                PrefUtils.putInt(keyAll, oldAllCount + newUnreadCount);
             //else if ( type == NewNumberOperType.Delete )
-            //    PrefUtils.putInt(key, oldCount - newUnreadCount);
+            //    PrefUtils.putInt(keyAll, oldAllCount - newUnreadCount);
         }
         synchronized (DrawerAdapter.class) {
             mIsNeedUpdateNumbers = true;
@@ -290,7 +290,6 @@ public class DrawerAdapter extends BaseAdapter {
 
     }
 
-    final String EXPR_FEED_ALL_NUMBER = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false ) ? EXPR_NUMBER("1=1" ) : "0";
 
     public DrawerAdapter(HomeActivity activity, Cursor feedCursor, ProgressBar progressBar) {
         mActivity = activity;
@@ -665,6 +664,10 @@ public class DrawerAdapter extends BaseAdapter {
         ContentResolver cr = mContext.getContentResolver();
         Timer timer = new Timer("updateNumbers()");
         final boolean showRead = PrefUtils.getBoolean(PrefUtils.SHOW_READ_ARTICLE_COUNT, false);
+        // The per-feed all-article counter (FeedAllArticleCountVoc_*) is always recounted here from
+        // the DB, regardless of showRead: entries get deleted and the Insert-only increment in
+        // newNumber() would otherwise leave stale (inflated) values forever.
+        final String allNumberExpr = EXPR_NUMBER("1=1");
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
                                   new String[]{FeedData.ALL_UNREAD_NUMBER,
@@ -717,7 +720,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         {
             Cursor cur = cr.query( FeedData.FeedColumns.GROUPED_FEEDS_CONTENT_URI,
-                                   new String[]{FeedData.FeedColumns._ID, EXPR_FEED_ALL_NUMBER, EXPR_NUMBER( WHERE_UNREAD )},
+                                   new String[]{FeedData.FeedColumns._ID, allNumberExpr},
                                    "(" + FeedData.FeedColumns.WHERE_GROUP + DB_OR +
                                        FeedData.FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
                                        FeedData.FeedColumns.GROUP_ID + "=0" + DB_OR +
@@ -729,7 +732,12 @@ public class DrawerAdapter extends BaseAdapter {
             if (cur != null) {
                 while (cur.moveToNext()) {
                     editor.putInt(getFeedAllArticleCountKey( cur.getLong(0 ) ), cur.getInt(1));
-                    editor.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
+                    // Unread counter (FeedUnreadArticleCountVoc_*) is NOT overwritten
+                    // from the DB here: the swipe path (DrawerAdapter.newNumber)
+                    // updates the pref synchronously, while the DB write is async.
+                    // Overwriting from COUNT(WHERE_UNREAD) could race with that
+                    // async write and revert the shiny unread count.
+                    //editor.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
                 }
                 cur.close();
             }

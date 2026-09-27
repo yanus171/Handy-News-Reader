@@ -1348,6 +1348,7 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mMapFavourite.clear();
         }
         reinit(newCursor);
+        mDBReadMap.clear(); // fully new cursor (e.g. another feed/group): drop stale in-memory read state
         return result;
     }
 
@@ -1393,9 +1394,13 @@ public class EntriesCursorAdapter extends ResourceCursorAdapter {
             mItemIDVoc.put( i, id );
         }
 
-        mDBReadMap.clear();
-        if (cursor == null )
+        if (cursor == null ) {
+            // No new cursor: this reinit is an in-memory view refresh
+            // (notifyDataSetChanged from a concurrent update). Keep the
+            // in-memory read state (mDBReadMap, changed by swipe/SetIsRead)
+            // intact until a real new cursor arrives via swapCursor().
             return;
+        }
         mCursor = cursor;
         mIdPos = cursor.getColumnIndex(EntryColumns._ID);
         mTitlePos = cursor.getColumnIndex(EntryColumns.TITLE);
