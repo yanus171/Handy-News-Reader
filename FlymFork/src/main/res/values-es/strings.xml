@@ -358,7 +358,6 @@
     <string name="force_portrait_orientation">Orientación vertical</string>
     <string name="markAsStarred">Marcar como favorito</string>
     <string name="markedAsStarred">El artículo fue marcado como favorito: </string>
-    <string name="and_n_more">… y %1$d más</string>
     <string name="deleteAllEntries">¿Borrar todos los artículos no favoritos que se muestran?</string>
     <string name="question">Pregunta</string>
     <string name="reload_full_text_with_tags">Editar Vista de Contenido</string>
