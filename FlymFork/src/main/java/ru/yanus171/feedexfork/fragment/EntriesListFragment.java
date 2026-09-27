@@ -647,6 +647,10 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
                 copyFeed();
                 return true;
             }
+            case R.id.menu_send_report: {
+                DebugApp.SendReport( getContext() );
+                return true;
+            }
 
         }
         return super.onOptionsItemSelected(item);

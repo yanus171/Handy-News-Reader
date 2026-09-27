@@ -186,8 +186,6 @@ public class DebugApp {
 		st.append("-------------------\n");
 		st.append(new DebugApp().new Info().GetInformationString());
 		st.append("-------------------\n");
-		// st.append(CalendarEvent.GetProviderInfo( mContext ));
-		// st.append("-------------------\n");
 
 		PrefUtils.putStringCommit( "crashText", st.toString() );
 
@@ -195,19 +193,17 @@ public class DebugApp {
 
 		throwable.printStackTrace();
 
-		try {
-			CreateFileUri(FileUtils.INSTANCE.getFolder().getAbsolutePath(), "crash.txt", st.toString());
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
+				final String report = st.toString();
+
 		final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-		emailIntent.setType("plain/text");
+		emailIntent.setType("text/plain");
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
 		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "HandyNews error stacktrace");
-		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, st.toString());
+		// Crash stacktrace is always sent as mail body text.
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, report);
 		if ( PrefUtils.getBoolean( "copy_debug_info_to_clipboard", true ) )
 			((ClipboardManager) context.getSystemService(android.content.Context.CLIPBOARD_SERVICE))
-				.setText(st.toString());
+				.setText(report);
 		UiUtils.RunOnGuiThread(() -> Toast.makeText(context, R.string.toastAppCrashed, Toast.LENGTH_LONG).show());
 		context.startActivity(
 				Intent.createChooser(emailIntent, context.getString(R.string.criticalErrorSending)).setFlags( Intent.FLAG_ACTIVITY_NEW_TASK ));
@@ -454,14 +450,85 @@ public class DebugApp {
 	}
 
 	// --------------------------------------------------------------------------
+	// Build a user report (app log + prefs + device info) and open the
+	// SendErrorActivity. The report is always sent as an attached file -
+	// never as mail body text.
+	public static void SendReport(Context context) {
+		final StringBuilder st = new StringBuilder();
+		st.append("----------------------\n");
+		st.append("APP LOG\n");
+		st.append("----------------------\n");
+		st.append(GetErrorLog());
+		st.append("\n");
+		st.append(GetPreferences());
+		st.append("\n");
+		st.append(new DebugApp().new Info().GetInformationString());
+		st.append("----------------------\n");
+
+		final Intent intent = new Intent(context, SendErrorActivity.class);
+		if (st.length() > 300000) {
+			// The Binder transaction buffer is limited to ~1 MB; a huge report
+			// must not be passed inside the Intent. Store it to a cache file
+			// and let SendErrorActivity read it back.
+			final String logPath = SaveReportFilePath(st.toString());
+			intent.putExtra(SendErrorActivity.cLogPathExtra, logPath);
+		} else {
+			intent.putExtra(SendErrorActivity.cExceptionTextExtra, st.toString());
+		}
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+
+	// --------------------------------------------------------------------------
+	// Write a report to the cache folder (covered by cache-path in
+	// file_paths.xml => FileProvider can share it) and return its Uri.
+	public static Uri SaveReportFile(String text) {
+		final String path = SaveReportFilePath(text);
+		if (path == null)
+			return null;
+		return FileUtils.INSTANCE.getUriForFile(new File(path));
+	}
+
+	// --------------------------------------------------------------------------
+	private static String SaveReportFilePath(String text) {
+		try {
+			final File dir = new File(MainApplication.getContext().getCacheDir(), "report");
+			if (!dir.exists() && !dir.mkdirs())
+				return null;
+			final File file = new File(dir, "report.txt");
+			final FileOutputStream out = new FileOutputStream(file);
+			try {
+				out.write(text.getBytes("UTF-8"));
+			} finally {
+				out.close();
+			}
+			return file.getAbsolutePath();
+		} catch (IOException e) {
+			AddErrorToLog("SaveReportFile", e);
+			return null;
+		}
+	}
+
+	// --------------------------------------------------------------------------
 	private static void ShowSendErrorActivity(String crashText) {
 		//SaveExceptionToFile(crashText);
 		PrefUtils.putStringCommit("crashText", crashText);
-		// MessageBox.Show(crashText, this);
-		Intent intent = new Intent(MainApplication.getContext(), SendErrorActivity.class);
-		intent.putExtra(SendErrorActivity.cExceptionTextExtra, crashText);
+		final Context context = MainApplication.getContext();
+		final Intent intent = new Intent(context, SendErrorActivity.class);
+		if (crashText.length() > 300000) {
+			// The Binder transaction buffer is limited to ~1 MB; a huge crash
+			// text must not be passed inside the Intent. Store it to a cache
+			// file and let SendErrorActivity read it back.
+			final String logPath = SaveReportFilePath(crashText);
+			if (logPath != null)
+				intent.putExtra(SendErrorActivity.cLogPathExtra, logPath);
+			else
+				intent.putExtra(SendErrorActivity.cExceptionTextExtra, crashText.substring(0, 300000));
+		} else {
+			intent.putExtra(SendErrorActivity.cExceptionTextExtra, crashText);
+		}
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		MainApplication.getContext().startActivity(intent);
+		context.startActivity(intent);
 	}
 
 	/*private static void SaveExceptionToFile(String crashText) {
