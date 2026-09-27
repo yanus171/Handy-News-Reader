@@ -363,7 +363,6 @@
     <string name="force_landscape_orientation">Orientation paysage</string>
     <string name="markAsStarred">Ajouter aux favoris</string>
     <string name="markedAsStarred">L\'article a été ajouté aux favoris : </string>
-    <string name="and_n_more">… et %1$d de plus</string>
     <string name="deleteAllEntries">Supprimer tous les articles non favoris ?</string>
     <string name="question">Question</string>
     <string name="reload_full_text_with_tags">Recharger avec les tags</string>
