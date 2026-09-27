@@ -349,7 +349,6 @@
     <string name="entry_marked_unread">O artigo foi marcado como não lido</string>
     <string name="markAsStarred">Marcar como favorito</string>
     <string name="markedAsStarred">O artigo foi marcado como favorito: </string>
-    <string name="and_n_more">… e mais %1$d</string>
     <string name="deleteAllEntries">Excluir todos os artigos visíveis e não favoritos</string>
     <string name="question">Questão</string>
     <string name="reload_full_text_with_tags">Recarregar com tags</string>
