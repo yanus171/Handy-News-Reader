@@ -364,7 +364,6 @@
     <string name="force_portrait_orientation">Hochformat</string>
     <string name="markAsStarred">Automatisch als Favorit markieren</string>
     <string name="markedAsStarred">Artikel wurde als Favorit markiert:</string>
-    <string name="and_n_more">… und %1$d weitere</string>
     <string name="deleteAllEntries">Feed zurücksetzen und dabei alle nicht als Favorit markierten Artikel löschen?</string>
     <string name="question">Frage</string>
     <string name="reload_full_text_with_tags">Artikelansicht bearbeiten</string>
