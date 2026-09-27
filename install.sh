@@ -27,7 +27,12 @@ fi
 echo "APK: $APK"
 
 # --- установка ---
-"$ADB" -s "$DEVICE" install -r "$APK"
-"$ADB" -s "$DEVICE" shell am start -n ru.yanus171.feedexfork/ru.yanus171.feedexfork.activity.HomeActivity
-
-echo "Установлено на $DEVICE, HomeActivity запущена"
+if "$ADB" get-state 2>/dev/null | grep -q device; then
+    "$ADB" -s "$DEVICE" install -r "$APK"
+    "$ADB" -s "$DEVICE" shell am start -n ru.yanus171.feedexfork/ru.yanus171.feedexfork.activity.HomeActivity
+    echo "Установлено на $DEVICE, HomeActivity запущена"
+else
+    echo "adb: устройство '$DEVICE' не найдено — открываю APK через termux-open"
+    echo "Подтвердите установку в системном диалоге Android."
+    termux-open "$APK"
+fi
