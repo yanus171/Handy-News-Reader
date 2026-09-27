@@ -365,7 +365,6 @@
     <string name="force_portrait_orientation">竖屏</string>
     <string name="markAsStarred">添加星标</string>
     <string name="markedAsStarred">文章被标为加星: </string>
-    <string name="and_n_more">…还有 %1$d 篇</string>
     <string name="deleteAllEntries">删除所有未加星标显示的文章吗？</string>
     <string name="question">问题</string>
     <string name="reload_full_text_with_tags">编辑内容</string>
