@@ -365,6 +365,7 @@
     <string name="force_portrait_orientation">Портретний режим</string>
     <string name="markAsStarred">Додати до обраного</string>
     <string name="markedAsStarred">Стаття помічена обраною: </string>
+    <string name="and_n_more">... і %1$d ще</string>
     <string name="deleteAllEntries">Вилучити всі статті крім обраних?</string>
     <string name="question">Запитання</string>
     <string name="reload_full_text_with_tags">Перезавантажити з мітками</string>
@@ -615,6 +616,7 @@
     <string name="web_search_title">Веб-пошук статей</string>
     <string name="settings_datetime_format">Формат дати та часу</string>
     <string name="menu_show_log">Показати журнал подій</string>
+    <string name="menu_send_report">Надіслати звіт розробнику</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Одна нова стаття</item>
         <item quantity="few">%d нових статей</item>
