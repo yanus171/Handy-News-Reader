@@ -749,4 +749,6 @@
     <string name="feed_list_color">Колір списку стрічок</string>
     <string name="feed_list_color_desc">Колір фону лівої панелі</string>
     <string name="error_no_connection">Не можу завантажити сайт через перевищення часу очікування</string>
+    <string name="screen_on_duration">Час увімкненого екрана</string>
+    <string name="screen_on_duration_descr">Як довго тримати екран увімкненим при бездіяльності (типово = вимкнуто)</string>
 </resources>
