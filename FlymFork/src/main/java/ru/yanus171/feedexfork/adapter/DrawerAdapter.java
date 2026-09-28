@@ -115,6 +115,11 @@ public class DrawerAdapter extends BaseAdapter {
 
     private final ProgressBar mProgressBar;
     public static boolean mIsNeedUpdateNumbers = true;
+    // Guards the async unread recount (updateNumbers()) against racing with an
+    // in-flight swipe (SetIsRead): a swipe updates the FeedUnreadArticleCountVoc_*
+    // pref synchronously (newNumber) while the DB write is async, so an unread
+    // recount that started BEFORE the swipe must not overwrite the newer pref.
+    private static boolean mUpdateNumbersInFlight = false;
 
     public static boolean isLabelExpanded(long parentLabelID ) {
         return PrefUtils.getBoolean( PREF_LABEL_ID_EXPANDED + parentLabelID, false );
@@ -636,9 +641,10 @@ public class DrawerAdapter extends BaseAdapter {
     @SuppressLint("StaticFieldLeak")
     public void updateNumbersAsync() {
         synchronized (DrawerAdapter.class) {
-            if (!mIsNeedUpdateNumbers)
+            if (!mIsNeedUpdateNumbers || mUpdateNumbersInFlight)
                 return;
             mIsNeedUpdateNumbers = false;
+            mUpdateNumbersInFlight = true;
         }
         mProgressBar.setVisibility( View.VISIBLE );
 
@@ -652,6 +658,9 @@ public class DrawerAdapter extends BaseAdapter {
 
             @Override
             protected void onPostExecute(Void result) {
+                synchronized (DrawerAdapter.class) {
+                    mUpdateNumbersInFlight = false;
+                }
                 notifyDataSetChanged();
                 mProgressBar.setVisibility( View.GONE );
             }
@@ -668,6 +677,9 @@ public class DrawerAdapter extends BaseAdapter {
         // the DB, regardless of showRead: entries get deleted and the Insert-only increment in
         // newNumber() would otherwise leave stale (inflated) values forever.
         final String allNumberExpr = EXPR_NUMBER("1=1");
+        // Per-feed unread counter, also recounted from the DB so accumulated
+        // drift (swipe increments minus deletions) self-heals on next recount.
+        final String unreadNumberExpr = EXPR_NUMBER(WHERE_UNREAD);
         // Gets the numbers of entries (should be in a thread, but it's way easier like this and it shouldn't be so slow)
         Cursor numbers = cr.query(EntryColumns.CONTENT_URI,
                                   new String[]{FeedData.ALL_UNREAD_NUMBER,
@@ -720,7 +732,7 @@ public class DrawerAdapter extends BaseAdapter {
 
         {
             Cursor cur = cr.query( FeedData.FeedColumns.GROUPED_FEEDS_CONTENT_URI,
-                                   new String[]{FeedData.FeedColumns._ID, allNumberExpr},
+                                   new String[]{FeedData.FeedColumns._ID, allNumberExpr, unreadNumberExpr},
                                    "(" + FeedData.FeedColumns.WHERE_GROUP + DB_OR +
                                        FeedData.FeedColumns.GROUP_ID + DB_IS_NULL + DB_OR +
                                        FeedData.FeedColumns.GROUP_ID + "=0" + DB_OR +
@@ -732,12 +744,16 @@ public class DrawerAdapter extends BaseAdapter {
             if (cur != null) {
                 while (cur.moveToNext()) {
                     editor.putInt(getFeedAllArticleCountKey( cur.getLong(0 ) ), cur.getInt(1));
-                    // Unread counter (FeedUnreadArticleCountVoc_*) is NOT overwritten
-                    // from the DB here: the swipe path (DrawerAdapter.newNumber)
-                    // updates the pref synchronously, while the DB write is async.
-                    // Overwriting from COUNT(WHERE_UNREAD) could race with that
-                    // async write and revert the shiny unread count.
-                    //editor.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
+                    // Unread counter (FeedUnreadArticleCountVoc_*) is recounted from
+                    // the DB here, but ONLY when no swipe (SetIsRead) is in flight:
+                    // a swipe updates the pref synchronously (newNumber) while the
+                    // DB write is async, so overwriting from COUNT(WHERE_UNREAD)
+                    // can race with that async write and temporarily revert a
+                    // freshly-swiped unread count. In-flight detection (atomic
+                    // since the swipe itself also synchronizes on the class) keeps
+                    // both the stable swipe UX and a self-healing unread counter.
+                    if (PrefUtils.getInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), -1) != -1)
+                        editor.putInt(getFeedUnreadArticleCountKey( cur.getLong(0 ) ), cur.getInt(2));
                 }
                 cur.close();
             }
