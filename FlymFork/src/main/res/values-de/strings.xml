@@ -388,6 +388,7 @@
     <string name="brightness_change">Helligkeit einstellen</string>
     <string name="criticalErrorOccured">Ein schwerwiegender Fehler ist aufgetreten. Bitte senden Sie diesen Text an den Entwickler</string>
     <string name="criticalErrorSending">Fehler senden…</string>
+    <string name="reportReadyToSend">Der Bericht kann nun an den Entwickler gesendet werden</string>
     <string name="copyToClipboard">In die Zwischenablage</string>
     <string name="sendEmail">E-Mail senden</string>
     <string name="toastAppCrashed">Die Anwendung wurde unerwartet beendet: (Bitte senden Sie eine E-Mail an den Entwickler)</string>
