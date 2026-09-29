@@ -101,6 +101,7 @@ public class PrefUtils {
     public static final String VIBRATE_ON_ARTICLE_LIST_ENTRY_SWYPE = "vibrate_on_article_list_entry_swype";
     public static final String BRIGHTNESS_GESTURE_ENABLED = "brightness_gesture_enabled";
     public static final String PREF_FORCE_ORIENTATION_BY_SENSOR = "force_orientation_by_sensor";
+    public static final String USE_AREA_AROUND_CUTOUT = "use_area_around_cutout";
 
     public static final String GLOBAL_CLASS_LIST_TO_REMOVE_FROM_ARTICLE_TEXT = "global_class_list_to_remove_from_article_text";
 

@@ -782,6 +782,11 @@
             android:title="@string/show_navigation_bar_in_fullscreen"
             android:summary="@string/show_navigation_bar_in_fullscreen_summary"/>
         <CheckBoxPreference
+            android:key="use_area_around_cutout"
+            android:defaultValue="true"
+            android:title="@string/use_area_around_cutout"
+            android:summary="@string/use_area_around_cutout_summary"/>
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="force_orientation_by_sensor"
             android:summary="@string/settings_force_orientation_by_sensor_descr"

@@ -75,6 +75,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             setRequestedOrientation( newOr );
     }
 
+    private void applyDisplayCutoutMode() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P)
+            return;
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        final int newMode = PrefUtils.getBoolean( PrefUtils.USE_AREA_AROUND_CUTOUT, true )
+            ? WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            : WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+        if ( params.layoutInDisplayCutoutMode != newMode ) {
+            params.layoutInDisplayCutoutMode = newMode;
+            getWindow().setAttributes( params );
+        }
+    }
+
     @Override
     public void onDestroy() {
         mActivityCount--;
@@ -117,6 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS );
             getWindow().setStatusBarColor(GetToolBarColorInt());
         }
+        applyDisplayCutoutMode();
         applyOrientation();
         Status().UpdateText();
     }
