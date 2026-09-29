@@ -175,6 +175,7 @@ Sa võid ka <a href=\"https://github.com/yanus171/Handy-News-Reader\">annetuse t
     <string name="see_enclosure">Laadi manus</string>
     <string name="see_link">View in browser</string>
     <string name="cant_open_link">Selle lingi jaoks ei leitud ühtegi rakendust</string>
+    <string name="cant_open_activity">Selle toimingu jaoks ei leitud rakendust</string>
     <string name="open_enclosure">Ava manus</string>
     <string name="file">Fail</string>
     <string name="download_and_save">Laadi alla ja salvesta</string>

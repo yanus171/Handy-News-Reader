@@ -3,6 +3,7 @@ package ru.yanus171.feedexfork.view;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import ru.yanus171.feedexfork.MainApplication;
+import ru.yanus171.feedexfork.R;
 import ru.yanus171.feedexfork.utils.Theme;
 import ru.yanus171.feedexfork.utils.UiUtils;
 
@@ -103,10 +105,14 @@ public class MenuItem {
                 return v;
             }
         }, (dialogInterface, i) -> {
-            if ( items[i].mListener != null )
-                items[i].mListener.onClick(dialogInterface, i);
-            else if ( items[i].mIntent != null )
-                context.startActivity( items[i].mIntent );
+            try {
+                if ( items[i].mListener != null )
+                    items[i].mListener.onClick(dialogInterface, i);
+                else if ( items[i].mIntent != null )
+                    context.startActivity( items[i].mIntent );
+            } catch ( ActivityNotFoundException e ) {
+                UiUtils.toast( R.string.cant_open_link );
+            }
         });
         if ( title != null ) {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)

@@ -178,6 +178,7 @@
     <string name="see_enclosure">Carica Allegati</string>
     <string name="see_link">Apri nel Browser</string>
     <string name="cant_open_link">Nessuna app trovata per questo collegamento</string>
+    <string name="cant_open_activity">Nessuna app trovata per questa azione</string>
     <string name="open_enclosure">Apri Allegato</string>
     <string name="file">File</string>
     <string name="download_and_save">Scarica e Salva</string>

@@ -103,6 +103,7 @@
     <string name="see_enclosure">Avaa liite</string>
     <string name="see_link">Avaa selaimessa</string>
     <string name="cant_open_link">Linkin avaamiseen kykenevää sovellusta ei löydy.</string>
+    <string name="cant_open_activity">Toimintoa käsittelevää sovellusta ei löytynyt</string>
     <string name="open_enclosure">Avaa liite</string>
     <string name="file">Tiedosto</string>
     <string name="download_and_save">Lataa ja tallenna</string>

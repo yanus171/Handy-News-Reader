@@ -171,6 +171,7 @@
     <string name="see_enclosure">Wczytaj załącznik</string>
     <string name="see_link">Otwórz w przeglądarce</string>
     <string name="cant_open_link">Brak aplikacji obsługujących ten link</string>
+    <string name="cant_open_activity">Nie znaleziono aplikacji do obsługi tej czynności</string>
     <string name="open_enclosure">Otwórz załącznik</string>
     <string name="file">Plik</string>
     <string name="download_and_save">Pobierz i zapisz</string>

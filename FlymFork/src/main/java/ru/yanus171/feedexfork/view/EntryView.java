@@ -15,6 +15,7 @@ import static ru.yanus171.feedexfork.utils.PrefUtils.PREF_ARTICLE_TAP_ENABLED_TE
 import static ru.yanus171.feedexfork.utils.PrefUtils.STATE_IMAGE_WHITE_BACKGROUND;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -537,8 +538,12 @@ public abstract class EntryView {
         } else
             intent.putExtra( Intent.EXTRA_TEXT, entryUri.toString() );
 
-        context.startActivity(
-                Intent.createChooser( intent, MainApplication.getContext().getString(R.string.menu_share) ) );
+        try {
+            context.startActivity(
+                    Intent.createChooser( intent, MainApplication.getContext().getString(R.string.menu_share) ) );
+        } catch ( ActivityNotFoundException e ) {
+            UiUtils.toast( R.string.cant_open_activity );
+        }
     }
 
     protected void Log( String text ) {

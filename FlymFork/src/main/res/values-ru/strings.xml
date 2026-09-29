@@ -185,6 +185,7 @@
     <string name="see_enclosure">Показать вложение</string>
     <string name="see_link">Открыть в браузере</string>
     <string name="cant_open_link">Не найдено приложений для открытия этой ссылки</string>
+    <string name="cant_open_activity">Не найдено приложений для выполнения этого действия</string>
     <string name="open_enclosure">Открыть вложение</string>
     <string name="file">Файл</string>
     <string name="download_and_save">Загрузить и сохранить</string>

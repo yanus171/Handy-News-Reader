@@ -183,6 +183,7 @@
     <string name="see_enclosure">Load the attachment</string>
     <string name="see_link">View in browser</string>
     <string name="cant_open_link">No application found for this link</string>
+    <string name="cant_open_activity">No application found to handle this action</string>
     <string name="open_enclosure">Open the attachment</string>
     <string name="file">File</string>
     <string name="download_and_save">Download and save</string>

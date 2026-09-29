@@ -180,6 +180,7 @@
     <string name="see_enclosure">载入附件</string>
     <string name="see_link">在浏览器中查看</string>
     <string name="cant_open_link">找不到打开链接的应用程序</string>
+    <string name="cant_open_activity">找不到处理此操作的应用程序</string>
     <string name="open_enclosure">打开附件</string>
     <string name="file">文件</string>
     <string name="download_and_save">下载并保存</string>

@@ -100,6 +100,7 @@
     <string name="see_enclosure">내장 미디어 보기</string>
     <string name="see_link">브라우저에서 보기</string>
     <string name="cant_open_link">이 링크에 대한 프로그램이 없습니다</string>
+    <string name="cant_open_activity">이 작업을 처리할 앱이 없습니다</string>
     <string name="open_enclosure">내장 미디어 열기</string>
     <string name="file">파일</string>
     <string name="download_and_save">다운로드 및 저장</string>

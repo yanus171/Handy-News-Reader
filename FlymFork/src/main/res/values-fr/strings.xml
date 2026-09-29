@@ -181,6 +181,7 @@
     <string name="see_enclosure">Voir le fichier joint</string>
     <string name="see_link">Ouvrir dans le navigateur web</string>
     <string name="cant_open_link">Aucune application trouvée pour ce lien</string>
+    <string name="cant_open_activity">Aucune application trouvée pour cette action</string>
     <string name="open_enclosure">Ouvrir pièce jointe</string>
     <string name="file">Fichier</string>
     <string name="download_and_save">Télécharger et sauvegarder</string>

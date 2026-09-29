@@ -96,6 +96,7 @@
     <string name="see_enclosure">Mostra el fitxer adjunt</string>
     <string name="see_link">Mostra al navegador</string>
     <string name="cant_open_link">No s\'ha trobat una aplicació\'per aquest enllaç.</string>
+    <string name="cant_open_activity">No s\'ha trobat cap aplicació per gestionar aquesta acció</string>
     <string name="open_enclosure">Open enclosure</string>
     <string name="tip_sentence">Tip: slide left to mark as read </string>
     <!-- WIDGET -->

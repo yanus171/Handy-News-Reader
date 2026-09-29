@@ -115,6 +115,7 @@
     <string name="see_enclosure">Zobrazit přílohu</string>
     <string name="see_link">Zobrazit v prohlížeči</string>
     <string name="cant_open_link">Pro tento odkaz nebyla nalezena žádná aplikace</string>
+    <string name="cant_open_activity">Nebyla nalezena žádná aplikace pro tuto akci</string>
     <string name="open_enclosure">Otevřít přílohu</string>
     <string name="file">Soubor</string>
     <string name="download_and_save">Stáhnout a uložit</string>

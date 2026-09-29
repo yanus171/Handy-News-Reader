@@ -171,6 +171,7 @@
     <string name="see_enclosure">Φόρτωση συνημμένου</string>
     <string name="see_link">Προβολή στον φυλλομετρητή - Browser</string>
     <string name="cant_open_link">Δεν βρέθηκε εφαρμογή για αυτό το σύνδεσμο</string>
+    <string name="cant_open_activity">Δεν βρέθηκε εφαρμογή για αυτήν την ενέργεια</string>
     <string name="open_enclosure">Άνοιγμα συνημμένου</string>
     <string name="file">Αρχείο</string>
     <string name="download_and_save">Λήψη και αποθήκευση</string>

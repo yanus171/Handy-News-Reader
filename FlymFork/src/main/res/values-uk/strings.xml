@@ -180,6 +180,7 @@
     <string name="see_enclosure">Відкрити вкладення</string>
     <string name="see_link">Відкрити у браузері</string>
     <string name="cant_open_link">Не знайдено застосунку для відкриття цього посилання</string>
+    <string name="cant_open_activity">Не знайдено застосунку для виконання цієї дії</string>
     <string name="open_enclosure">Відкрити вкладення</string>
     <string name="file">Файл</string>
     <string name="download_and_save">Завантажити та зберегти</string>

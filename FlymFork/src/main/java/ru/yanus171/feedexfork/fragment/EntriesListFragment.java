@@ -63,6 +63,7 @@ import static ru.yanus171.feedexfork.view.WebViewExtended.mImageDownloadObservab
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -1050,7 +1051,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         textIntent.putExtra(Intent.EXTRA_TEXT, getArticlesList( starredOnly ) );
         textIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.shared_favorities_article_list_mail_sugject);
         textIntent.setType(Constants.MIMETYPE_TEXT_PLAIN);
-        startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
+        try {
+            startActivity(Intent.createChooser( textIntent, getString(R.string.share_favorites_title)) );
+        } catch ( ActivityNotFoundException e ) {
+            UiUtils.toast( R.string.cant_open_activity );
+        }
     }
 
     private void shareArticleListViaFile( boolean starredOnly ) {
@@ -1059,7 +1064,11 @@ public class EntriesListFragment extends /*SwipeRefreshList*/Fragment implements
         emailIntent.putExtra(Intent.EXTRA_STREAM, DebugApp.CreateFileUri(getContext().getCacheDir().getAbsolutePath(),
                                                                          getStarredArticlesListFileName(),
                                                                          getArticlesList(starredOnly)) );
-        startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
+        try {
+            startActivity(Intent.createChooser( emailIntent, getString(R.string.share_favorites_title)) );
+        } catch ( ActivityNotFoundException e ) {
+            UiUtils.toast( R.string.cant_open_activity );
+        }
     }
 
     private String getStarredArticlesListFileName() {

@@ -10,6 +10,7 @@ import static ru.yanus171.feedexfork.provider.FeedData.FeedColumns.IS_AUTO_REFRE
 import static ru.yanus171.feedexfork.provider.FeedData.PACKAGE_NAME;
 import static ru.yanus171.feedexfork.provider.FeedData.getOldContentValues;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -66,7 +67,11 @@ public class StartActivityPreference extends Preference {
 			intent.addCategory(Intent.CATEGORY_DEFAULT);
 			intent.setData(Uri.parse("package:" + getContext().getPackageName()));
 		}
-		getContext().startActivity(intent);
+		try {
+			getContext().startActivity(intent);
+		} catch ( ActivityNotFoundException e ) {
+			UiUtils.toast( R.string.cant_open_activity );
+		}
 	}
 	private void SelectAllFeedsForAutoRefresh() {
 		Theme.CreateDialog( getContext() )

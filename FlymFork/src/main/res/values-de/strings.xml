@@ -178,6 +178,7 @@
     <string name="see_enclosure">Anhang laden</string>
     <string name="see_link">Im Browser ansehen</string>
     <string name="cant_open_link">Keine Anwendung für diesen Link gefunden</string>
+    <string name="cant_open_activity">Keine Anwendung für diese Aktion gefunden</string>
     <string name="open_enclosure">Anhang öffnen</string>
     <string name="file">Datei</string>
     <string name="download_and_save">Herunterladen und speichern</string>

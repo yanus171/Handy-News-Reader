@@ -173,6 +173,7 @@
     <string name="see_enclosure">Carregar o anexo</string>
     <string name="see_link">Ver no navegador</string>
     <string name="cant_open_link">Nenhum aplicativo encontrado para este link</string>
+    <string name="cant_open_activity">Nenhum aplicativo encontrado para esta ação</string>
     <string name="open_enclosure">Abrir anexo</string>
     <string name="file">Arquivo</string>
     <string name="download_and_save">Baixar e salvar</string>

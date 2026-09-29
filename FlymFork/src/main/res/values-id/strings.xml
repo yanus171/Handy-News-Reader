@@ -183,6 +183,7 @@ maksimum per umpan<br/>
     <string name="see_enclosure">Muat lampiran</string>
     <string name="see_link">Lihat di peramban</string>
     <string name="cant_open_link">Tidak ada aplikasi untuk tautan ini</string>
+    <string name="cant_open_activity">Tidak ada aplikasi untuk tindakan ini</string>
     <string name="open_enclosure">Buka lampiran</string>
     <string name="file">Berkas</string>
     <string name="download_and_save">Unduh dan simpan</string>

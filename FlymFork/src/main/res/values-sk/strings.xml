@@ -106,6 +106,7 @@
     <string name="see_enclosure">Zobraziť prílohu</string>
     <string name="see_link">Zobraziť v prehliadači</string>
     <string name="cant_open_link">Pre tento odkaz nebola nájdená žiadna aplikácia</string>
+    <string name="cant_open_activity">Pre túto akciu sa nenašla žiadna aplikácia</string>
     <string name="open_enclosure">Otvoriť prílohu</string>
     <string name="file">Súbor</string>
     <string name="download_and_save">Stiahnúť a uložiť</string>

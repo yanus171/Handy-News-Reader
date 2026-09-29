@@ -176,6 +176,7 @@
     <string name="see_enclosure">تحميل المرفق</string>
     <string name="see_link">فتح بالمتصفح</string>
     <string name="cant_open_link">لم يُعثر على تطبيق يمكنه فتح هذا الرابط</string>
+    <string name="cant_open_activity">لم يتم العثور على تطبيق للتعامل مع هذا الإجراء</string>
     <string name="open_enclosure">فتح المرفق</string>
     <string name="file">ملف</string>
     <string name="download_and_save">تحميل وحفظ</string>

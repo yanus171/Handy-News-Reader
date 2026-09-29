@@ -168,6 +168,7 @@
     <string name="see_enclosure">Kargatu eranskailua</string>
     <string name="see_link">Ikusi nabigatzailean</string>
     <string name="cant_open_link">Ez da aplikaziorik aurkitu esteka honetarako</string>
+    <string name="cant_open_activity">Ez da aplikaziorik aurkitu ekintza honetarako</string>
     <string name="open_enclosure">Ireki eranskina</string>
     <string name="file">Fitxategia</string>
     <string name="download_and_save">Deskargatu eta gorde</string>

@@ -175,6 +175,7 @@
     <string name="see_enclosure">Ver el adjunto</string>
     <string name="see_link">Ver en el navegador</string>
     <string name="cant_open_link">No se ha encontrado una aplicación para este enlace.</string>
+    <string name="cant_open_activity">No se ha encontrado una aplicación para esta acción</string>
     <string name="open_enclosure">Abrir adjunto</string>
     <string name="file">Archivo</string>
     <string name="download_and_save">Descargar y guardar</string>

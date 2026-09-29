@@ -903,7 +903,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 break;
             }
             case R.id.menu_open_link: {
-                getContext().startActivity(GetShowInBrowserIntent(mEntryLink));
+                try {
+                    getContext().startActivity(GetShowInBrowserIntent(mEntryLink));
+                } catch ( ActivityNotFoundException e ) {
+                    UiUtils.toast( R.string.cant_open_link );
+                }
                 break;
             }
 
@@ -1018,10 +1022,14 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
                 TextUtils.getChars(spanned, 0, spanned.length(), chars, 0);
                 String plainText = new String(chars);
                 plainText = plainText.replaceAll( "body(.)*", "" );
-                getContext().startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
-                                .putExtra(Intent.EXTRA_TEXT, plainText)
-                                .setType(Constants.MIMETYPE_TEXT_PLAIN),
-                        getContext().getString(R.string.menu_share)));
+                try {
+                    getContext().startActivity(Intent.createChooser(new Intent(Intent.ACTION_SEND)
+                                    .putExtra(Intent.EXTRA_TEXT, plainText)
+                                    .setType(Constants.MIMETYPE_TEXT_PLAIN),
+                            getContext().getString(R.string.menu_share)));
+                } catch ( ActivityNotFoundException e ) {
+                    UiUtils.toast( R.string.cant_open_activity );
+                }
                 break;
             }
             case R.id.menu_cancel_refresh: {

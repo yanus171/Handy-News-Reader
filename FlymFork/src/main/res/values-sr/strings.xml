@@ -106,6 +106,7 @@
     <string name="see_enclosure">Погледај прилог</string>
     <string name="see_link">Погледај у прегледачу</string>
     <string name="cant_open_link">Ниједна апликација није додељена овој вези</string>
+    <string name="cant_open_activity">Ниједна апликација није пронађена за ову радњу</string>
     <string name="open_enclosure">Отварање прилога</string>
     <string name="file">Фајл</string>
     <string name="download_and_save">Преузми и сачувај</string>
