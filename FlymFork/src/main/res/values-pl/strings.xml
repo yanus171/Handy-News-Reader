@@ -350,7 +350,6 @@
     <string name="entry_marked_unread">Artykuł został oznaczony jako nieprzeczytany</string>
     <string name="markAsStarred">Oznacz jako Ulubione</string>
     <string name="markedAsStarred">Artykuł został dodany do Ulubionych:</string>
-    <string name="and_n_more">… i %1$d więcej</string>
     <string name="deleteAllEntries">Usunąć wszystkie niezagwiazdkowane artykuły?</string>
     <string name="question">Pytanie</string>
     <string name="reload_full_text_with_tags">Edytuj Treść</string>

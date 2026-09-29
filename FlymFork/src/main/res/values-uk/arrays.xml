@@ -57,4 +57,17 @@
         <item>Залишилось</item>
     </string-array>
     <!-- English -->
+    <string-array name="screen_on_duration_captions">
+        <item>System Default</item>
+        <item>30 секунд</item>
+        <item>1 minute</item>
+        <item>1.5 minutes</item>
+        <item>2 minutes</item>
+        <item>2.5 minutes</item>
+        <item>3 minutes</item>
+        <item>4 minutes</item>
+        <item>5 minutes</item>
+        <item>7 minutes</item>
+        <item>10 хвилин</item>
+    </string-array>
 </resources>

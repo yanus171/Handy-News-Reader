@@ -359,7 +359,6 @@ Sa võid ka <a href=\"https://github.com/yanus171/Handy-News-Reader\">annetuse t
     <string name="force_portrait_orientation">Püstformaat</string>
     <string name="markAsStarred">Märgi tärniga</string>
     <string name="markedAsStarred">Artikkel on tähistatud tärniga: </string>
-    <string name="and_n_more">… ja veel %1$d</string>
     <string name="deleteAllEntries">Kas kustutada kõik tärniga tähistamata kuvatavad artiklid?</string>
     <string name="question">Küsimus</string>
     <string name="reload_full_text_with_tags">Redigeeri sisu</string>

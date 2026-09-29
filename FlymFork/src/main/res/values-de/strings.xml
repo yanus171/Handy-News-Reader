@@ -615,6 +615,7 @@
     <string name="web_search_title">Artikel im Web suchen</string>
     <string name="settings_datetime_format">Datums- und Zeitformat</string>
     <string name="menu_show_log">Protokoll zeigen</string>
+    <string name="menu_send_report">Bericht an Entwickler senden</string>
     <plurals name="number_of_new_entries">
         <item quantity="one">Ein neuer Artikel</item>
         <item quantity="other">%d neue Artikel</item>
@@ -661,6 +662,8 @@
     <string name="not_selected">Nicht ausgewählt</string>
     <string name="setting_ignore_all_ssl_errors">Alle SSL-Fehler ignorieren</string>
     <string name="setting_setting_ignore_all_ssl_errors_summary">Auswählen, wenn es zu Zertifikatproblemen beim Laden von Webinhalten kommt. !!! ACHTUNG !!! Das kann Ihr Gerät unsicher machen :(</string>
+    <string name="setting_okhttp_shared_client">HTTP-Verbindungen zwischen Feeds teilen</string>
+    <string name="setting_okhttp_shared_client_summary">Verwenden Sie einen einzigen HTTP-Client für alle Feeds und Bilder, anstatt für jede Verbindung einen neuen zu erstellen. Dies verhindert, dass bei langen Aktualisierungszyklen die Dateideskriptoren erschöpft werden und Verbindungslecks entstehen. Deaktivieren Sie diese Option nur, wenn auf Ihrem Gerät Verbindungsprobleme auftreten.</string>
     <string name="connection_timeout">Zeitüberschreitung der Verbindung</string>
     <string name="connection_timeout_summary">In ms (Millisekunden). Wie lange auf eine Internetverbindung gewartet werden soll</string>
     <string name="settings_category_connection">Verbindung</string>
