@@ -275,6 +275,18 @@ public class DebugApp {
 	}
 
 	// -------------------------------------------------------------------
+	private static String GetNotUpdatedFeeds() {
+		StringBuilder result = new StringBuilder();
+		result.append("====================================\n");
+		result.append("NOT_UPDATED_FEEDS\n");
+		final ArrayList<String[]> list = FetcherService.getNotUpdatedFeeds();
+		for ( String[] item : list )
+			result.append(String.format("%s | %s | %s\n", item[1], item[2], item[3]));
+		result.append("------------------------------------\n");
+		return result.toString();
+	}
+
+	// -----------------------------------------------------------------
 	private static String GetStackTrace(Throwable th) {
 		final StringWriter st = new StringWriter();
 		st.append("Stacktrace:\n");
@@ -451,8 +463,7 @@ public class DebugApp {
 
 	// --------------------------------------------------------------------------
 	// Build a user report (app log + prefs + device info) and open the
-	// SendErrorActivity. The report is always sent as an attached file -
-	// never as mail body text.
+	// SendErrorActivity. The report is sent as an attached file.
 	public static void SendReport(Context context) {
 		final StringBuilder st = new StringBuilder();
 		st.append("----------------------\n");
@@ -461,6 +472,8 @@ public class DebugApp {
 		st.append(GetErrorLog());
 		st.append("\n");
 		st.append(GetPreferences());
+		st.append("\n");
+		st.append(GetNotUpdatedFeeds());
 		st.append("\n");
 		st.append(new DebugApp().new Info().GetInformationString());
 		st.append("----------------------\n");
@@ -471,10 +484,11 @@ public class DebugApp {
 			// must not be passed inside the Intent. Store it to a cache file
 			// and let SendErrorActivity read it back.
 			final String logPath = SaveReportFilePath(st.toString());
-			intent.putExtra(SendErrorActivity.cLogPathExtra, logPath);
+			intent.putExtra(SendErrorActivity.cReportLogPathExtra, logPath);
 		} else {
-			intent.putExtra(SendErrorActivity.cExceptionTextExtra, st.toString());
+			intent.putExtra(SendErrorActivity.cReportTextExtra, st.toString());
 		}
+		intent.putExtra(SendErrorActivity.cIsReportExtra, true);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
@@ -521,12 +535,13 @@ public class DebugApp {
 			// file and let SendErrorActivity read it back.
 			final String logPath = SaveReportFilePath(crashText);
 			if (logPath != null)
-				intent.putExtra(SendErrorActivity.cLogPathExtra, logPath);
+				intent.putExtra(SendErrorActivity.cExceptionLogPathExtra, logPath);
 			else
 				intent.putExtra(SendErrorActivity.cExceptionTextExtra, crashText.substring(0, 300000));
 		} else {
 			intent.putExtra(SendErrorActivity.cExceptionTextExtra, crashText);
 		}
+		intent.putExtra(SendErrorActivity.cIsReportExtra, false);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}

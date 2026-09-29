@@ -407,6 +407,7 @@
     <string name="brightness_change">brightness change</string>
     <string name="criticalErrorOccured">A critical error occurred in thу application. Please send this text to developer</string>
     <string name="criticalErrorSending">Sending critical error…</string>
+    <string name="reportReadyToSend">The report is ready to send to the developer</string>
     <string name="copyToClipboard">To clipboard</string>
     <string name="sendEmail">Send email</string>
     <string name="toastAppCrashed">The application unexpectedly failed: (Please email the developer)</string>

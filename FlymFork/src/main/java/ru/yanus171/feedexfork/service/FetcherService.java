@@ -166,6 +166,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1391,6 +1392,9 @@ public class FetcherService extends IntentService {
     private static int refreshFeeds(final ExecutorService executor, final long keepDateBorderTime, String groupID, final boolean isFromAutoRefresh) {
         String statusText = "";
         int status = Status().Start( statusText, false ); try {
+            // Collect feeds that could not update in this pass so the user report
+            // can show their name + URL + failure reason.
+            mNotUpdatedFeeds.set( new ArrayList<>() );
             final ExecutorService executorInner = CreateExecutorService(GetThreadCount()); try {
                 ContentResolver cr = contentResolver();
                 String where = PrefUtils.getBoolean(PrefUtils.REFRESH_ONLY_SELECTED, false) && isFromAutoRefresh ? FeedColumns.IS_AUTO_REFRESH + Constants.DB_IS_TRUE : null;
@@ -1422,8 +1426,12 @@ public class FetcherService extends IntentService {
                             try {
                                 if (!isCancelRefresh())
                                     result.mResultCount = refreshFeed(executorInner, feedId, keepDateBorderTime);
+                                else {
+                                    addNotUpdatedFeed( feedId, null, new Exception("cancelled") );
+                                }
                             } catch (Exception e) {
                                 Status().SetError(statusText + ", feed #" + feedId, feedId, "", e);
+                                addNotUpdatedFeed(feedId, statusText, e);
                             }
                             return result;
                         }));
@@ -1447,7 +1455,40 @@ public class FetcherService extends IntentService {
         return jsonOptions;
     }
 
-    private static int refreshFeed(ExecutorService executor, String feedId, long keepDateBorderTime) {
+    private static final AtomicReference<ArrayList<String[]>> mNotUpdatedFeeds =
+            new AtomicReference<>( new ArrayList<>() );
+
+    /**
+     * Record a feed that failed to update in the current refresh pass so the
+     * user report can list name + URL + reason (see DebugApp.GetNotUpdatedFeeds).
+     */
+    private static void addNotUpdatedFeed( String feedId, String title, Exception e ) {
+        final ArrayList<String[]> list = mNotUpdatedFeeds.get();
+        if (list == null)
+            return;
+        String url = "";
+        String name = title != null ? title : "";
+        try ( final Cursor cursor = contentResolver().query(FeedColumns.CONTENT_URI(feedId),
+                new String[]{FeedColumns.NAME, FeedColumns.URL}, null, null, null) ) {
+            if (cursor != null && cursor.moveToFirst()) {
+                final int nameCol = cursor.getColumnIndex(FeedColumns.NAME);
+                final int urlCol = cursor.getColumnIndex(FeedColumns.URL);
+                if (!cursor.isNull(nameCol)) name = cursor.getString(nameCol);
+                if (!cursor.isNull(urlCol)) url = cursor.getString(urlCol);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        list.add(new String[]{feedId, name, url,
+                e != null && e.getMessage() != null ? e.getMessage() : (e != null ? e.toString() : "")});
+    }
+
+    public static ArrayList<String[]> getNotUpdatedFeeds() {
+        final ArrayList<String[]> list = mNotUpdatedFeeds.get();
+        return list == null ? new ArrayList<>() : list;
+    }
+
+    public static int refreshFeed(ExecutorService executor, String feedId, long keepDateBorderTime) {
         PrefUtils.putBoolean( STATE_RELOAD_WITH_DEBUG, false );
 
         int newCount = 0;
@@ -1495,6 +1536,7 @@ public class FetcherService extends IntentService {
                     newNumber(feedID, DrawerAdapter.NewNumberOperType.Insert, newCount);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    addNotUpdatedFeed( feedId, cursor.getString( titlePosition ), e );
                 }
 
             }
@@ -1788,6 +1830,7 @@ public class FetcherService extends IntentService {
                 values.put(FeedColumns.ERROR, String(R.string.error_feed_error));
                 cr.update(FeedColumns.CONTENT_URI(feedId), values, null, null);
                 FetcherService.Status().SetError( cursor.getString(titlePosition) + ": " + String(R.string.error_feed_error), feedId, "", e);
+                addNotUpdatedFeed( feedId, cursor.getString(titlePosition), e );
             }
         } catch(Exception e){
             if (handler == null || (!handler.isDone() && !handler.isCancelled())) {
@@ -1801,6 +1844,7 @@ public class FetcherService extends IntentService {
 
                 FetcherService.Status().SetError(cursor.getString(titlePosition) + ": " + e.toString(),
                         feedId, "", e);
+                addNotUpdatedFeed( feedId, cursor.getString(titlePosition), e );
             }
         } finally{
             if (connection != null)

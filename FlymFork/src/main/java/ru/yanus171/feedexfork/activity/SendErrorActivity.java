@@ -30,16 +30,20 @@ import static ru.yanus171.feedexfork.utils.UiUtils.CreateTextView;
 
 public class SendErrorActivity extends Activity {
 	public static final String cExceptionTextExtra = "ExceptionTextExtra";
-	public static final String cLogPathExtra = "LogPathExtra";
+	public static final String cExceptionLogPathExtra = "ExceptionLogPathExtra";
+	public static final String cReportTextExtra = "ReportTextExtra";
+	public static final String cReportLogPathExtra = "ReportLogPathExtra";
+	public static final String cIsReportExtra = "IsReportExtra";
 
 	// --------------------------------------------------------------------------------
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		String text = getIntent().getStringExtra(cExceptionTextExtra);
+		final boolean isReport = getIntent().getBooleanExtra(cIsReportExtra, false);
+		String text = getIntent().getStringExtra(isReport ? cReportTextExtra : cExceptionTextExtra);
 		if (text == null) {
-			final String logPath = getIntent().getStringExtra(cLogPathExtra);
+			final String logPath = getIntent().getStringExtra(isReport ? cReportLogPathExtra : cExceptionLogPathExtra);
 			text = ReadLogFile(logPath);
 		}
 		if (text == null)
@@ -51,7 +55,7 @@ public class SendErrorActivity extends Activity {
 
 		title: {
 			TextView labelTitle = CreateTextView(this);
-			labelTitle.setText(R.string.criticalErrorOccured);
+			labelTitle.setText(isReport ? R.string.reportReadyToSend : R.string.criticalErrorOccured);
 			layout.addView(labelTitle, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		}
 
@@ -74,30 +78,37 @@ public class SendErrorActivity extends Activity {
 			btnSend.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					// The user report is always sent as an attached file
-					// (never as mail body text).
-					final Uri uri = DebugApp.SaveReportFile(reportText);
-					if (uri == null) {
-						UiUtils.toast(R.string.criticalErrorSending);
-						return;
-					}
+					// A user report ("Send report to developer" menu item) is sent
+					// as an attached file; a crash/exception text is sent as the
+					// mail body text.
 					final Intent emailIntent = new Intent(Intent.ACTION_SEND);
 					emailIntent.setType("text/plain");
 					emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "workyalex@mail.ru" });
-					emailIntent.putExtra(Intent.EXTRA_SUBJECT, GetMailSubject());
-					emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+					emailIntent.putExtra(Intent.EXTRA_SUBJECT, GetMailSubject(isReport));
+					if (isReport) {
+						final Uri uri = DebugApp.SaveReportFile(reportText);
+						if (uri == null) {
+							UiUtils.toast(R.string.criticalErrorSending);
+							return;
+						}
+						emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+					} else {
+						emailIntent.putExtra(Intent.EXTRA_TEXT, reportText);
+					}
 					startActivity(Intent.createChooser(emailIntent, getString(R.string.criticalErrorSending)));
 					finish();
 				}
 
-				private String GetMailSubject() {
+				private String GetMailSubject(boolean isReport) {
 					String version = "";
 					try {
 						version = getBaseContext().getPackageManager().getPackageInfo(getBaseContext().getPackageName(),
 								0).versionName;
 					} catch (NameNotFoundException e) {
 					}
-					return String.format("HandyClock error stacktrace %s", version);
+					return isReport
+							? String.format("HandyNews report %s", version)
+							: String.format("HandyNews error stacktrace %s", version);
 				}
 			});
 			layoutBtn.addView(btnSend, new LayoutParams(0, LayoutParams.FILL_PARENT, 1));
