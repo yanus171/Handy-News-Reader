@@ -393,6 +393,7 @@
     <string name="brightness_change">Измнение яркости</string>
     <string name="criticalErrorOccured">В приложение возникла ошибка. Отошлите, пожалуйста отчет об ошибке разработчику</string>
     <string name="criticalErrorSending">Отправка отчета об ошибке…</string>
+    <string name="reportReadyToSend">Отчет готов к отправке разработчику</string>
     <string name="copyToClipboard">Скопировать в буфер</string>
     <string name="sendEmail">Послать письмо</string>
     <string name="toastAppCrashed">Приложение неожиданно завершилось. Пожалуйста отправьте отчет разработчику</string>
