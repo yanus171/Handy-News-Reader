@@ -23,8 +23,15 @@ fi
 
 # ===== ПРОВЕРКА БЛОКИРОВКИ =====
 if [ -f "$LOCK_FILE" ]; then
-    log "⚠️ Синхронизация уже выполняется (PID $(cat $LOCK_FILE))"
-    exit 1
+    LOCK_PID=$(cat "$LOCK_FILE" 2>/dev/null)
+    # Если PID из lock-файла мёртв — lock устарел (процесс убит по timeout/Ctrl+C), удаляем
+    if ! kill -0 "$LOCK_PID" 2>/dev/null; then
+        log "🔓 Lock устарел (PID $LOCK_PID не существует), удаляю"
+        rm -f "$LOCK_FILE"
+    else
+        log "⚠️ Синхронизация уже выполняется (PID $LOCK_PID)"
+        exit 1
+    fi
 fi
 echo $$ > "$LOCK_FILE"
 
