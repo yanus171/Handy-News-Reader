@@ -4,7 +4,7 @@
 REMOTE="yandex"
 REMOTE_PATH="Projects/Flym"
 LOCAL_PATH="$HOME/Yandex.Disk/Projects/Flym"
-LOG_FILE="$HOME/.rclone_sync.log"
+LOG_FILE="$HOME/.flym_sync.log"
 LOCK_FILE="/tmp/rclone_sync.lock"
 FILTER_FILE="./.rclone_filters.txt"
 BARE="$HOME/Yandex.Disk/Projects/Flym.bare.git"
@@ -14,6 +14,12 @@ REMOTE_BARE="$REMOTE:Projects/Flym.bare.git"
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
 }
+
+# ===== ПРОВЕРКА КАТАЛОГА ЗАПУСКА =====
+if [ "$PWD" != "$LOCAL_PATH" ]; then
+    echo "❌ Запускайте sync_noute.sh только из $LOCAL_PATH (текущий каталог: $PWD)"
+    exit 1
+fi
 
 # ===== ПРОВЕРКА БЛОКИРОВКИ =====
 if [ -f "$LOCK_FILE" ]; then
@@ -53,6 +59,7 @@ rclone sync "$LOCAL_PATH" "$REMOTE:$REMOTE_PATH" \
     --checkers=32 \
     --verbose \
     --progress \
+    --checksum \
     --filter-from "$FILTER_FILE" \
     --exclude ".git/" \
     --exclude "**/.git/" \
