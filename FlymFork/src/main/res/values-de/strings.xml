@@ -178,6 +178,7 @@
     <string name="see_enclosure">Anhang laden</string>
     <string name="see_link">Im Browser ansehen</string>
     <string name="cant_open_link">Keine Anwendung für diesen Link gefunden</string>
+    <string name="cant_open_activity">Keine Anwendung gefunden, die diese Aktion ausführen kann</string>
     <string name="open_enclosure">Anhang öffnen</string>
     <string name="file">Datei</string>
     <string name="download_and_save">Herunterladen und speichern</string>
@@ -695,6 +696,8 @@
     <string name="feed_count_were_edited">Feeds wurden bearbeitet</string>
     <string name="show_navigation_bar_in_fullscreen">Navigation bei Vollbild</string>
     <string name="show_navigation_bar_in_fullscreen_summary">Navigationsleiste im Vollbildmodus anzeigen</string>
+    <string name="use_area_around_cutout">Bereich um den Bildschirmausschnitt nutzen</string>
+    <string name="use_area_around_cutout_summary">Im Vollbildmodus soll der Bereich um die Kameraaussparung (Display-Notch) mit Inhalten ausgefüllt werden, anstatt ihn schwarz zu lassen</string>
     <string name="show_unstarred_checkbox">Symbol für »Kein Favorit«</string>
     <string name="show_unstarred_checkbox_descr">Kleinen ungefüllten Stern als Zeichen anzeigen, dass Artikel nicht zu den Favoriten gehört</string>
     <string name="debug">Fehlersuche</string>
