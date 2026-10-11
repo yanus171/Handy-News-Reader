@@ -117,6 +117,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mIsWithTables;
     private boolean mWasAutoUnStar = false;
     boolean mLoadTitleOnly = false;
+    private boolean mWasFullTextAutoReload = false;
     private int mLastContentHash = 0;
 
     private int mIsWithTablePos = -1, mEnclosurePos, mRetrieveFullTextPos;
@@ -550,6 +551,12 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             return;
         setHtml(mEntryFragment.mBaseUri, mEntryFragment.mFilters);
         Dog.v(String.format("generateArticleContent view.mScrollY  (entry %s) view.mScrollPartY = %f", mEntryId, mScrollPartY));
+        if ( !mWasFullTextAutoReload && !mLoadTitleOnly && mRetrieveFullText && !mIsFullTextShown
+             && mEntryFragment.isCurrentPage( mPosition )
+             && !FetcherService.hasMobilizationTask( mEntryId ) ) {
+            mWasFullTextAutoReload = true;
+            onClickFullText();
+        }
     }
 
     @Override
