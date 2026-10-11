@@ -8,6 +8,29 @@
 set -eu
 cd "$(dirname "$0")"
 
+# --- Java version check: AGP 8.9 / Gradle 8.11.1 require JDK 17+ ---
+MIN_JAVA_MAJOR=17
+if ! command -v java >/dev/null 2>&1; then
+    echo "Error: Java not found. Install JDK $MIN_JAVA_MAJOR or newer:" >&2
+    echo "  Termux:        pkg install openjdk-17" >&2
+    echo "  Debian/Ubuntu: sudo apt install openjdk-17-jdk" >&2
+    echo "  Other:         https://adoptium.net/ or SDKMAN (sdk install java)" >&2
+    exit 1
+fi
+JAVA_MAJOR="$(java -version 2>&1 | head -1 | sed -n 's/.*version "\([0-9]*\)\.\([0-9]*\).*/\1/p')"
+JAVA_MINOR="$(java -version 2>&1 | head -1 | sed -n 's/.*version "\([0-9]*\)\.\([0-9]*\).*/\2/p')"
+# Legacy numbering "1.8.x" means Java 8
+[ "$JAVA_MAJOR" = "1" ] && JAVA_MAJOR="$JAVA_MINOR"
+if [ -z "$JAVA_MAJOR" ] || [ "$JAVA_MAJOR" -lt "$MIN_JAVA_MAJOR" ]; then
+    echo "Error: Java too old ($(java -version 2>&1 | head -1))." >&2
+    echo "Need JDK $MIN_JAVA_MAJOR or newer for AGP 8.9 / Gradle 8.11.1. Recommended:" >&2
+    echo "  Termux:        pkg install openjdk-17" >&2
+    echo "  Debian/Ubuntu: sudo apt install openjdk-17-jdk" >&2
+    echo "  Other:         https://adoptium.net/ or SDKMAN (sdk install java)" >&2
+    exit 1
+fi
+echo "Java: $(java -version 2>&1 | head -1) — OK (>= $MIN_JAVA_MAJOR)"
+
 GRADLE_BIN=""
 # --- gradle: first the Termux cache, then ./gradlew (Linux desktop) ---
 for cand in "$HOME"/.gradle/wrapper/dists/gradle-*-bin/*/gradle-*/bin/gradle; do
