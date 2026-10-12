@@ -118,6 +118,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     private boolean mWasAutoUnStar = false;
     boolean mLoadTitleOnly = false;
     private boolean mWasFullTextAutoReload = false;
+    private boolean mAreImagesDownloadStarted = false;
     private int mLastContentHash = 0;
 
     private int mIsWithTablePos = -1, mEnclosurePos, mRetrieveFullTextPos;
@@ -252,6 +253,7 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
             }
             mLastContentHash = contentHash;
         }
+        mAreImagesDownloadStarted = false;
         //getSettings().setBlockNetworkLoads(true);
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.getSettings().setSupportZoom(false);
@@ -388,6 +390,11 @@ public class WebEntryView extends EntryView implements WebViewExtended.EntryView
     }
 
     public void DownLoadImages() {
+        synchronized (this) {
+            if ( mAreImagesDownloadStarted )
+                return;
+            mAreImagesDownloadStarted = true;
+        }
         final ArrayList<String> imagesToDl = GetImageListCopy();
         if (!imagesToDl.isEmpty())
             new Thread(() -> {

@@ -368,6 +368,7 @@ public class WebViewExtended extends WebView implements Handler.Callback {
                 if ( mIsPageFinished && !mIsScrollScheduled && newContentHeight > 0 && newContentHeight == mLastContentHeight) {
                     if (!mEntryView.mLoadTitleOnly) {
                         mEntryView.mContentWasLoaded = true;
+                        mEntryView.DownLoadImages();
                         mEntryView.EndStatus();
                     }
                     if ( isSearch ) {
